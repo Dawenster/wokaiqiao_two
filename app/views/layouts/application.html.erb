@@ -4,15 +4,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title><%= content_for?(:title) ? yield(:title) : "foundation-rails" %></title>
+    <title>我开窍 &mdash; 快来“窍”一下！</title>
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "vendor/modernizr" %>
     <%= csrf_meta_tags %>
+
+    <meta name="description" content="“我开窍”平台为您提供与行业专家、顶级顾问、学术权威直接对话的难得机会，让您安坐家中就能与经验证的成功专业人士通过电话会议商讨企业计划书、获得战略性建议、进行市场调研、学习专业技能、解决学术上的烦恼。" />
+
+    <meta name="default-title" content="我开窍 &mdash; 快来“窍”一下！">
+    <meta property="og:title" content="我开窍 &mdash; 快来“窍”一下！"/>
+    <meta property="og:description" content="“我开窍”平台为您提供与行业专家、顶级顾问、学术权威直接对话的难得机会，让您安坐家中就能与经验证的成功专业人士通过电话会议商讨企业计划书、获得战略性建议、进行市场调研、学习专业技能、解决学术上的烦恼。" />
+    <meta property="og:image" content="https://s3-us-west-2.amazonaws.com/wokaiqiao/jackma.jpg" />
+    <meta property="og:site_name" content="我开窍" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://www.wokaiqiao.com" />
+    <meta name="baidu-site-verification" content="0WgYIgWVxB" />
   </head>
 
   <body>
-
+    <div class="notice-alert-holder">
+      <div class="notice"><%= notice %></div>
+      <div class="alert"><%= alert %></div>
+    </div>
     <%= yield %>
     <%= javascript_include_tag "application" %>
   </body>
