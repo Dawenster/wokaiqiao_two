@@ -1,5 +1,15 @@
-.top-nav {
-  .title-bar {
+.top-nav-holder {
+  .top-bar {
     width: 100%;
+    border-bottom: 1px solid lightgrey;
+    height: 55px;
+
+    .top-bar-title {
+      margin-top: 5px;
+
+      .mobile-menu-icon {
+        margin-right: 10px;
+      }
+    }
   }
 }

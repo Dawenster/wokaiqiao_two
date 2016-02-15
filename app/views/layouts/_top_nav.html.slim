@@ -1,6 +1,42 @@
-.top-nav data-sticky-container=""
-  .title-bar.sticky data-sticky="" data-options="marginTop: 0;" style="width:100%"
-    .title-bar-left
-      | Yoyo
-    .title-bar-right
-      | Momo
+.top-nav-holder data-sticky-container=""
+  .top-bar data-sticky="" data-options="marginTop: 0;" data-topbar="" role="navigation"
+    .top-bar-title
+      span data-responsive-toggle="responsive-menu" data-hide-for="medium"
+        span.menu-icon.dark.mobile-menu-icon data-toggle=""
+      a href="#{root_path}"
+        = image_tag "https://s3-us-west-2.amazonaws.com/wokaiqiao/general/wokaiqiao_logo.png", width: 120
+
+    #responsive-menu
+      .top-bar-left
+        ul.dropdown.menu data-dropdown-menu=""
+          li
+            a href="#"
+              | 找专家
+          li
+            a href="#"
+              | 常见问题 + 提示
+
+          li
+            a href="#"
+              | 合作伙伴
+
+      .top-bar-right
+        ul.dropdown.menu data-dropdown-menu=""
+          - if user_signed_in?
+            li
+              a href="#"
+                | 使用者名字
+              ul.menu.vertical
+                li
+                  a href="#"
+                    | 个人主页
+
+          - else
+
+            li
+              a href="#"
+                | 注册
+
+            li
+              a href="#"
+                | 快速登入
