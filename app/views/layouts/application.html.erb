@@ -24,9 +24,18 @@
 
   <body>
 
-    <%= render "layouts/top_nav" %>
-    <%= render "layouts/alerts_and_notifications" %>
-    <%= yield %>
+    <div class="off-canvas-wrapper">
+      <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+        <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+          <%= render "layouts/off_canvas_content" %>
+        </div>
+        <div class="off-canvas-content" data-off-canvas-content>
+          <%= render "layouts/top_nav" %>
+          <%= render "layouts/alerts_and_notifications" %>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>

@@ -1,0 +1,22 @@
+.off-canvas-content-holder
+  ul.menu.vertical
+    - nav_list.each do |nav_item|
+      li
+        a href="#{nav_item[:link]}"
+          = nav_item[:text]
+
+  hr
+
+  - if user_signed_in?
+    ul.menu.vertical
+      - logged_in_user_dropdown_list.each do |nav_item|
+        li
+          a href="#{nav_item[:link]}"
+            = nav_item[:text]
+
+  - else
+    ul.menu.vertical
+      - not_logged_in_user_actions_list.each do |nav_item|
+        li
+          a href="#{nav_item[:link]}"
+            = nav_item[:text]
