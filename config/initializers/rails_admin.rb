@@ -1,10 +1,17 @@
 RailsAdmin.config do |config|
 
+  require 'i18n'
+  I18n.default_locale = :en
+
+  config.main_app_name = Proc.new { |controller| [ "我开窍", "大奶頭管理區" ] }
+
   ### Popular gems integration
 
   ## == Devise ==
-  config.authenticate_with do
-    warden.authenticate! scope: :user
+  config.authorize_with do |controller|
+    unless current_user.try(:admin)
+      redirect_to main_app.root_path
+    end
   end
   config.current_user_method(&:current_user)
 
