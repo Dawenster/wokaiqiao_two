@@ -1,0 +1,15 @@
+- if notice
+  #noticeCallout.callout.success data-closable="" data-toggler=".hide" ng-controller="AlertsAndNotificationsCtrl"
+    button.close-button aria-label="Close notice" type="button" data-toggle="noticeCallout"
+      span aria-hidden="true"
+        | &times;
+
+    = notice.html_safe
+
+- if alert
+  #alertCallout.callout.alert data-closable="" data-toggler=".hide" ng-controller="AlertsAndNotificationsCtrl"
+    button.close-button aria-label="Close alert" type="button" data-toggle="alertCallout"
+      span aria-hidden="true"
+        | &times;
+
+    = alert.html_safe
