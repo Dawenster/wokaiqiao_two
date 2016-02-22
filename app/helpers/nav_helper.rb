@@ -3,15 +3,18 @@ module NavHelper
     [
       {
         text: "找专家",
-        link: experts_path
+        link: experts_path,
+        method: :get
       },
       {
         text: "常见问题 + 提示",
-        link: faq_path
+        link: faq_path,
+        method: :get
       },
       {
         text: "合作伙伴",
-        link: partners_path
+        link: partners_path,
+        method: :get
       }
     ]
   end
@@ -20,11 +23,13 @@ module NavHelper
     [
       {
         text: "注册",
-        link: "#"
+        link: new_user_registration_path,
+        method: :get
       },
       {
         text: "快速登入",
-        link: "#"
+        link: new_user_session_path,
+        method: :get
       }
     ]
   end
@@ -33,7 +38,13 @@ module NavHelper
     [
       {
         text: "个人主页",
-        link: "#"
+        link: "#",
+        method: :get
+      },
+      {
+        text: "登出",
+        link: destroy_user_session_path,
+        method: :delete
       }
     ]
   end
