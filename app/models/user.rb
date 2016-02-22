@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
 
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
 
+  scope :experts, -> {
+    where(expert: true)
+  }
+
   def s3_credentials
     {
       bucket: ENV['AWS_BUCKET'],
