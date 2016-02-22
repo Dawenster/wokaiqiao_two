@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_attached_file :picture,
                     styles: { medium: "300x300#", thumb: "100x100#" },
-                    default_url: "/images/:style/missing.png",
+                    default_url: "https://s3-us-west-2.amazonaws.com/wokaiqiao/users/missing-user.png",
                     storage: :s3,
                     s3_credentials: Proc.new{|a| a.instance.s3_credentials }
 
