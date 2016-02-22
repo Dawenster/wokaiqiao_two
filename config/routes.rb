@@ -3,5 +3,8 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#landing"
 
-  get "experts" => "experts#index", as: :experts
+  scope "experts" do
+    get "/" => "experts#index", as: :experts
+    post "book" => "experts#book", as: :book_expert
+  end
 end

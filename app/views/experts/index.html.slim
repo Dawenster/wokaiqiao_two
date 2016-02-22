@@ -1,3 +1,14 @@
-- @experts.each do |expert|
-  div
-    = expert.name
+.page-banner-holder
+  .row
+    .small-12.columns
+      h3
+        | 找专家
+
+.row
+  .small-12.columns
+    - @experts.each do |expert|
+      = render "experts/list", expert: expert
+      - unless expert == @experts.last
+        hr
+
+br

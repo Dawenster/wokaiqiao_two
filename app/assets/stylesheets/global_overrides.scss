@@ -1,5 +1,33 @@
+@import "settings";
+
 .callout {
   border-radius: 0 !important;
   border: none !important;
   margin-bottom: 0 !important;
+}
+
+.profile-circle {
+  margin-bottom: 10px;
+  border-radius: 50%;
+  background-repeat: no-repeat; 
+  background-position: center center; // Center image in the circle
+  background-size: cover; // Make sure it covers the circle, as there is no bg repeat
+  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+
+  @media only screen and (max-width: 40em) {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+.page-banner-holder {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: $white;
+  background-color: $primary-color;
+  margin-bottom: 30px;
 }

@@ -1,0 +1,23 @@
+.expert-list-holder {
+  padding-top: 10px;
+
+  .profile-circle-holder {
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 40em) {
+    .expert-name {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+  }
+
+  .left-side {
+    width: 120px;
+    float: left;
+  }
+
+  .right-side {
+    margin-left: 140px;
+  }
+}
