@@ -1,35 +1,37 @@
 .top-nav-holder data-sticky-container=""
   .top-bar data-sticky="" data-options="marginTop: 0;" data-topbar="" role="navigation"
-    .top-bar-title
-      span.show-for-small-only data-toggle="offCanvas"
-        span.menu-icon.dark.mobile-menu-icon data-toggle=""
-      a href="#{root_path}"
-        = image_tag "https://s3-us-west-2.amazonaws.com/wokaiqiao/general/wokaiqiao_logo.png", width: 120
+    .row
+      .small-12.columns
+        .top-bar-title
+          span.show-for-small-only data-toggle="offCanvas"
+            span.menu-icon.dark.mobile-menu-icon data-toggle=""
+          a href="#{root_path}"
+            = image_tag "https://s3-us-west-2.amazonaws.com/wokaiqiao/general/wokaiqiao_logo.png", width: 120
 
-    .link-holder.hide-for-small-only
-      .top-bar-left
-        ul.dropdown.menu data-dropdown-menu=""
-          - nav_list.each do |nav_item|
-            li
-              a href="#{nav_item[:link]}"
-                = nav_item[:text]
+        .link-holder.hide-for-small-only
+          .top-bar-left
+            ul.dropdown.menu data-dropdown-menu=""
+              - nav_list.each do |nav_item|
+                li
+                  a href="#{nav_item[:link]}"
+                    = nav_item[:text]
 
-      .top-bar-right
-        ul.dropdown.menu data-dropdown-menu=""
-          - if user_signed_in?
-            li
-              a href="#"
-                = current_user.email
+          .top-bar-right
+            ul.dropdown.menu data-dropdown-menu=""
+              - if user_signed_in?
+                li
+                  a href="#"
+                    = current_user.email
 
-              ul.menu.vertical
-                - logged_in_user_dropdown_list.each do |nav_item|
+                  ul.menu.vertical
+                    - logged_in_user_dropdown_list.each do |nav_item|
+                      li
+                        a href="#{nav_item[:link]}"
+                          = nav_item[:text]
+
+              - else
+
+                - not_logged_in_user_actions_list.each do |nav_item|
                   li
                     a href="#{nav_item[:link]}"
                       = nav_item[:text]
-
-          - else
-
-            - not_logged_in_user_actions_list.each do |nav_item|
-              li
-                a href="#{nav_item[:link]}"
-                  = nav_item[:text]
