@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'actionview-encoded_mail_to'
+gem 'angularjs-rails'
 gem 'aws-sdk', '< 2.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'devise'
