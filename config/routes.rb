@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#landing"
 
+  get "faq" => "pages#faq", as: :faq
+  get "partners" => "pages#partners", as: :partners
+
   scope "experts" do
     get "/" => "experts#index", as: :experts
     post "book" => "experts#book", as: :book_expert

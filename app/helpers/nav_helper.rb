@@ -7,11 +7,11 @@ module NavHelper
       },
       {
         text: "常见问题 + 提示",
-        link: "#"
+        link: faq_path
       },
       {
         text: "合作伙伴",
-        link: "#"
+        link: partners_path
       }
     ]
   end
