@@ -1,2 +1,11 @@
 zh:
   hello: 你好
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: 请填入邮箱
+            password:
+              blank: 请填入密码

@@ -3,11 +3,23 @@
 # https://gist.github.com/Kenrick-Zhou/7909822
 
 zh:
+  activerecord:
+    attributes:
+      user:
+        current_password: "当前密码"
+        email: "电子邮箱"
+        password: "密码"
+        password_confirmation: "密码确认"
+        remember_me: "记住登录信息"
+    models:
+      user: "用户"
   devise:
     confirmations:
       confirmed: "您的帐号已经确认，您现在已登录。"
       send_instructions: "几分钟后，您将收到确认帐号的电子邮件。"
       send_paranoid_instructions: "如果您的邮箱存在于我们的数据库中，您将收到一封确认账号的邮件。"
+      new:
+        resend_confirmation_instructions: "重新发送确认邮件"
     failure:
       already_authenticated: "您已经登录。"
       inactive: "您还没有激活帐户。"
@@ -21,10 +33,22 @@ zh:
     mailer:
       confirmation_instructions:
         subject: "确认信息"
+        action: "确认我的帐户"
+        greeting: "欢迎 %{recipient}!"
+        instruction: "您可以通过下面的链接确认您的帐户的电子邮件:"
       reset_password_instructions:
         subject: "重置密码信息"
+        action: "更改我的密码"
+        greeting: "你好 %{recipient}!"
+        instruction: "有人要求更改密码的链接，您可以通过下面的链接更改密码："
+        instruction_2: "如果您没有要求请求更改密码，请忽略此电子邮件。"
+        instruction_3: "如果你没有访问上面的链接并更改密码，你的密码就不会被改变。"
       unlock_instructions:
         subject: "解锁信息"
+        action: "帐户解锁"
+        greeting: "你好 %{recipient}!"
+        instruction: "点击下面的链接到您的帐户解锁:"
+        message: "由于多次的不成功的登入尝试，您的帐户已被锁定。"
     omniauth_callbacks:
       failure: "因为%{reason}，所以您无法从%{kind}获得授权。"
       success: "成功地从%{kind}获得授权。"
@@ -34,6 +58,14 @@ zh:
       send_paranoid_instructions: "如果您的邮箱存在于我们的数据库中，您将收到一封找回密码的邮件。"
       updated: "您的密码已修改成功，您现在已登录。"
       updated_not_active: "您的密码已修改成功。"
+      edit:
+        change_my_password: "更改我的密码"
+        change_your_password: "更改您的密码"
+        confirm_new_password: "确认新密码"
+        new_password: "新密码"
+      new:
+        forgot_your_password: "忘记密码？"
+        send_me_reset_password_instructions: "请给我发送重设密码的邮件"
     registrations:
       destroyed: "再见！您的帐户已成功注销。我们希望很快可以再见到您。"
       signed_up: "欢迎您！您已注册成功。"
@@ -42,14 +74,38 @@ zh:
       signed_up_but_unconfirmed: "一封带有确认链接的邮件已经发送至您的邮箱，请检查邮箱（包括垃圾邮箱），并点击该链接激活您的账号。"
       update_needs_confirmation: "信息更新成功，但我们需要验证您的新电子邮件地址，请检查邮箱（包括垃圾邮箱），并点击该链接激活您的账号。"
       updated: "帐号资料更新成功。"
+      edit:
+        are_you_sure: "你确定吗？"
+        cancel_my_account: "取消我的帐户"
+        currently_waiting_confirmation_for_email: "等待 %{email} 的确认"
+        leave_blank_if_you_don_t_want_to_change_it: "你不想去改变它，不需要填写"
+        title: "修改 %{resource}"
+        unhappy: "不喜欢"
+        update: "更新"
+        we_need_your_current_password_to_confirm_your_changes: "我们需要您的当前密码以确认您的更改"
+      new:
+        sign_up: "注册"
     sessions:
       signed_in: "登录成功."
       signed_out: "退出成功."
       already_signed_out: "已经退出成功."
+      new:
+        sign_in: "登录"
     unlocks:
       send_instructions: "几分钟后，您将收到一封解锁帐号的邮件。"
       send_paranoid_instructions: "如果您的邮箱存在于我们的数据库中，您将收到一封解锁账号的邮件。"
       unlocked: "您的帐号已成功解锁，您现在已登录。"
+      new:
+        resend_unlock_instructions: "重发解锁邮件"
+    shared:
+      links:
+        back: "返回"
+        didn_t_receive_confirmation_instructions: "没有收到确认邮件？"
+        didn_t_receive_unlock_instructions: "没有收到解锁邮件？"
+        forgot_your_password: "忘记密码？"
+        sign_in: "登录"
+        sign_in_with_provider: "用 %{provider} 登录"
+        sign_up: "注册"
   errors:
     messages:
       already_confirmed: "已经确认，请重新登录。"
