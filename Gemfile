@@ -16,8 +16,10 @@ gem 'rails', '4.2.4'
 gem 'rails_admin'
 gem 'sass-rails', '~> 5.0.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'send_with_us'
 gem 'simple_form'
 gem 'slim'
+gem 'twilio-ruby', '~> 4.11.1'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
