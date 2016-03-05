@@ -13,6 +13,12 @@ zh:
         remember_me: "记住登录信息"
     models:
       user: "用户"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "已存在"
   devise:
     confirmations:
       confirmed: "您的帐号已经确认，您现在已登录。"

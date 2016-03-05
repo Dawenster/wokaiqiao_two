@@ -6,6 +6,6 @@ zh:
         user:
           attributes:
             email:
-              blank: 请填入邮箱
+              blank: 请填入
             password:
-              blank: 请填入密码
+              blank: 请填入
