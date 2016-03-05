@@ -79,4 +79,20 @@ Rails.application.configure do
 
   # For devise
   config.action_mailer.default_url_options = { host: 'wokaiqiao.com' }
+
+  # Email settings
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.zoho.com',
+    port:                 465,
+    domain:               'wokaiqiao.com',
+    user_name:            'team@wokaiqiao.com',
+    password:             ENV['EMAIL_PASSWORD'],
+    authentication:       'plain',
+    tls:                  true,
+    ssl:                  true,
+    enable_starttls_auto: true
+  }
 end
