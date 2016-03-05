@@ -7,6 +7,6 @@
       br
       | 从我开窍开始
     .landing-call-to-action
-      a.button.landing-call-to-action-button.primary href="#"
+      a.button.landing-call-to-action-button.primary href="#{experts_path}"
         | 找专家
       = mail_to become_expert_email, "成为专家", encode: "hex", class: "button landing-call-to-action-button success", subject: "我想当专家", body: "名字: \n联络资料(邮箱, 微信户名, 或手机号): "
