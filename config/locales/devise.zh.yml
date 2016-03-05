@@ -11,6 +11,7 @@ zh:
         password: "密码"
         password_confirmation: "密码确认"
         remember_me: "记住登录信息"
+        reset_password_token: "认证码"
     models:
       user: "用户"
     errors:
@@ -19,6 +20,8 @@ zh:
           attributes:
             email:
               taken: "已存在"
+            reset_password_token:
+              invalid: "无效"
   devise:
     confirmations:
       confirmed: "您的帐号已经确认，您现在已登录。"
