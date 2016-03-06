@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
                     s3_credentials: Proc.new{|a| a.instance.s3_credentials }
 
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
+  validates :name, presence: true
 
   scope :experts, -> {
     where(expert: true)
