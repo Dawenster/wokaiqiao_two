@@ -14,6 +14,7 @@ gem 'paperclip', '~> 4.3'
 gem 'pg'
 gem 'rails', '4.2.4'
 gem 'rails_admin'
+gem 'rollbar', '~> 2.8.0'
 gem 'sass-rails', '~> 5.0.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'send_with_us'
