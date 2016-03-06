@@ -9,3 +9,5 @@ zh:
               blank: 请填入
             password:
               blank: 请填入
+            name:
+              blank: 请填入
