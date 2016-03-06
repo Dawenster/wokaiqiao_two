@@ -1,0 +1,21 @@
+.book-expert-holder {
+  .left-side {
+    width: 50px;
+    float: left;
+  }
+
+  .right-side {
+    margin-left: 50px;
+  }
+
+  .description-holder {
+    margin-top: 20px;
+
+    .call_description {
+      textarea {
+        margin-bottom: 0px;
+        height: 80px;
+      }
+    }
+  }
+}

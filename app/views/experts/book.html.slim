@@ -4,6 +4,34 @@
       h3
         | 通话申请
 
-.row
-  .small-12.columns
-    | To be built
+.book-expert-holder
+  .row
+    .small-12.large-10.large-offset-1.columns
+      = simple_form_for @call do |f|
+        .row
+          .small-12.columns.show-for-small-only
+            br
+            = render "expert_brief_vertical", expert: @expert
+            br
+
+          .small-12.columns
+            div
+              .left-side
+                .numbered-circle
+                  | 1
+              .right-side
+                h5
+                  | 电话会议申请资料
+
+          br
+
+          .small-12.medium-8.columns
+            div.description-holder
+              .input-group
+                span.input-group-label
+                  | 通话内容：
+                = f.input :description, placeholder: "想与专家查询的事情", type: "number", label: false
+
+          .small-12.medium-4.columns.hide-for-small-only
+            br
+            = render "expert_brief_horizontal", expert: @expert

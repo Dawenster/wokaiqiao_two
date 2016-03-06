@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
     where(expert: true)
   }
 
+  has_many :calls
+  has_many :calls_as_expert, class_name: Call, foreign_key: :expert_id
   has_many :educations
 
   def s3_credentials

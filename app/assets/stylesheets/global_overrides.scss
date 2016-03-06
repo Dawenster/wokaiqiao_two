@@ -16,11 +16,6 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-
-  @media only screen and (max-width: 40em) {
-    width: 150px;
-    height: 150px;
-  }
 }
 
 .page-banner-holder {
@@ -31,4 +26,43 @@
   color: $white;
   background-color: $primary-color;
   margin-bottom: 30px;
+}
+
+.numbered-circle {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background-color: $primary-color;
+  border: 4px solid $white;
+  box-shadow: 0 0 0 2px #2199e8;
+  text-align: center;
+  color: $white;
+}
+
+.subtitle-holder {
+  h6 {
+    margin-bottom: 0px;
+  }
+
+  .subtitle {
+    color: $dark-gray;
+  }
+}
+
+.expert-brief-blurb-holder {
+  .left-side {
+    width: 60px;
+    float: left;
+  }
+
+  .right-side {
+    margin-left: 60px;
+  }
+
+}
+
+@media only screen and (max-width: 40em) {
+  .expert-brief-blurb-holder {
+    text-align: center;
+  }
 }

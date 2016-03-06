@@ -1,0 +1,21 @@
+.expert-brief-blurb-holder
+  div
+    = image_tag expert.picture.url(:thumb), class: "profile-circle", width: 100
+  div
+    b
+      = expert.name
+    .subtitle-holder
+      h6
+        small.subtitle
+          i.fa.fa-graduation-cap
+          = " #{expert.list_education}"
+
+      h6
+        small.subtitle
+          i.fa.fa-map-pin
+          = " #{expert.location}"
+
+      h6
+        small.subtitle
+          i.fa.fa-rmb
+          = " #{expert.rate_per_minute}/分钟"

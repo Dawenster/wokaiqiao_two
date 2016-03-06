@@ -4,6 +4,7 @@ class ExpertsController < ApplicationController
   end
 
   def book
-    
+    @call = Call.new
+    @expert = User.find(params[:expert_id])
   end
 end
