@@ -32,4 +32,8 @@ class User < ActiveRecord::Base
   def list_education
     educations.map{|e|e.name_with_year}.join("，")
   end
+
+  def rate_for(min)
+    rate_per_minute * min
+  end
 end

@@ -1,0 +1,38 @@
+.small-12.columns.show-for-small-only
+  br
+  = render "expert_brief_vertical", expert: expert
+  br
+
+.small-12.columns
+  div
+    .left-side
+      .numbered-circle
+        | 1
+    .right-side
+      h5
+        | 电话会议申请资料
+
+br
+
+.medium-8.columns
+  div.description-holder
+    .input-group
+      span.input-group-label
+        | 通话内容简介：
+      = f.input :description, placeholder: "想与专家查询的事情", type: "number", label: false
+
+.medium-4.columns.hide-for-small-only
+  br
+  = render "expert_brief_horizontal", expert: expert
+
+.small-12.medium-8.columns.end
+  div.est-duration-holder
+    .input-group
+      span.input-group-label
+        | 预计通话长度：
+      = select_tag "call[est_duration_in_min]", options_for_select(@estimated_call_durations, @estimated_call_durations.first)
+
+.small-8.columns.end
+  .disclaimer-text
+    p
+      | 预计通话长度不会影响通话收费，但可能影响专家安排通话的时间。通话结束后按实际通话长度收费。请查阅使用我开窍的礼仪。你会收到关于通话最新消息的电邮，你也可以到你的个人主页获得同样信息。

@@ -1,3 +1,5 @@
+@import 'settings';
+
 .book-expert-holder {
   .left-side {
     width: 50px;
@@ -17,5 +19,18 @@
         height: 80px;
       }
     }
+  }
+
+  .est-duration-holder {
+    select {
+      margin-bottom: 0px;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+
+  .disclaimer-text {
+    font-size: 12px;
+    color: $dark-gray;
   }
 }
