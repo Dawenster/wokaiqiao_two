@@ -58,6 +58,7 @@ RailsAdmin.config do |config|
       field :expert
       field :domestic
       field :rate_per_minute
+      field :title
       field :expertise
       field :current_work
       field :past_work
