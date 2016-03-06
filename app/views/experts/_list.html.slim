@@ -51,7 +51,7 @@
             = "每分钟收费：¥#{expert.rate_per_minute}"
             br
           br
-          .button.primary.expanded
+          a.button.primary.expanded href="#{book_expert_path(expert)}"
             | 通话申请
           .show-for-small-only
             = "每分钟收费：¥#{expert.rate_per_minute}"
