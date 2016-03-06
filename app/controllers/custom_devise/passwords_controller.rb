@@ -7,7 +7,7 @@ class CustomDevise::PasswordsController < Devise::PasswordsController
       @user.reset_password_sent_at = Time.now.utc
       @user.save(validate: false)
 
-      reset_link = edit_password_url(resource, :reset_password_token => (Devise::VERSION.start_with?('3.') ? raw : resource.reset_password_token))
+      reset_link = edit_password_url(resource, :reset_password_token => raw)
       Emails::User.reset_password(resource, reset_link)
 
       flash[:notice] = "几分钟后，您将收到重置密码的电子邮件。"
