@@ -138,6 +138,8 @@ GEM
       mime-types
       mimemagic (= 0.3.0)
     pg (0.18.4)
+    pikaday-gem (1.4.0)
+      railties (>= 3.1)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -277,6 +279,7 @@ DEPENDENCIES
   oj (~> 2.12.14)
   paperclip (~> 4.3)
   pg
+  pikaday-gem (~> 1.4)
   pry
   rails (= 4.2.4)
   rails_admin
