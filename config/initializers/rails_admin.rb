@@ -38,4 +38,32 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
   end
+
+  config.model User do
+    list do
+      field :name
+      field :email
+      field :expert
+      field :domestic
+      field :rate_per_minute
+      field :current_work
+    end
+
+    edit do
+      field :name
+      field :email
+      field :password
+      field :picture
+      field :admin
+      field :expert
+      field :domestic
+      field :rate_per_minute
+      field :expertise
+      field :current_work
+      field :past_work
+      field :educations
+      field :languages
+      field :location
+    end
+  end
 end
