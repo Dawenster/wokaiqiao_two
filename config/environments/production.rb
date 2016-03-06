@@ -95,4 +95,7 @@ Rails.application.configure do
     ssl:                  true,
     enable_starttls_auto: true
   }
+
+  config.time_zone = 'Beijing'
+  config.active_record.default_timezone = :utc
 end

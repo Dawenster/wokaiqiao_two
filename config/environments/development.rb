@@ -56,4 +56,7 @@ Rails.application.configure do
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
     }
   }
+
+  config.time_zone = 'Beijing'
+  config.active_record.default_timezone = :utc
 end
