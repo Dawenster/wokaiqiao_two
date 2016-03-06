@@ -1,3 +1,5 @@
+@import 'settings';
+
 .expert-list-holder {
   padding-top: 10px;
 
@@ -12,12 +14,40 @@
     }
   }
 
+  .expert-title {
+    margin-bottom: 0px;
+  }
+
+  h6 {
+    margin-bottom: 0px;
+  }
+
+  .subtitle {
+    color: $dark-gray;
+  }
+
+  .inline-title {
+    color: $primary-color;
+  }
+
+  .expert-details-holder {
+    margin-top: 10px;
+  }
+
   .left-side {
-    width: 120px;
+    width: 80px;
     float: left;
   }
 
   .right-side {
-    margin-left: 140px;
+    margin-left: 80px;
+  }
+
+  .far-right-column {
+    text-align: center;
+  }
+
+  .fa-star, .fa-star-half-empty {
+    color: $success-color;
   }
 }

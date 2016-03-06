@@ -1,71 +1,72 @@
 .expert-list-holder
   .row
-    .small-12.medium-3.large-2.column.profile-circle-holder
-      img.profile-circle src="#{expert.picture.url(:medium)}"
-      h4.expert-name
-        b
-          = expert.name
-
-    .small-12.medium-5.large-6.columns
+    .small-12.medium-10.medium-offset-1.large-8.large-offset-2.column
       .row
-        .small-12.columns
-          .left-side
-            p
-              b
-                | 教育:
+        .small-12.medium-3.column.profile-circle-holder
+          img.profile-circle src="#{expert.picture.url(:medium)}"
+          h4.expert-name
+            b
+              = expert.name
 
-          .right-side
-            p
-              = expert.list_education
+        .small-12.medium-6.columns
+          h5.expert-title
+            b
+              = expert.title
 
-      .row
-        .small-12.columns
-          .left-side
-            p
-              b
-                | 专长领域:
+          .subtitle-holder
+            h6
+              small.subtitle
+                i.fa.fa-graduation-cap
+                = " #{expert.list_education}"
 
-          .right-side
-            = simple_format(expert.expertise, {}, wrapper_tag: 'div')
-            / Adding p below for spacing purposes...
-            p
+            h6
+              small.subtitle
+                i.fa.fa-map-pin
+                = " #{expert.location}"
 
-      .row
-        .small-12.columns
-          .left-side
-            p
-              b
-                | 现在 / 曾经 就职:
+            .expert-details-holder
+              div
+                .left-side
+                  .inline-title
+                    | 现在就职：
+                .right-side
+                  = expert.current_work
 
-          .right-side
-            p
-              = expert.current_work
+              div
+                .left-side
+                  .inline-title
+                    | 曾经就职：
+                .right-side
+                  = expert.past_work
+                
+              div
+                .left-side
+                  .inline-title
+                    | 专长领域：
+                .right-side
+                  = expert.expertise
 
-      .row
-        .small-12.columns
-          .left-side
-            p
-              b
-                | 每分钟:
+        .small-12.medium-3.column.end.far-right-column
+          .hide-for-small-only
+            = "每分钟收费：¥#{expert.rate_per_minute}"
+            br
+          br
+          .button.primary.expanded
+            | 通话申请
+          .show-for-small-only
+            = "每分钟收费：¥#{expert.rate_per_minute}"
+          div
+            i.fa.fa-star
+            i.fa.fa-star
+            i.fa.fa-star
+            i.fa.fa-star
+            i.fa.fa-star-half-empty
 
-          .right-side
-            p
-              = "¥#{expert.rate_per_minute}"
+          div
+            h6
+              small.subtitle
+                i.fa.fa-comments
+                |  10个评论
 
-    .small-12.medium-4.large-4.column
-      = form_tag book_expert_path
-        .row ng-controller="ExpertListCtrl"
-          .small-12.columns
-            input type="hidden" value="#{expert.name}" name="name"
-            input type="hidden" value="#{expert.rate_per_minute}" name="rate_per_minute"
-
-            input type="text" placeholder="最佳通话时间及日期" name="preferred_time" aria-describedby="preferredTimeHelpText"
-            p.help-text.hide#preferredTimeHelpText
-              | 请填入
-
-            input type="text" placeholder="通话内容" name="contact_reason" aria-describedby="reasonHelpText"
-            p.help-text.hide#reasonHelpText
-              | 请填入
-
-            .button.primary.expanded ng-click="book($event)"
-              | 通话申请
+      - unless (i + 1) == max
+        hr

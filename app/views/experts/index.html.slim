@@ -6,7 +6,5 @@
 
 .row
   .small-12.columns
-    - @experts.each do |expert|
-      = render "experts/list", expert: expert
-      - unless expert == @experts.last
-        hr
+    - @experts.each_with_index do |expert, i|
+      = render "experts/list", expert: expert, i: i, max: @experts.count

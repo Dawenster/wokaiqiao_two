@@ -12,6 +12,6 @@ Rails.application.routes.draw do
 
   scope "experts" do
     get "/" => "experts#index", as: :experts
-    post "book" => "experts#book", as: :book_expert
+    get "book/:call_id" => "experts#book", as: :book_expert
   end
 end
