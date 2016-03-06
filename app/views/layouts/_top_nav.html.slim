@@ -21,7 +21,7 @@
               - if user_signed_in?
                 li
                   a href="#"
-                    = current_user.email
+                    = current_user.name
 
                   ul.menu.vertical
                     - logged_in_user_dropdown_list.each do |nav_item|
