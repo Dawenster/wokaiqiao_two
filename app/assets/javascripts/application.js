@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require foundation
 //= require angular
+//= require moment
+//= require pikaday
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

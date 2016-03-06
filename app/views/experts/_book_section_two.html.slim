@@ -6,3 +6,24 @@
     .right-side
       h5
         | 建议通话时间及日期
+
+  br
+
+  .row
+    .small-6.columns
+      input.datepicker type="text" value="#{@today}"
+
+    .small-6.columns
+      = select_tag "call[offer_time_one_hour]", options_for_select(@available_times, @available_times[3])
+
+    .small-6.columns
+      input.datepicker type="text"
+
+    .small-6.columns
+      = select_tag "call[offer_time_two_hour]", options_for_select(@available_times, @available_times[4])
+
+    .small-6.columns
+      input.datepicker type="text"
+
+    .small-6.columns
+      = select_tag "call[offer_time_three_hour]", options_for_select(@available_times, @available_times[5])
