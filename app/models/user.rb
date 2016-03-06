@@ -26,4 +26,8 @@ class User < ActiveRecord::Base
       secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]
     }
   end
+
+  def list_education
+    educations.map{|e|e.name_with_year}.join("，")
+  end
 end

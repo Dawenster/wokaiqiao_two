@@ -16,7 +16,7 @@
 
           .right-side
             p
-              = expert.education
+              = expert.list_education
 
       .row
         .small-12.columns
@@ -26,8 +26,9 @@
                 | 专长领域:
 
           .right-side
+            = simple_format(expert.expertise, {}, wrapper_tag: 'div')
+            / Adding p below for spacing purposes...
             p
-              = expert.expertise
 
       .row
         .small-12.columns
