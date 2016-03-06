@@ -17,9 +17,6 @@ app.controller('BookExpertCtrl', ['$scope', function($scope) {
         var yesterday = today.setDate(today.getDate() - 1);
         return date <= yesterday;
       },
-      onSelect: function() {
-        console.log(this.getMoment().format('Do MMMM YYYY'));
-      },
       i18n: internationalization
     });
   };

@@ -1,4 +1,4 @@
-.small-8.columns.end
+.small-12.medium-8.columns.end
   div
     .left-side
       .numbered-circle
@@ -9,21 +9,39 @@
 
   br
 
-  .row
-    .small-6.columns
-      input.datepicker type="text" value="#{@today}"
+  .row.date-pickers
+    .small-12.medium-6.columns
+      .input-group
+        span.input-group-label
+          | 日期：
+        input.datepicker type="text" value="#{@today}"
 
-    .small-6.columns
-      = select_tag "call[offer_time_one_hour]", options_for_select(@available_times, @available_times[3])
+    .small-12.medium-6.columns
+      .input-group
+        span.input-group-label
+          | 时间：
+        = select_tag "call[offer_time_one_hour]", options_for_select(@available_times, @available_times[3])
 
-    .small-6.columns
-      input.datepicker type="text"
+    .small-12.medium-6.columns
+      .input-group
+        span.input-group-label
+          | 日期：
+        input.datepicker type="text" value="#{@today}"
 
-    .small-6.columns
-      = select_tag "call[offer_time_two_hour]", options_for_select(@available_times, @available_times[4])
+    .small-12.medium-6.columns
+      .input-group
+        span.input-group-label
+          | 时间：
+        = select_tag "call[offer_time_two_hour]", options_for_select(@available_times, @available_times[4])
 
-    .small-6.columns
-      input.datepicker type="text"
+    .small-12.medium-6.columns
+      .input-group
+        span.input-group-label
+          | 日期：
+        input.datepicker type="text" value="#{@today}"
 
-    .small-6.columns
-      = select_tag "call[offer_time_three_hour]", options_for_select(@available_times, @available_times[5])
+    .small-12.medium-6.columns
+      .input-group
+        span.input-group-label
+          | 时间：
+        = select_tag "call[offer_time_three_hour]", options_for_select(@available_times, @available_times[5])
