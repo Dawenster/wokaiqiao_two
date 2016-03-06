@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
     where(expert: true)
   }
 
+  has_many :educations
+
   def s3_credentials
     {
       bucket: ENV['AWS_BUCKET'],
