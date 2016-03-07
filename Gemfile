@@ -23,6 +23,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'send_with_us'
 gem 'simple_form'
 gem 'slim'
+gem 'stripe'
 gem 'twilio-ruby', '~> 4.11.1'
 gem 'uglifier', '>= 1.3.0'
 
