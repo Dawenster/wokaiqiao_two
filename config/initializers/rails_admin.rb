@@ -43,6 +43,8 @@ RailsAdmin.config do |config|
     list do
       field :name
       field :email
+      field :phone
+      field :wechat
       field :expert
       field :domestic
       field :rate_per_minute
@@ -52,6 +54,8 @@ RailsAdmin.config do |config|
     edit do
       field :name
       field :email
+      field :phone
+      field :wechat
       field :password
       field :picture
       field :admin
