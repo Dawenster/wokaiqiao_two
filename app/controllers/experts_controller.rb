@@ -13,8 +13,9 @@ class ExpertsController < ApplicationController
     end
     @available_times = []
     7.upto(22) do |hour|
-      @available_times << ["#{hour >= 12 ? '下午' : '上午'}#{hour}:00"]
-      @available_times << ["#{hour >= 12 ? '下午' : '上午'}#{hour}:30"]
+      hours_to_subtract = hour >= 13 ? 12 : 0
+      @available_times << ["#{hour >= 12 ? '下午' + (hour - hours_to_subtract).to_s : '上午' + hour.to_s}:00", "#{hour}:00"]
+      @available_times << ["#{hour >= 12 ? '下午' + (hour - hours_to_subtract).to_s : '上午' + hour.to_s}:30", "#{hour}:30"]
     end
     @today = Time.current
   end

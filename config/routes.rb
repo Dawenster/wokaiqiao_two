@@ -15,5 +15,5 @@ Rails.application.routes.draw do
     get "book/:expert_id" => "experts#book", as: :book_expert
   end
 
-  resources :calls
+  resources :calls, only: [:create]
 end

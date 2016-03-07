@@ -12,3 +12,7 @@
           = render "book_section_one", expert: @expert, f: f
         .row
           = render "book_section_two", expert: @expert, f: f
+
+        = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
+
+      = render "stripe_checkout", expert: @expert

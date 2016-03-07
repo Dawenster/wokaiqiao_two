@@ -21,4 +21,9 @@ class ApplicationController < ActionController::Base
       I18n.locale = :zh
     end
   end
+
+  def parse_text_into_date(date_text)
+    zone = "Beijing"
+    ActiveSupport::TimeZone[zone].parse(date_text)
+  end
 end

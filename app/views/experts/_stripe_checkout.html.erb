@@ -1,0 +1,38 @@
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<button id="customButton" class="button">支付以订时间</button>
+
+<script>
+  var handler = StripeCheckout.configure({
+    key: "<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>",
+    image: 'https://s3-us-west-2.amazonaws.com/wokaiqiao/general/square-logo.png',
+    locale: 'auto',
+    token: function(token) {
+      var callForm = $(".new_call")
+      var input = $("<input>")
+                 .attr("type", "hidden")
+                 .attr("name", "stripe_token").val(token.id);
+      callForm.append($(input));
+      callForm.submit()
+    }
+  });
+
+  $('#customButton').on('click', function(e) {
+    // Open Checkout with further options
+    handler.open({
+      name: '我开窍',
+      description: '2 widgets',
+      currency: "CNY",
+      amount: 2000,
+      alipay: true,
+      "alipay-reusable": true,
+      email: "<%= current_user.email %>"
+    });
+    e.preventDefault();
+  });
+
+  // Close Checkout on page navigation
+  $(window).on('popstate', function() {
+    handler.close();
+  });
+</script>
