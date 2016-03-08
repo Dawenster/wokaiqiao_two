@@ -21,7 +21,7 @@
     // Open Checkout with further options
     handler.open({
       name: '我开窍',
-      description: '2 widgets',
+      description: "<%= expert.name %>通话" + $("#call_est_duration_in_min").val() + "分钟",
       currency: "CNY",
       amount: 2000,
       alipay: true,
