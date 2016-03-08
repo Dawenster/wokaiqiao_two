@@ -11,4 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 # For Foundation
-Rails.application.config.assets.precompile += %w( vendor/modernizr.js )
+Rails.application.config.assets.precompile += %w( vendor/modernizr.js favicon.ico )
