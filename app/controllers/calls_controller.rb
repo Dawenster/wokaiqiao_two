@@ -1,15 +1,30 @@
 class CallsController < ApplicationController
 
   def create
-    # binding.pry
+    if current_user
+      @user = current_user
+    else
+      @user = User.new(
+        name: params[:user_name],
+        email: params[:user_email],
+        password: params[:user_password]
+      )
+      if !@user.save
+        flash[:alert] = @user.errors.full_messages.join("，") + "。"
+        redirect_to book_expert_path(params[:call][:expert_id]) and return
+      else
+        sign_in(:user, @user)
+      end
+    end
+
     merge_dates
     @call = Call.new(call_params)
-    @call.user = current_user
+    @call.user = @user
     @call.user_accepted_at = Time.current
     @expert = User.find(params[:call][:expert_id])
 
     if @call.save
-      flash[:notice] = "<strong>#{current_user.name}</strong>，感谢您的通话申请！我们正在努力为您安排与<strong>#{@expert.name}</strong>直接通话。电子邮件已发送到您登记的电子邮箱，请查阅详情。"
+      flash[:notice] = "<strong>#{@user.name}</strong>，感谢您的通话申请！我们正在努力为您安排与<strong>#{@expert.name}</strong>直接通话。电子邮件已发送到您登记的电子邮箱，请查阅详情。"
       redirect_to root_path
     else
       flash[:alert] = @calls.errors.full_messages.join("，") + "。"

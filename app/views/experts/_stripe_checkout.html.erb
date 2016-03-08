@@ -9,30 +9,100 @@
     locale: 'auto',
     token: function(token) {
       var callForm = $(".new_call")
-      var input = $("<input>")
-                 .attr("type", "hidden")
-                 .attr("name", "stripe_token").val(token.id);
-      callForm.append($(input));
+      var isUserSignedIn = $(".book-expert-holder").data("user-signed-in")
+
+      if (!isUserSignedIn) {
+        var name = $("#user_name").val()
+        var email = $("#user_email").val()
+        var password = $("#user_password").val()
+
+        var nameInput = $("<input>")
+                       .attr("type", "hidden")
+                       .attr("name", "user_name").val(name);
+
+        var emailInput = $("<input>")
+                         .attr("type", "hidden")
+                         .attr("name", "user_email").val(email);
+
+        var passwordInput = $("<input>")
+                           .attr("type", "hidden")
+                           .attr("name", "user_password").val(password);
+
+        callForm.append($(nameInput));
+        callForm.append($(emailInput));
+        callForm.append($(passwordInput));
+      }
+
+      var stripeTokenInput = $("<input>")
+                             .attr("type", "hidden")
+                             .attr("name", "stripe_token").val(token.id);
+
+      callForm.append($(stripeTokenInput));
       callForm.submit()
     }
   });
 
   $('#customButton').on('click', function(e) {
-    // Open Checkout with further options
-    handler.open({
-      name: '我开窍',
-      description: "<%= expert.name %>通话" + $("#call_est_duration_in_min").val() + "分钟",
-      currency: "CNY",
-      amount: 2000,
-      alipay: true,
-      "alipay-reusable": true,
-      email: "<%= current_user.email %>"
-    });
     e.preventDefault();
+
+    if (validateSignUp()) {
+      var email = "<%= current_user.email if user_signed_in? %>"
+      if (email == "") {
+        email = $("#user_email").val()
+      }
+
+      // Open Checkout with further options
+      handler.open({
+        name: '我开窍',
+        description: "<%= expert.name %>通话" + $("#call_est_duration_in_min").val() + "分钟",
+        currency: "CNY",
+        amount: 2000,
+        alipay: true,
+        "alipay-reusable": true,
+        email: email
+      });
+    }
   });
 
   // Close Checkout on page navigation
   $(window).on('popstate', function() {
     handler.close();
   });
+
+  function validateSignUp() {
+    $(".error-box").addClass("hide")
+    var passValidation = true
+
+    var name = $("#user_name").val()
+    var email = $("#user_email").val()
+    var password = $("#user_password").val()
+
+    if (name == "") {
+      $(".name-error").removeClass("hide")
+      passValidation = false
+    }
+
+    if (email == "") {
+      $(".email-missing-error").removeClass("hide")
+      passValidation = false
+    } else if (!validateEmail(email)) {
+      $(".not-proper-email-error").removeClass("hide")
+      passValidation = false
+    }
+
+    if (password == "") {
+      $(".password-missing-error").removeClass("hide")
+      passValidation = false
+    } else if (password.length < 8) {
+      $(".password-length-error").removeClass("hide")
+      passValidation = false
+    }
+    
+    return passValidation
+  }
+
+  function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
 </script>

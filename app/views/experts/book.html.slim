@@ -4,7 +4,7 @@
       h3
         | 通话申请
 
-.book-expert-holder ng-controller="BookExpertCtrl"
+.book-expert-holder data-user-signed-in="#{user_signed_in?}" ng-controller="BookExpertCtrl"
   .row
     .small-12.large-10.large-offset-1.columns
       = simple_form_for @call do |f|
@@ -15,4 +15,13 @@
 
         = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
 
-      = render "stripe_checkout", expert: @expert
+      - if user_signed_in?
+
+        = render "stripe_checkout", expert: @expert
+
+      - else
+
+        br
+
+        .row
+          = render "book_section_three", user: @user

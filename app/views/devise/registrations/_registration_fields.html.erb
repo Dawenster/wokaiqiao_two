@@ -1,0 +1,23 @@
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <% unless just_fields %>
+    <% devise_error_messages! %>
+  <% end %>
+
+  <div><%= f.label :name %>
+  <%= f.text_field :name %></div>
+  <div class="error-box name-error hide">请填入</div>
+
+  <div><%= f.label :email %>
+  <%= f.email_field :email %></div>
+  <div class="error-box email-missing-error hide">请填入</div>
+  <div class="error-box not-proper-email-error hide">请输入正确的电子邮件</div>
+
+  <div><%= f.label :password %>
+  <%= f.password_field :password %></div>
+  <div class="error-box password-missing-error hide">请填入</div>
+  <div class="error-box password-length-error hide">最少八个字符</div>
+
+  <% unless just_fields %>
+    <div><%= f.submit t('.sign_up', :default => "Sign up"), class: "button" %></div>
+  <% end %>
+<% end %>

@@ -11,6 +11,8 @@ class ExpertsController < ApplicationController
     estimated_durations.each do |duration|
       @estimated_call_durations << ["#{duration}分钟 (¥#{@expert.rate_for(duration)})", duration]
     end
+    @user = User.new if current_user.nil?
+
     @available_times = []
     7.upto(22) do |hour|
       hours_to_subtract = hour >= 13 ? 12 : 0

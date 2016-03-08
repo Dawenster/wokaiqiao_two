@@ -1,0 +1,15 @@
+.small-12.medium-8.columns.end
+  div
+    .left-side
+      .numbered-circle
+        | 3
+    .right-side
+      h5
+        | 注册
+
+  br
+
+  .row
+    .small-12.medium-6.columns.end
+      = render "devise/registrations/registration_fields", resource: user, resource_name: :user, just_fields: true
+      = render "stripe_checkout", expert: @expert
