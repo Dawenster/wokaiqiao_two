@@ -54,12 +54,16 @@
         email = $("#user_email").val()
       }
 
+      var estimatedDurationInMin = $("#call_est_duration_in_min").val()
+      var amount = $("#call_est_duration_in_min").val()
+      var ratePerMin = parseInt("<%= expert.rate_per_minute %>")
+
       // Open Checkout with further options
       handler.open({
         name: '我开窍',
-        description: "<%= expert.name %>通话" + $("#call_est_duration_in_min").val() + "分钟",
+        description: "<%= expert.name %>通话" + estimatedDurationInMin + "分钟",
         currency: "CNY",
-        amount: 2000,
+        amount: estimatedDurationInMin * ratePerMin * 100,
         alipay: true,
         "alipay-reusable": true,
         email: email
