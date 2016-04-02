@@ -8,8 +8,8 @@
 <script>
   var handler = StripeCheckout.configure({
     key: "<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>",
-    image: 'https://s3-us-west-2.amazonaws.com/wokaiqiao/general/square-logo.png',
-    locale: 'auto',
+    image: "https://s3-us-west-2.amazonaws.com/wokaiqiao/general/square-logo.png",
+    locale: "zh",
     token: function(token) {
       var callForm = $(".new_call")
       var isUserSignedIn = $(".book-expert-holder").data("user-signed-in")
@@ -62,7 +62,7 @@
       handler.open({
         name: '我开窍',
         description: "<%= expert.name %>通话" + estimatedDurationInMin + "分钟",
-        currency: "CNY",
+        currency: "<%= StripeTask::CURRENCY %>",
         amount: estimatedDurationInMin * ratePerMin * 100,
         alipay: true,
         "alipay-reusable": true,
