@@ -17,11 +17,16 @@ class CallsController < ApplicationController
       end
     end
 
+    @expert = User.find(params[:call][:expert_id])
+    amount_to_charge = @expert.rate_for_in_cents(params[:call][:est_duration_in_min].to_i)
+
+    customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
+    StripeTask.charge(customer, amount_to_charge, "Chat with #{@expert.name}")
+
     merge_dates
     @call = Call.new(call_params)
     @call.user = @user
     @call.user_accepted_at = Time.current
-    @expert = User.find(params[:call][:expert_id])
 
     if @call.save
       flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
