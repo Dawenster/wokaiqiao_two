@@ -4,11 +4,7 @@ class CallsController < ApplicationController
     if current_user
       @user = current_user
     else
-      @user = User.new(
-        name: params[:user_name],
-        email: params[:user_email],
-        password: params[:user_password]
-      )
+      @user = assign_user
       if !@user.save
         flash[:alert] = @user.errors.full_messages.join("，") + "。"
         redirect_to book_expert_path(params[:call][:expert_id]) and return
@@ -18,7 +14,7 @@ class CallsController < ApplicationController
     end
 
     @expert = User.find(params[:call][:expert_id])
-    amount_to_charge = @expert.rate_for_in_cents(params[:call][:est_duration_in_min].to_i)
+    amount_to_charge = @expert.rate_in_cents_for(params[:call][:est_duration_in_min].to_i)
 
     customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
     StripeTask.charge(customer, amount_to_charge, "Chat with #{@expert.name}")
@@ -62,6 +58,14 @@ class CallsController < ApplicationController
     params[:call][:offer_time_one] = parse_text_into_date("#{params[:call][:offer_time_one_date]} #{params[:call][:offer_time_one_hour]}:00")
     params[:call][:offer_time_two] = parse_text_into_date("#{params[:call][:offer_time_two_date]} #{params[:call][:offer_time_two_hour]}:00")
     params[:call][:offer_time_three] = parse_text_into_date("#{params[:call][:offer_time_three_date]} #{params[:call][:offer_time_three_hour]}:00")
+  end
+
+  def assign_user
+    User.new(
+      name: params[:user_name],
+      email: params[:user_email],
+      password: params[:user_password]
+    )
   end
 
 end

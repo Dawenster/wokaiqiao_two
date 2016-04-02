@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     rate_per_minute * min
   end
 
-  def rate_for_in_cents(min)
+  def rate_in_cents_for(min)
     rate_per_minute * min * 100
   end
 end
