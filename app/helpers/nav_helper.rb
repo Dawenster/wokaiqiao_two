@@ -38,7 +38,7 @@ module NavHelper
     [
       {
         text: "个人主页",
-        link: "#",
+        link: user_path(current_user),
         method: :get
       },
       {
