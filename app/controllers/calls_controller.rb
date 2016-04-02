@@ -24,7 +24,7 @@ class CallsController < ApplicationController
     @expert = User.find(params[:call][:expert_id])
 
     if @call.save
-      flash[:notice] = "<strong>#{@user.name}</strong>，感谢您的通话申请！我们正在努力为您安排与<strong>#{@expert.name}</strong>直接通话。电子邮件已发送到您登记的电子邮箱，请查阅详情。"
+      flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
       redirect_to root_path
     else
       flash[:alert] = @calls.errors.full_messages.join("，") + "。"
