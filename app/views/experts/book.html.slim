@@ -7,21 +7,31 @@
 .book-expert-holder data-user-signed-in="#{user_signed_in?}" ng-controller="BookExpertCtrl"
   .row
     .small-12.large-10.large-offset-1.columns
-      = simple_form_for @call do |f|
-        .row
-          = render "book_section_one", expert: @expert, f: f
-        .row
-          = render "book_section_two", expert: @expert, f: f
+      .row
+        .small-12.medium-8.columns
+          .show-for-small-only
+            br
+            = render "expert_brief_vertical", expert: @expert
+            br
 
-        = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
+          = simple_form_for @call do |f|
+            .row
+              = render "book_section_one", expert: @expert, f: f
+            .row
+              = render "book_section_two", expert: @expert, f: f
 
-      - if user_signed_in?
+            = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
 
-        = render "stripe_checkout", expert: @expert
+          - if user_signed_in?
 
-      - else
+            = render "stripe_checkout", expert: @expert
 
-        br
+          - else
 
-        .row
-          = render "book_section_three", user: @user
+            br
+
+            .row
+              = render "book_section_three", user: @user
+
+        .medium-4.columns.hide-for-small-only
+          = render "expert_brief_horizontal", expert: @expert

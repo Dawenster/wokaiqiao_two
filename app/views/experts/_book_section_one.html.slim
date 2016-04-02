@@ -1,8 +1,3 @@
-.small-12.columns.show-for-small-only
-  br
-  = render "expert_brief_vertical", expert: expert
-  br
-
 .small-12.columns
   div
     .left-side
@@ -14,18 +9,14 @@
 
 br
 
-.medium-8.columns
+.small-12.columns
   div.description-holder
     .input-group
       span.input-group-label
         | 通话内容简介：
       = f.input :description, placeholder: "想与专家查询的事情", type: "number", label: false
 
-.medium-4.columns.hide-for-small-only
-  br
-  = render "expert_brief_horizontal", expert: expert
-
-.small-12.medium-8.columns.end
+.small-12.columns.end
   div.est-duration-holder
     .input-group
       span.input-group-label
