@@ -1,6 +1,6 @@
 class StripeTask
 
-  CURRENCY = "CNY"
+  CURRENCY = "cny"
 
   def self.create_stripe_customer(user, token)
     customer = Stripe::Customer.create(

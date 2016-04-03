@@ -26,6 +26,7 @@ class CallsController < ApplicationController
 
     if @call.save
       flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
+      send_emails(@user, @expert, @call)
       redirect_to root_path
     else
       flash[:alert] = @calls.errors.full_messages.join("，") + "。"
@@ -66,6 +67,10 @@ class CallsController < ApplicationController
       email: params[:user_email],
       password: params[:user_password]
     )
+  end
+
+  def send_emails(user, expert, call)
+    Emails::Call.send_confirmation_to_user(user, expert, call)
   end
 
 end
