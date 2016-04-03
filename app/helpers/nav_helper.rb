@@ -42,6 +42,11 @@ module NavHelper
         method: :get
       },
       {
+        text: "通话会议",
+        link: calls_path,
+        method: :get
+      },
+      {
         text: "登出",
         link: destroy_user_session_path,
         method: :delete

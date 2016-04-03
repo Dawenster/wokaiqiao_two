@@ -16,5 +16,5 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:show]
-  resources :calls, only: [:create]
+  resources :calls, only: [:create, :index]
 end

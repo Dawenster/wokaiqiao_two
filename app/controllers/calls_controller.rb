@@ -34,6 +34,11 @@ class CallsController < ApplicationController
     end
   end
 
+  def index
+    @completed_calls = current_user.calls.completed
+    @in_progress_calls = current_user.calls - @completed_calls
+  end
+
   protected
 
   def call_params
