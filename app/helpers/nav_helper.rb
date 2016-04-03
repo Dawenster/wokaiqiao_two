@@ -47,6 +47,11 @@ module NavHelper
         method: :get
       },
       {
+        text: "修改用户",
+        link: edit_user_registration_path,
+        method: :get
+      },
+      {
         text: "登出",
         link: destroy_user_session_path,
         method: :delete
