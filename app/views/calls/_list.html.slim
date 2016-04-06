@@ -1,0 +1,79 @@
+.call-list-holder
+  .row
+    .small-12.column
+      .row
+        .small-12.medium-2.column.profile-circle-holder
+          img.profile-circle src="#{expert.picture.url(:medium)}"
+          h4.call-name
+            b
+              = expert.name
+          
+          div
+            i.fa.fa-star
+            i.fa.fa-star
+            i.fa.fa-star
+            i.fa.fa-star
+            i.fa.fa-star-half-empty
+
+          div
+            h6
+              small.subtitle
+                i.fa.fa-comments
+                |  10个评论
+
+        .small-12.medium-6.columns
+          h5.call-title
+            b
+              = expert.title
+
+          .subtitle-holder
+            h6
+              small.subtitle
+                i.fa.fa-graduation-cap
+                = " #{expert.list_education}"
+
+            h6
+              small.subtitle
+                i.fa.fa-map-pin
+                = " #{expert.location}"
+
+            .call-details-holder
+              div
+                .left-side
+                  .inline-title
+                    | 现在就职：
+                .right-side
+                  = expert.current_work
+
+              div
+                .left-side
+                  .inline-title
+                    | 曾经就职：
+                .right-side
+                  = expert.past_work
+                
+              div
+                .left-side
+                  .inline-title
+                    | 专长领域：
+                .right-side
+                  = expert.expertise
+
+        .small-12.medium-4.column.end
+          .callout.action-callout class="#{callout_class(call)}"
+            h5
+              b
+                = "状态: #{call.status}"
+            div
+              = "申请日期一：#{ChineseTime.display(call.offer_time_one)}"
+            div
+              = "申请日期二：#{ChineseTime.display(call.offer_time_two)}"
+            div
+              = "申请日期三：#{ChineseTime.display(call.offer_time_three)}"
+            div
+              = "每分钟收费：¥#{expert.rate_per_minute}"
+
+      - unless (i + 1) == max
+        br
+        hr
+        br

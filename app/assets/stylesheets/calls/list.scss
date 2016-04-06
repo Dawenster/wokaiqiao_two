@@ -1,0 +1,50 @@
+@import 'settings';
+
+.call-list-holder {
+  padding: 0px 10px;
+
+  .profile-circle-holder {
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 40em) {
+    .call-name {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .profile-circle {
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  .call-title {
+    margin-bottom: 0px;
+  }
+
+  .inline-title {
+    color: $primary-color;
+  }
+
+  .call-details-holder {
+    margin-top: 10px;
+  }
+
+  .left-side {
+    width: 80px;
+    float: left;
+  }
+
+  .right-side {
+    margin-left: 80px;
+  }
+
+  .action-callout {
+    text-align: left !important;
+  }
+
+  .fa-star, .fa-star-half-empty {
+    color: $success-color;
+  }
+}

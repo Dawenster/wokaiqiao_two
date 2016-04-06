@@ -18,8 +18,8 @@
       div.tabs-panel.is-active id="in-progress"
         p
           - if @in_progress_calls.any?
-            - @in_progress_calls.each do |call|
-              = call.description
+            - @in_progress_calls.each_with_index do |call, i|
+              = render "list", call: call, expert: call.expert, i: i, max: @in_progress_calls.length
 
           - else
             | 您目前没有在进行中的通话。
