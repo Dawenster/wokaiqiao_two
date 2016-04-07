@@ -72,6 +72,11 @@
               = "申请日期三：#{ChineseTime.display(call.offer_time_three)}"
             div
               = "每分钟收费：¥#{expert.rate_per_minute}"
+            .call-action-buttons-holder
+              a.button.secondary.call-action-button.edit-call-button
+                | 编辑通话申请
+              a.button.alert.call-action-button.cancel-call-button
+                | 取消通话申请
 
       - unless (i + 1) == max
         br

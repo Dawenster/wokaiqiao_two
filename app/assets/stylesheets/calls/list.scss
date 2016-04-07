@@ -44,7 +44,34 @@
     text-align: left !important;
   }
 
+  @media only screen and (max-width: 40em) {
+    .action-callout {
+      margin-top: 10px;
+    }
+  }
+
   .fa-star, .fa-star-half-empty {
     color: $success-color;
+  }
+
+  .call-action-buttons-holder {
+    margin-top: 10px;
+  }
+
+
+  @media only screen and (max-width: 40em) {
+    .edit-call-button {
+      margin-right: 10px;
+    }
+  }
+
+  @media only screen and (min-width: 40.063em) {
+    .call-action-button {
+      margin-bottom: 0px !important;
+    }
+
+    .edit-call-button {
+      margin-right: 10px;
+    }
   }
 }
