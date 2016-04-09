@@ -43,6 +43,14 @@ class User < ActiveRecord::Base
     rate_per_minute * min * 100
   end
 
+  def all_calls
+    calls + calls_as_expert
+  end
+
+  def all_completed_calls
+    calls.completed + calls_as_expert.completed
+  end
+
   private
 
   def ensure_auth_token

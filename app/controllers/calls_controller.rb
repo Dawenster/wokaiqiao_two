@@ -41,8 +41,8 @@ class CallsController < ApplicationController
       @call = Call.find(params[:call_id])
       accept_call(@call)
     end
-    @completed_calls = current_user.calls.completed
-    @in_progress_calls = current_user.calls - @completed_calls
+    @completed_calls = current_user.all_completed_calls
+    @in_progress_calls = current_user.all_calls - @completed_calls
   end
 
   protected
