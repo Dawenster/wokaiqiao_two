@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   def auto_login
-    if params[:auth_token].present? && current_user.nil?
+    if params[:auth_token].present?
       user = User.find_by_auth_token(params[:auth_token])
       sign_in(user) if user.present?
     end
