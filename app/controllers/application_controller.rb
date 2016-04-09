@@ -26,4 +26,19 @@ class ApplicationController < ActionController::Base
     zone = "Beijing"
     ActiveSupport::TimeZone[zone].parse(date_text)
   end
+
+  def email_link_for_calls(user=nil, auto_login=false)
+    if auto_login
+      calls_url(auth_token: user.auth_token)
+    else
+      calls_url
+    end
+  end
+
+  def auto_login
+    if params[:auth_token].present?
+      user = User.find_by_auth_token(params[:auth_token])
+      sign_in(user) if user.present?
+    end
+  end
 end

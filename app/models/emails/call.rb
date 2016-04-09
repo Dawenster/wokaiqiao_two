@@ -1,7 +1,7 @@
 module Emails
   class Call
 
-    def self.send_confirmation_to_user(user, expert, call)
+    def self.send_confirmation_to_user(user, expert, call, link_to_manage_calls)
       begin
         obj = Emails::Setup.send_with_us_obj
 
@@ -11,7 +11,7 @@ module Emails
           data: {
             user_name: user.name,
             user_email: user.email,
-            manage_calls_link: "#",
+            manage_calls_link: link_to_manage_calls,
             expert_name: expert.name,
             expert_expertise: expert.expertise,
             expert_picture: expert.picture.url(:medium),

@@ -1,5 +1,7 @@
 class CallsController < ApplicationController
 
+  before_action :auto_login, only: [:index]
+
   def create
     if current_user
       @user = current_user
@@ -35,6 +37,10 @@ class CallsController < ApplicationController
   end
 
   def index
+    if current_user.nil?
+      flash[:alert] = "请先登录帐户"
+      return redirect_to root_path
+    end
     @completed_calls = current_user.calls.completed
     @in_progress_calls = current_user.calls - @completed_calls
   end
@@ -75,7 +81,7 @@ class CallsController < ApplicationController
   end
 
   def send_emails(user, expert, call)
-    Emails::Call.send_confirmation_to_user(user, expert, call)
+    Emails::Call.send_confirmation_to_user(user, expert, call, email_link_for_calls(user, true))
   end
 
 end
