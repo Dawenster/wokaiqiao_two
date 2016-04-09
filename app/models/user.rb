@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true
 
+  before_save :ensure_auth_token
+
   scope :experts, -> {
     where(expert: true)
   }
@@ -39,5 +41,20 @@ class User < ActiveRecord::Base
 
   def rate_in_cents_for(min)
     rate_per_minute * min * 100
+  end
+
+  private
+
+  def ensure_auth_token
+    if auth_token.blank? && !auth_token_changed?
+      self.auth_token = generate_auth_token
+    end
+  end
+
+  def generate_auth_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(auth_token: token).first
+    end
   end
 end
