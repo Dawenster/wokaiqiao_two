@@ -97,10 +97,12 @@ class CallsController < ApplicationController
   end
 
   def accept_call(call)
-    if params[:acceptor] == Call::EXPERT_ACCEPTOR_TEXT
+    if params[:acceptor] == Call::EXPERT_ACCEPTOR_TEXT && call.expert == current_user
       call.accept_as_expert(params[:datetime_num].to_i)
-    else
+      flash[:notice] = "谢谢你接受在<strong>#{ChineseTime.display(@call.scheduled_at)}</strong>和<strong>#{@call.user.name}</strong>通话"
+    elsif params[:acceptor] == Call::USER_ACCEPTOR_TEXT && call.user == current_user
       call.accept_as_user(params[:datetime_num].to_i)
+      flash[:notice] = "接受成功：<strong>#{ChineseTime.display(@call.scheduled_at)}</strong>和<strong>#{@call.expert.name}</strong>通话"
     end
   end
 
