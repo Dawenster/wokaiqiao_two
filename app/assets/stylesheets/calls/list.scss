@@ -74,4 +74,30 @@
       margin-right: 10px;
     }
   }
+
+  .user-as-call-expert-indicator-holder {
+    margin-bottom: 20px;
+
+    .user-as-call-expert-indicator {
+      margin-left: -26px;
+      padding: 10px 35px 10px 10px;
+      background-color: $light-gray;
+      position: relative;
+    }
+
+    .user-as-call-expert-indicator:before {
+      position: absolute;
+      content: '';
+      width: 0;
+      height: 0;
+      right: -15px;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 25px solid white;
+      -ms-transform: rotate(270deg); /* IE 9 */
+      -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+      transform: rotate(270deg);
+      -webkit-backface-visibility: hidden;
+    }
+  }
 }

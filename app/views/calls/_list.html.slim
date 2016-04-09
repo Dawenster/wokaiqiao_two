@@ -1,6 +1,10 @@
 .call-list-holder id="#{call.anchor_tag}"
   .row
     .small-12.column
+      - if call.expert == current_user
+        .user-as-call-expert-indicator-holder
+          span.user-as-call-expert-indicator
+            | 你是这个通话的专家
       .row
         .small-12.medium-2.column.profile-circle-holder
           img.profile-circle src="#{expert.picture.url(:medium)}"
