@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
 
   before_save :ensure_auth_token
 
+  scope :admin, -> {
+    where(admin: true)
+  }
   scope :experts, -> {
     where(expert: true)
   }

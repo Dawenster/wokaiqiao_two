@@ -64,5 +64,30 @@ module Emails
       end
     end
 
+    def self.send_confirmation_to_admin(data, rails_admin_path, general_email)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        user = data[:user]
+        expert = data[:expert]
+        call = data[:call]
+
+        result = obj.send_email(
+          "tem_JDWkoFffepCB9dqtGhdqt",
+          { address: general_email },
+          data: {
+            user_name: user.name,
+            expert_name: expert.name,
+            call_description: call.description,
+            rate_per_min: expert.rate_per_minute,
+            estimated_duration_in_min: call.est_duration_in_min,
+            rails_admin_path: rails_admin_path
+          },
+          cc: Emails::User.admin_emails
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
   end
 end

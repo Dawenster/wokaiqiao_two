@@ -1,6 +1,15 @@
 module Emails
   class User
 
+    def self.admin_emails
+      ::User.admin.map do |user|
+        {
+          name: user.name,
+          address: user.email
+        }
+      end
+    end
+
     def self.send_welcome(user)
       begin
         obj = Emails::Setup.send_with_us_obj

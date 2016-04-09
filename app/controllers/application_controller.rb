@@ -49,4 +49,12 @@ class ApplicationController < ActionController::Base
       return redirect_to root_path
     end
   end
+
+  def rails_admin_path(obj)
+    request.base_url + rails_admin.show_path(model_name: obj.class.name.downcase, id: obj.id)
+  end
+
+  def general_email
+    "team@wokaiqiao.com"
+  end
 end
