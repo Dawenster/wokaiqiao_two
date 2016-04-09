@@ -1,22 +1,23 @@
-.page-banner-holder
+.all-calls-holder ng-controller="CallListCtrl"
+  .page-banner-holder
+    .row
+      .small-12.columns
+        h3
+          | 通话会议
+
   .row
-    .small-12.columns
-      h3
-        | 通话会议
+    .small-12.large-10.large-offset-1.columns
+      ul.tabs data-tabs="" id="calls-tabs"
+        li.tabs-title.is-active
+          a.calls-tab-title href="#in-progress" aria-selected="true"
+            | 进行中
+        li.tabs-title
+          a.calls-tab-title href="#completed" aria-selected="true"
+            | 已进行
 
-.row
-  .small-12.large-10.large-offset-1.columns
-    ul.tabs data-tabs="" id="calls-tabs"
-      li.tabs-title.is-active
-        a.calls-tab-title href="#in-progress" aria-selected="true"
-          | 进行中
-      li.tabs-title
-        a.calls-tab-title href="#completed" aria-selected="true"
-          | 已进行
-
-    .tabs-content data-tabs-content="example-tabs"
-      div.tabs-panel.is-active id="in-progress"
-        p
+      .tabs-content data-tabs-content="example-tabs"
+        div.tabs-panel.is-active id="in-progress"
+          br
           - if @in_progress_calls.any?
             - @in_progress_calls.each_with_index do |call, i|
               = render "list", call: call, expert: call.expert, i: i, max: @in_progress_calls.length
@@ -24,8 +25,8 @@
           - else
             | 您目前没有在进行中的通话。
 
-      div.tabs-panel id="completed"
-        p
+        div.tabs-panel id="completed"
+          br
           - if @completed_calls.any?
             - @completed_calls.each do |call|
               = call.description

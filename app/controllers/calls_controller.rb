@@ -1,6 +1,6 @@
 class CallsController < ApplicationController
 
-  before_action :auto_login, only: [:index]
+  before_action :auto_login, except: [:create]
 
   def create
     if current_user
@@ -37,9 +37,9 @@ class CallsController < ApplicationController
   end
 
   def index
-    if current_user.nil?
-      flash[:alert] = "请先登录帐户"
-      return redirect_to root_path
+    if params[:acceptor].present?
+      @call = Call.find(params[:call_id])
+      accept_call(@call)
     end
     @completed_calls = current_user.calls.completed
     @in_progress_calls = current_user.calls - @completed_calls
@@ -81,7 +81,27 @@ class CallsController < ApplicationController
   end
 
   def send_emails(user, expert, call)
-    Emails::Call.send_confirmation_to_user(user, expert, call, email_link_for_calls(user, true))
+    user_data = expert_data = {
+      user: user,
+      expert: expert,
+      call: call,
+      link_to_manage_calls: email_link_for_calls(user)
+    }
+    expert_data[:link_to_manage_calls] = email_link_for_calls(expert)
+    expert_data[:link_to_accept_call_one] = email_link_for_accepting_calls(expert, call, 1, Call::EXPERT_ACCEPTOR_TEXT)
+    expert_data[:link_to_accept_call_two] = email_link_for_accepting_calls(expert, call, 2, Call::EXPERT_ACCEPTOR_TEXT)
+    expert_data[:link_to_accept_call_three] = email_link_for_accepting_calls(expert, call, 3, Call::EXPERT_ACCEPTOR_TEXT)
+
+    Emails::Call.send_confirmation_to_user(user_data)
+    Emails::Call.send_confirmation_to_expert(expert_data)
+  end
+
+  def accept_call(call)
+    if params[:acceptor] == Call::EXPERT_ACCEPTOR_TEXT
+      call.accept_as_expert(params[:datetime_num].to_i)
+    else
+      call.accept_as_user(params[:datetime_num].to_i)
+    end
   end
 
 end

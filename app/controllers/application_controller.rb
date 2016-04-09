@@ -27,18 +27,26 @@ class ApplicationController < ActionController::Base
     ActiveSupport::TimeZone[zone].parse(date_text)
   end
 
-  def email_link_for_calls(user=nil, auto_login=false)
-    if auto_login
-      calls_url(auth_token: user.auth_token)
-    else
-      calls_url
-    end
+  def email_link_for_calls(user)
+    calls_url(auth_token: user.auth_token)
+  end
+
+  def email_link_for_accepting_calls(user, call, num, acceptor)
+    calls_url(auth_token: user.auth_token, call_id: call.id, datetime_num: num, acceptor: acceptor, anchor: call.anchor_tag)
   end
 
   def auto_login
-    if params[:auth_token].present?
+    if params[:auth_token].present? && current_user.nil?
       user = User.find_by_auth_token(params[:auth_token])
       sign_in(user) if user.present?
+    end
+    redirect_to_root_if_not_logged_in
+  end
+
+  def redirect_to_root_if_not_logged_in
+    if current_user.nil?
+      flash[:alert] = "请先登录帐户"
+      return redirect_to root_path
     end
   end
 end
