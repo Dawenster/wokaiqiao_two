@@ -68,17 +68,21 @@
             h5
               b
                 = "状态: #{call.status}"
-            div
-              = "申请日期一：#{ChineseTime.display(call.offer_time_one)}"
-            div
-              = "申请日期二：#{ChineseTime.display(call.offer_time_two)}"
-            div
-              = "申请日期三：#{ChineseTime.display(call.offer_time_three)}"
+            - if call.accepted?
+              div
+                = "申请日期一：#{ChineseTime.display(call.scheduled_at)}"
+            - else
+              div
+                = "申请日期一：#{ChineseTime.display(call.offer_time_one)}"
+              div
+                = "申请日期二：#{ChineseTime.display(call.offer_time_two)}"
+              div
+                = "申请日期三：#{ChineseTime.display(call.offer_time_three)}"
             div
               = "每分钟收费：¥#{expert.rate_per_minute}"
             .call-action-buttons-holder
-              a.button.secondary.call-action-button.edit-call-button
-                | 编辑通话申请
+              / a.button.secondary.call-action-button.edit-call-button
+              /   | 编辑通话申请
               a.button.alert.call-action-button.cancel-call-button
                 | 取消通话申请
 

@@ -29,11 +29,13 @@ class Call < ActiveRecord::Base
 
   def accept_as_expert(num)
     self.expert_accepted_at = time_of_acceptance(num)
+    self.scheduled_at = time_of_acceptance(num)
     self.save
   end
 
   def accept_as_user(num)
     self.user_accepted_at = time_of_acceptance(num)
+    self.scheduled_at = time_of_acceptance(num)
     self.save
   end
 
@@ -50,6 +52,10 @@ class Call < ActiveRecord::Base
 
   def anchor_tag
     "call-anchor-#{id}"
+  end
+
+  def accepted?
+    status == MUTUALLY_ACCEPTED
   end
   
 end
