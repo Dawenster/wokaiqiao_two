@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
 
   def all_calls
-    calls + calls_as_expert
+    calls.not_cancelled + calls_as_expert.not_cancelled
   end
 
   def all_completed_calls

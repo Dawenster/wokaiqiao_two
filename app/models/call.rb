@@ -9,6 +9,9 @@ class Call < ActiveRecord::Base
   scope :completed, -> {
     where("scheduled_at < ?", Time.current)
   }
+  scope :not_cancelled, -> {
+    where(cancelled_at: nil)
+  }
 
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
   PENDING_USER_ACCEPTANCE = "专家建议时间更改为"
