@@ -61,5 +61,9 @@ class Call < ActiveRecord::Base
   def accepted?
     status == MUTUALLY_ACCEPTED
   end
+
+  def cancellee
+    user_that_cancelled == user ? expert : user
+  end
   
 end

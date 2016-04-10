@@ -83,10 +83,13 @@
             .call-action-buttons-holder
               / a.button.secondary.call-action-button.edit-call-button
               /   | 编辑通话申请
-              a.button.alert.call-action-button.cancel-call-button
+              a.button.alert.call-action-button.cancel-call-button data-toggle="cancelCallModal#{call.id}"
                 | 取消通话申请
+
 
       - unless (i + 1) == max
         br
         hr
         br
+        
+  = render "cancel_call_modal", call: call

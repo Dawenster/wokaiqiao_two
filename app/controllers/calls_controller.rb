@@ -47,6 +47,19 @@ class CallsController < ApplicationController
     @in_progress_calls = current_user.all_calls - @completed_calls
   end
 
+  def cancel
+    @call = Call.find(params[:id])
+    @call.assign_attributes(call_params)
+    @call.cancelled_at = Time.current
+    @call.user_that_cancelled = current_user
+    if @call.save
+      flash[:notice] = "取消了你和#{@call.cancellee.name}的通话"
+    else
+      flash[:alert] = @call.errors.full_messages.join("，") + "。"
+    end
+    redirect_to calls_path
+  end
+
   protected
 
   def call_params
@@ -64,7 +77,8 @@ class CallsController < ApplicationController
       :offer_time_three,
       :scheduled_at,
       :user_accepted_at,
-      :expert_accepted_at
+      :expert_accepted_at,
+      :cancellation_reason
     )
   end
 
