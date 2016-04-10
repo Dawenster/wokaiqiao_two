@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160410003729) do
+ActiveRecord::Schema.define(version: 20160410011615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20160410003729) do
     t.datetime "updated_at"
     t.datetime "cancelled_at"
     t.string   "cancellation_reason"
+    t.integer  "cancelled_by"
   end
 
   create_table "educations", force: :cascade do |t|
