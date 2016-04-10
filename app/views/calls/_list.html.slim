@@ -70,14 +70,16 @@
                 = "状态: #{call.status}"
             - if call.accepted?
               div
-                = "申请日期一：#{ChineseTime.display(call.scheduled_at)}"
+                = "确定时间：#{ChineseTime.display(call.scheduled_at)}"
             - else
               div
-                = "申请日期一：#{ChineseTime.display(call.offer_time_one)}"
+                = "一：#{ChineseTime.display(call.offer_time_one)}#{link_to_accept(call, 1) if current_user.need_to_action_on(call)}".html_safe
               div
-                = "申请日期二：#{ChineseTime.display(call.offer_time_two)}"
+                = "二：#{ChineseTime.display(call.offer_time_two)}#{link_to_accept(call, 2) if current_user.need_to_action_on(call)}".html_safe
               div
-                = "申请日期三：#{ChineseTime.display(call.offer_time_three)}"
+                = "三：#{ChineseTime.display(call.offer_time_three)}#{link_to_accept(call, 3) if current_user.need_to_action_on(call)}".html_safe
+            div
+              = "预计通话长度：#{call.est_duration_in_min}分钟"
             div
               = "每分钟收费：¥#{expert.rate_per_minute}"
             .call-action-buttons-holder

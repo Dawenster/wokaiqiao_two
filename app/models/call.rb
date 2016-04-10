@@ -25,6 +25,9 @@ class Call < ActiveRecord::Base
   CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED = 120
   MINUTES_TO_CHARGE_FOR_CANCELLATION = 15
 
+  CONFERENCE_CALL_NUMBER = "+86-10-5904-5286"
+  CONFERENCE_CALL_PARTICIPANT_CODE = "5773858"
+
   def status
     if user_accepted_at.present? && expert_accepted_at.nil?
       PENDING_EXPERT_ACCEPTANCE
@@ -36,18 +39,18 @@ class Call < ActiveRecord::Base
   end
 
   def accept_as_expert(num)
-    self.expert_accepted_at = time_of_acceptance(num)
-    self.scheduled_at = time_of_acceptance(num)
+    self.expert_accepted_at = Time.current
+    self.scheduled_at = accepted_offer_time(num)
     self.save
   end
 
   def accept_as_user(num)
-    self.user_accepted_at = time_of_acceptance(num)
-    self.scheduled_at = time_of_acceptance(num)
+    self.user_accepted_at = Time.current
+    self.scheduled_at = accepted_offer_time(num)
     self.save
   end
 
-  def time_of_acceptance(num)
+  def accepted_offer_time(num)
     case num
     when 1
       offer_time_one
@@ -78,6 +81,15 @@ class Call < ActiveRecord::Base
   def cancellation_fee
     # Charge 15 minutes if cancelled too late
     apply_cancellation_fee? ? MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute : 0
+  end
+
+  def person_to_action
+    case status
+    when PENDING_EXPERT_ACCEPTANCE
+      expert
+    when PENDING_USER_ACCEPTANCE
+      user
+    end
   end
   
 end

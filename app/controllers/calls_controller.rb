@@ -47,6 +47,12 @@ class CallsController < ApplicationController
     @in_progress_calls = current_user.all_calls - @completed_calls
   end
 
+  def accept
+    @call = Call.find(params[:id])
+    accept_call(@call)
+    redirect_to calls_path
+  end
+
   def cancel
     @call = Call.find(params[:id])
     @call.assign_attributes(call_params)
@@ -109,19 +115,26 @@ class CallsController < ApplicationController
     expert_data[:link_to_accept_call_two] = email_link_for_accepting_calls(expert, call, 2, Call::EXPERT_ACCEPTOR_TEXT)
     expert_data[:link_to_accept_call_three] = email_link_for_accepting_calls(expert, call, 3, Call::EXPERT_ACCEPTOR_TEXT)
 
-    Emails::Call.send_confirmation_to_user(user_data)
-    Emails::Call.send_confirmation_to_expert(expert_data)
-    Emails::Call.send_confirmation_to_admin(user_data, rails_admin_path(call), general_email)
+    Emails::Call.send_confirmation_of_call_request_to_user(user_data)
+    Emails::Call.send_initial_request_to_expert(expert_data)
+    Emails::Call.send_request_notification_to_admin(user_data, rails_admin_path(call), general_email)
   end
 
   def accept_call(call)
     if params[:acceptor] == Call::EXPERT_ACCEPTOR_TEXT && call.expert == current_user
       call.accept_as_expert(params[:datetime_num].to_i)
-      flash[:notice] = "谢谢你接受在<strong>#{ChineseTime.display(@call.scheduled_at)}</strong>和<strong>#{@call.user.name}</strong>通话"
+      flash[:notice] = "谢谢你接受在<strong>#{ChineseTime.display(call.scheduled_at)}</strong>和<strong>#{call.user.name}</strong>通话"
     elsif params[:acceptor] == Call::USER_ACCEPTOR_TEXT && call.user == current_user
       call.accept_as_user(params[:datetime_num].to_i)
-      flash[:notice] = "接受成功：<strong>#{ChineseTime.display(@call.scheduled_at)}</strong>和<strong>#{@call.expert.name}</strong>通话"
+      flash[:notice] = "接受成功：<strong>#{ChineseTime.display(call.scheduled_at)}</strong>和<strong>#{call.expert.name}</strong>通话"
     end
+    send_confirmation_of_calls_emails(call)
+  end
+
+  def send_confirmation_of_calls_emails(call)
+    Emails::Call.send_call_acceptance_confirmation(call, email_link_for_calls(call.user), Call::USER_ACCEPTOR_TEXT)
+    Emails::Call.send_call_acceptance_confirmation(call, email_link_for_calls(call.expert), Call::EXPERT_ACCEPTOR_TEXT)
+    Emails::Call.send_call_acceptance_confirmation_to_admin(call, rails_admin_path(call), general_email)
   end
 
   def send_cancellation_emails(call)

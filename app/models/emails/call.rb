@@ -1,7 +1,7 @@
 module Emails
   class Call
 
-    def self.send_confirmation_to_user(data)
+    def self.send_confirmation_of_call_request_to_user(data)
       begin
         obj = Emails::Setup.send_with_us_obj
         user = data[:user]
@@ -34,7 +34,7 @@ module Emails
       end
     end
 
-    def self.send_confirmation_to_expert(data)
+    def self.send_initial_request_to_expert(data)
       begin
         obj = Emails::Setup.send_with_us_obj
         user = data[:user]
@@ -64,7 +64,7 @@ module Emails
       end
     end
 
-    def self.send_confirmation_to_admin(data, rails_admin_path, general_email)
+    def self.send_request_notification_to_admin(data, rails_admin_path, general_email)
       begin
         obj = Emails::Setup.send_with_us_obj
         user = data[:user]
@@ -130,6 +130,65 @@ module Emails
             expert_name: expert.name,
             canceller_name: canceller.name,
             cancellation_reason: call.cancellation_reason,
+            rails_admin_path: rails_admin_path
+          },
+          cc: Emails::User.admin_emails
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
+    def self.send_call_acceptance_confirmation(call, link_to_manage_calls, receiver_text)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        user = call.user
+        expert = call.expert
+        receiver = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? expert : user
+        other_person = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? user : expert
+
+        result = obj.send_email(
+          "tem_PB3bXhdYEUde2zND63Y8yR",
+          { address: user.email },
+          data: {
+            receiver_name: receiver.name,
+            other_person_name: other_person.name,
+            conference_number: ::Call::CONFERENCE_CALL_NUMBER,
+            conference_participant_code: ::Call::CONFERENCE_CALL_PARTICIPANT_CODE,
+            link_to_manage_calls: link_to_manage_calls,
+            scheduled_date_time: ChineseTime.display(call.scheduled_at),
+            expert_expertise: expert.expertise,
+            expert_picture: expert.picture.url(:medium),
+            expert_location: expert.location,
+            expert_past_work: expert.past_work,
+            expert_education: expert.list_education,
+            call_description: call.description,
+            rate_per_min: expert.rate_per_minute,
+            estimated_duration_in_min: call.est_duration_in_min,
+            hours_buffer: ::Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED,
+            minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION,
+            receiver_is_user: receiver == user
+          }
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
+    def self.send_call_acceptance_confirmation_to_admin(call, rails_admin_path, general_email)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        user = call.user
+        expert = call.expert
+
+        result = obj.send_email(
+          "tem_pnnkV8KaWSK7gF4aYvbK6f",
+          { address: general_email },
+          data: {
+            user_name: user.name,
+            expert_name: expert.name,
+            scheduled_date_time: ChineseTime.display(call.scheduled_at),
+            call_description: call.description,
             rails_admin_path: rails_admin_path
           },
           cc: Emails::User.admin_emails

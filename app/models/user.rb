@@ -55,6 +55,14 @@ class User < ActiveRecord::Base
     calls.completed + calls_as_expert.completed
   end
 
+  def need_to_action_on(call)
+    self == call.person_to_action
+  end
+
+  def role_in(call)
+    self == call.user ? Call::USER_ACCEPTOR_TEXT : Call::EXPERT_ACCEPTOR_TEXT
+  end
+
   private
 
   def ensure_auth_token
