@@ -30,7 +30,7 @@ class CallsController < ApplicationController
 
     if @call.save
       flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
-      send_emails(@user, @expert, @call)
+      send_confirmation_emails(@user, @expert, @call)
       redirect_to calls_path
     else
       flash[:alert] = @calls.errors.full_messages.join("，") + "。"
@@ -53,6 +53,7 @@ class CallsController < ApplicationController
     @call.cancelled_at = Time.current
     @call.user_that_cancelled = current_user
     if @call.save
+      send_cancellation_emails(@call)
       flash[:notice] = "取消了你和#{@call.cancellee.name}的通话"
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
@@ -96,7 +97,7 @@ class CallsController < ApplicationController
     )
   end
 
-  def send_emails(user, expert, call)
+  def send_confirmation_emails(user, expert, call)
     user_data = expert_data = {
       user: user,
       expert: expert,
@@ -121,6 +122,10 @@ class CallsController < ApplicationController
       call.accept_as_user(params[:datetime_num].to_i)
       flash[:notice] = "接受成功：<strong>#{ChineseTime.display(@call.scheduled_at)}</strong>和<strong>#{@call.expert.name}</strong>通话"
     end
+  end
+
+  def send_cancellation_emails(call)
+    Emails::Call.send_cancel_notice(call, email_link_for_calls(call.cancellee))
   end
 
 end

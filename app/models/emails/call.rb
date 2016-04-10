@@ -89,5 +89,31 @@ module Emails
       end
     end
 
+    def self.send_cancel_notice(call, link_to_manage_calls)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        canceller = call.user_that_cancelled
+        cancellee = call.cancellee
+
+        result = obj.send_email(
+          "tem_ssrtGZFeqUeKoKCA6Ww43L",
+          { address: cancellee.email },
+          data: {
+            canceller_name: canceller.name,
+            cancellee_name: cancellee.name,
+            cancellation_reason: call.cancellation_reason,
+            manage_calls_link: link_to_manage_calls,
+            hours_buffer: ::Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED,
+            minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION,
+            cancelled_in_time: call.apply_cancellation_fee? ? "否" : "是", # The email asks the question "did the person cancel in time?"
+            amount_to_collect: call.cancellation_fee,
+            cancellee_is_expert: cancellee == call.expert
+          }
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
   end
 end

@@ -21,6 +21,10 @@ class Call < ActiveRecord::Base
   EXPERT_ACCEPTOR_TEXT = "expert"
   USER_ACCEPTOR_TEXT = "user"
 
+  CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED = 2
+  CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED = 120
+  MINUTES_TO_CHARGE_FOR_CANCELLATION = 15
+
   def status
     if user_accepted_at.present? && expert_accepted_at.nil?
       PENDING_EXPERT_ACCEPTANCE
@@ -64,6 +68,16 @@ class Call < ActiveRecord::Base
 
   def cancellee
     user_that_cancelled == user ? expert : user
+  end
+
+  def apply_cancellation_fee?
+    return false if scheduled_at.nil?
+    cancelled_at > scheduled_at - CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED.minutes
+  end
+
+  def cancellation_fee
+    # Charge 15 minutes if cancelled too late
+    apply_cancellation_fee? ? MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute : 0
   end
   
 end
