@@ -82,6 +82,15 @@
               = "预计通话长度：#{call.est_duration_in_min}分钟"
             div
               = "每分钟收费：¥#{expert.rate_per_minute}"
+            div
+              - description = "通话内容简介：#{call.description}"
+              - truncate_length = 50
+              - if description.length > truncate_length
+                = truncate(description, length: truncate_length)
+                = link_to "..更多", "", class: "read-more-description-#{call.id}"
+              - else
+                = description
+
             .call-action-buttons-holder
               - if current_user.need_to_action_on(call)
                 a.button.secondary.call-action-button.edit-call-button data-toggle="editCallModal#{call.id}"
@@ -97,3 +106,9 @@
         
   = render "edit_call_modal", call: call if current_user.need_to_action_on(call)
   = render "cancel_call_modal", call: call
+  
+  javascript:
+    $(".read-more-description-#{call.id}").on('click', function(e) {
+      e.preventDefault()
+      $(this).parent().html("#{escape_javascript description}")
+    })
