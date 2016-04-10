@@ -9,41 +9,4 @@
 
   br
 
-  .row.date-pickers
-    .small-12.medium-6.columns
-      .input-group
-        span.input-group-label
-          | 日期：
-        input.datepicker type="text" value="#{@today}" name="call[offer_time_one_date]"
-
-    .small-12.medium-6.columns
-      .input-group
-        span.input-group-label
-          | 时间：
-        = select_tag "call[offer_time_one_hour]", options_for_select(@available_times, @available_times[3])
-
-  .row.date-pickers
-    .small-12.medium-6.columns
-      .input-group
-        span.input-group-label
-          | 日期：
-        input.datepicker type="text" value="#{@today}" name="call[offer_time_two_date]"
-
-    .small-12.medium-6.columns
-      .input-group
-        span.input-group-label
-          | 时间：
-        = select_tag "call[offer_time_two_hour]", options_for_select(@available_times, @available_times[4])
-
-  .row.date-pickers
-    .small-12.medium-6.columns
-      .input-group
-        span.input-group-label
-          | 日期：
-        input.datepicker type="text" value="#{@today}" name="call[offer_time_three_date]"
-
-    .small-12.medium-6.columns
-      .input-group
-        span.input-group-label
-          | 时间：
-        = select_tag "call[offer_time_three_hour]", options_for_select(@available_times, @available_times[5])
+  = render "calls/datetime_picker", today: @today, available_times: @available_times

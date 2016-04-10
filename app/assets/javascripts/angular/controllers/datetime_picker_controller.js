@@ -1,6 +1,6 @@
 var app = angular.module('wokaiqiao');
 
-app.controller('BookExpertCtrl', ['$scope', function($scope) {
+app.controller('DatetimePickerCtrl', ['$scope', function($scope) {
   var datepickers = $(".datepicker")
   var internationalization = {
     previousMonth : '上个月',

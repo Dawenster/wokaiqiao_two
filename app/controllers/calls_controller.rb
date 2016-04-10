@@ -45,6 +45,8 @@ class CallsController < ApplicationController
     end
     @completed_calls = current_user.all_completed_calls
     @in_progress_calls = current_user.all_calls - @completed_calls
+    @available_times = default_available_times
+    @today = Time.current
   end
 
   def accept

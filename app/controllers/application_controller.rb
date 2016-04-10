@@ -57,4 +57,14 @@ class ApplicationController < ActionController::Base
   def general_email
     "team@wokaiqiao.com"
   end
+
+  def default_available_times
+    available_times = []
+    7.upto(22) do |hour|
+      hours_to_subtract = hour >= 13 ? 12 : 0
+      available_times << ["#{hour >= 12 ? '下午' + (hour - hours_to_subtract).to_s : '上午' + hour.to_s}:00", "#{hour}:00"]
+      available_times << ["#{hour >= 12 ? '下午' + (hour - hours_to_subtract).to_s : '上午' + hour.to_s}:30", "#{hour}:30"]
+    end
+    available_times
+  end
 end

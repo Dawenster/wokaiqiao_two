@@ -91,5 +91,9 @@ class Call < ActiveRecord::Base
       user
     end
   end
+
+  def other_user(current_user)
+    user == current_user ? expert : user
+  end
   
 end
