@@ -4,7 +4,12 @@
     = "编辑跟<strong>#{edit_target.name}</strong>的通话".html_safe
   
   = simple_form_for call, url: call_path(call), method: "put" do |f|
-    = render "datetime_picker", today: @today, available_times: @available_times, call: call
+    - if call.user == current_user
+      h6
+        b
+          | 通话内容简介：
+      = f.input :description, label: false, input_html: {rows: 5}
+    = render "datetime_picker", today: @today, available_times: @available_times, call: call if call.person_to_action == current_user
     = f.submit "编辑通话", class: "button secondary"
 
   button.close-button data-close="" aria-label="Close reveal" type="button"

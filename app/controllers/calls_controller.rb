@@ -57,11 +57,11 @@ class CallsController < ApplicationController
 
   def update
     @call = Call.find(params[:id])
-    merge_dates
+    merge_dates if datetimes_passed_in
     @call.assign_attributes(call_params)
-    @call = @call.change_user_or_expert_accepted_at(current_user)
+    @call = @call.change_user_or_expert_accepted_at(current_user) if datetimes_changed(@call)
     if @call.save
-      send_edit_call_email(@call)
+      send_edit_call_email(@call) if datetimes_changed(@call)
       flash[:notice] = "编辑了你和#{@call.other_user(current_user).name}的通话"
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
@@ -171,6 +171,16 @@ class CallsController < ApplicationController
   def send_cancellation_emails(call)
     Emails::Call.send_cancel_notice(call, email_link_for_calls(call.cancellee))
     Emails::Call.send_cancellation_notice_to_admin(call, rails_admin_path(call), general_email)
+  end
+
+  def datetimes_passed_in
+    params[:call][:offer_time_one_date].present? &&
+    params[:call][:offer_time_two_date].present? &&
+    params[:call][:offer_time_three_date].present?
+  end
+
+  def datetimes_changed(call)
+    call.offer_time_one_changed? || call.offer_time_two_changed? || call.offer_time_three_changed?
   end
 
 end
