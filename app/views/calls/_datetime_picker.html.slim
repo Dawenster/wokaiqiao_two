@@ -1,39 +1,47 @@
+- call ||= nil
+
 .datetime-picker-holder ng-controller="DatetimePickerCtrl"
   .row.date-pickers
     .small-12.large-6.columns
       .input-group
         span.input-group-label
           | 日期：
-        input.datepicker type="text" value="#{today}" name="call[offer_time_one_date]"
+        input.datepicker type="text" value="#{call ? call.offer_time_one.strftime('%Y-%m-%d') : today}" name="call[offer_time_one_date]"
 
     .small-12.large-6.columns
       .input-group
         span.input-group-label
           | 时间：
-        = select_tag "call[offer_time_one_hour]", options_for_select(available_times, available_times[3])
+        - default_index = 3
+        - index = call ? available_times.index([ChineseTime.display_time_only(call.offer_time_one), call.offer_time_one.strftime("%-H:%M")]) : default_index
+        = select_tag "call[offer_time_one_hour]", options_for_select(available_times, available_times[index || default_index])
 
   .row.date-pickers
     .small-12.large-6.columns
       .input-group
         span.input-group-label
           | 日期：
-        input.datepicker type="text" value="#{today}" name="call[offer_time_two_date]"
+        input.datepicker type="text" value="#{call ? call.offer_time_two.strftime('%Y-%m-%d') : today}" name="call[offer_time_two_date]"
 
     .small-12.large-6.columns
       .input-group
         span.input-group-label
           | 时间：
-        = select_tag "call[offer_time_two_hour]", options_for_select(available_times, available_times[4])
+        - default_index = 4
+        - index = call ? available_times.index([ChineseTime.display_time_only(call.offer_time_two), call.offer_time_two.strftime("%-H:%M")]) : default_index
+        = select_tag "call[offer_time_two_hour]", options_for_select(available_times, available_times[index || default_index])
 
   .row.date-pickers
     .small-12.large-6.columns
       .input-group
         span.input-group-label
           | 日期：
-        input.datepicker type="text" value="#{today}" name="call[offer_time_three_date]"
+        input.datepicker type="text" value="#{call ? call.offer_time_three.strftime('%Y-%m-%d') : today}" name="call[offer_time_three_date]"
 
     .small-12.large-6.columns
       .input-group
         span.input-group-label
           | 时间：
-        = select_tag "call[offer_time_three_hour]", options_for_select(available_times, available_times[5])
+        - default_index = 5
+        - index = call ? available_times.index([ChineseTime.display_time_only(call.offer_time_three), call.offer_time_three.strftime("%-H:%M")]) : default_index
+        = select_tag "call[offer_time_three_hour]", options_for_select(available_times, available_times[index || default_index])

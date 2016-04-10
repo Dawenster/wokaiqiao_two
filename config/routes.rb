@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:show]
-  resources :calls, only: [:create, :index] do
+  resources :calls, only: [:create, :update, :index] do
     member do
       post :accept
       post :cancel

@@ -43,7 +43,7 @@ module Emails
 
         result = obj.send_email(
           "tem_75EqK2QPeQSV2aCkwL3qGa",
-          { address: user.email },
+          { address: expert.email },
           data: {
             user_name: user.name,
             manage_calls_link: data[:link_to_manage_calls],
@@ -83,6 +83,38 @@ module Emails
             rails_admin_path: rails_admin_path
           },
           cc: Emails::User.admin_emails
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
+    def self.edit_request(data)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        call = data[:call]
+        receiver = data[:receiver]
+        editing_user = data[:editing_user]
+
+        result = obj.send_email(
+          "tem_9Pzvm4JTewGzff7V8KJkGd",
+          { address: receiver.email },
+          data: {
+            editing_user_name: editing_user.name,
+            receiver_name: receiver.name,
+            manage_calls_link: data[:link_to_manage_calls],
+            requested_date_time_one: ChineseTime.display(call.offer_time_one),
+            requested_date_time_two: ChineseTime.display(call.offer_time_two),
+            requested_date_time_three: ChineseTime.display(call.offer_time_three),
+            link_to_accept_call_one: data[:link_to_accept_call_one],
+            link_to_accept_call_two: data[:link_to_accept_call_two],
+            link_to_accept_call_three: data[:link_to_accept_call_three],
+            call_description: call.description,
+            rate_per_min: call.expert.rate_per_minute,
+            estimated_duration_in_min: call.est_duration_in_min,
+            hours_buffer: ::Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED,
+            minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION
+          }
         )
       rescue => e
         puts "Error - #{e.class.name}: #{e.message}"
@@ -149,7 +181,7 @@ module Emails
 
         result = obj.send_email(
           "tem_PB3bXhdYEUde2zND63Y8yR",
-          { address: user.email },
+          { address: receiver.email },
           data: {
             receiver_name: receiver.name,
             other_person_name: other_person.name,

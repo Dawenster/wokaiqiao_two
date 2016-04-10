@@ -63,6 +63,14 @@ class User < ActiveRecord::Base
     self == call.user ? Call::USER_ACCEPTOR_TEXT : Call::EXPERT_ACCEPTOR_TEXT
   end
 
+  def is_user_in?(call)
+    role_in(call) == Call::USER_ACCEPTOR_TEXT
+  end
+
+  def is_expert_in?(call)
+    role_in(call) == Call::EXPERT_ACCEPTOR_TEXT
+  end
+
   private
 
   def ensure_auth_token

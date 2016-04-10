@@ -95,5 +95,16 @@ class Call < ActiveRecord::Base
   def other_user(current_user)
     user == current_user ? expert : user
   end
+
+  def change_user_or_expert_accepted_at(current_user)
+    if current_user.is_user_in?(self)
+      self.user_accepted_at = Time.current
+      self.expert_accepted_at = nil
+    else
+      self.user_accepted_at = nil
+      self.expert_accepted_at = Time.current
+    end
+    self
+  end
   
 end

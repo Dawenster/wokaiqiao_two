@@ -55,6 +55,20 @@ class CallsController < ApplicationController
     redirect_to calls_path
   end
 
+  def update
+    @call = Call.find(params[:id])
+    merge_dates
+    @call.assign_attributes(call_params)
+    @call = @call.change_user_or_expert_accepted_at(current_user)
+    if @call.save
+      send_edit_call_email(@call)
+      flash[:notice] = "编辑了你和#{@call.other_user(current_user).name}的通话"
+    else
+      flash[:alert] = @call.errors.full_messages.join("，") + "。"
+    end
+    redirect_to calls_path
+  end
+
   def cancel
     @call = Call.find(params[:id])
     @call.assign_attributes(call_params)
@@ -120,6 +134,21 @@ class CallsController < ApplicationController
     Emails::Call.send_confirmation_of_call_request_to_user(user_data)
     Emails::Call.send_initial_request_to_expert(expert_data)
     Emails::Call.send_request_notification_to_admin(user_data, rails_admin_path(call), general_email)
+  end
+
+  def send_edit_call_email(call)
+    receiver = call.other_user(current_user)
+    role = receiver.role_in(call)
+    data = {
+      call: call,
+      receiver: receiver,
+      editing_user: current_user,
+      link_to_manage_calls: email_link_for_calls(receiver),
+      link_to_accept_call_one: email_link_for_accepting_calls(receiver, call, 1, role),
+      link_to_accept_call_two: email_link_for_accepting_calls(receiver, call, 2, role),
+      link_to_accept_call_three: email_link_for_accepting_calls(receiver, call, 3, role)
+    }
+    Emails::Call.edit_request(data)
   end
 
   def accept_call(call)
