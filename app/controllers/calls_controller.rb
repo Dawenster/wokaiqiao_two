@@ -126,6 +126,7 @@ class CallsController < ApplicationController
 
   def send_cancellation_emails(call)
     Emails::Call.send_cancel_notice(call, email_link_for_calls(call.cancellee))
+    Emails::Call.send_cancellation_notice_to_admin(call, rails_admin_path(call), general_email)
   end
 
 end

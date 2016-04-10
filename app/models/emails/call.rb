@@ -115,5 +115,29 @@ module Emails
       end
     end
 
+    def self.send_cancellation_notice_to_admin(call, rails_admin_path, general_email)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        user = call.user
+        expert = call.expert
+        canceller = call.user_that_cancelled
+
+        result = obj.send_email(
+          "tem_8sPJV9UUwaDDs4kPJvwMDA",
+          { address: general_email },
+          data: {
+            user_name: user.name,
+            expert_name: expert.name,
+            canceller_name: canceller.name,
+            cancellation_reason: call.cancellation_reason,
+            rails_admin_path: rails_admin_path
+          },
+          cc: Emails::User.admin_emails
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
   end
 end
