@@ -18,8 +18,10 @@ class CallsController < ApplicationController
     @expert = User.find(params[:call][:expert_id])
     amount_to_charge = @expert.rate_in_cents_for(params[:call][:est_duration_in_min].to_i)
 
-    customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
-    StripeTask.charge(customer, amount_to_charge, "Chat with #{@expert.name}")
+    unless @user.stripe_cus_id
+      customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
+      StripeTask.charge(customer, amount_to_charge, "Chat with #{@expert.name}")
+    end
 
     merge_dates
     @call = Call.new(call_params)

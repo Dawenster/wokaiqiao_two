@@ -22,16 +22,27 @@
 
             = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
 
-          - if user_signed_in?
+            - if user_signed_in?
 
-            = render "stripe_checkout", expert: @expert
+              - if current_user.stripe_cus_id
 
-          - else
+                .disclaimer-text
+                  p
+                    | 我们会利用你上次输入的资料，通话结束后才收费。
+                    
+                = f.submit "立即申请通话", class: "button", id: "customButton"
 
-            br
 
-            .row
-              = render "book_section_three", user: @user
+              - else
+
+                = render "stripe_checkout", expert: @expert
+
+            - else
+
+              br
+
+              .row
+                = render "book_section_three", user: @user
 
         .medium-4.columns.hide-for-small-only
           = render "expert_brief_horizontal", expert: @expert
