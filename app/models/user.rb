@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
 
   has_many :calls
   has_many :calls_as_expert, class_name: Call, foreign_key: :expert_id
+  has_many :cancellations_initiated, class_name: Call, foreign_key: :cancelled_by
   has_many :educations
 
   def s3_credentials
