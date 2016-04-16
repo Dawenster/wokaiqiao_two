@@ -20,7 +20,7 @@ class CallsController < ApplicationController
 
     unless @user.stripe_cus_id
       customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
-      @charge = StripeTask.charge(customer, amount_to_charge, "Chat with #{@expert.name}")
+      @charge = StripeTask.charge(customer, amount_to_charge, "和#{@expert.name}通话")
     end
 
     merge_dates
@@ -29,7 +29,7 @@ class CallsController < ApplicationController
     @call.user_accepted_at = Time.current
 
     if @call.save
-      create_charge if @charge
+      Payment.payment(@user, @call, @charge) if @charge
       flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
       send_confirmation_emails(@user, @expert, @call)
       redirect_to calls_path
@@ -182,17 +182,6 @@ class CallsController < ApplicationController
 
   def datetimes_changed(call)
     call.offer_time_one_changed? || call.offer_time_two_changed? || call.offer_time_three_changed?
-  end
-
-  def create_charge
-    Charge.create(
-      amount_in_cents: @charge.amount,
-      currency: StripeTask::CURRENCY,
-      call: @call,
-      user: @user,
-      charge_type: Charge::PAYMENT,
-      stripe_py_id: @charge.id
-    )
   end
 
 end
