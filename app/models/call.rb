@@ -15,6 +15,8 @@ class Call < ActiveRecord::Base
     where(cancelled_at: nil)
   }
 
+  validate :call_ends_after_start
+
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
   PENDING_USER_ACCEPTANCE = "专家建议时间更改为"
   MUTUALLY_ACCEPTED = "通话确认"
@@ -107,6 +109,14 @@ class Call < ActiveRecord::Base
       self.expert_accepted_at = Time.current
     end
     self
+  end
+
+  private
+
+  def call_ends_after_start
+    if ended_at < started_at
+      errors.add(:ended_at, "cannot be before started_at")
+    end
   end
   
 end
