@@ -29,7 +29,7 @@ class CallsController < ApplicationController
     @call.user_accepted_at = Time.current
 
     if @call.save
-      Payment.payment(@user, @call, @charge) if @charge
+      Payment.make(@user, @call, @charge) if @charge
       flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
       send_confirmation_emails(@user, @expert, @call)
       redirect_to calls_path
