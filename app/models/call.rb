@@ -3,6 +3,7 @@ class Call < ActiveRecord::Base
   belongs_to :expert, class_name: User, foreign_key: :expert_id
   belongs_to :user
   belongs_to :user_that_cancelled, class_name: User, foreign_key: :cancelled_by
+  has_many :charges
 
   scope :unconfirmed, -> {
     where("user_accepted_at is null OR expert_accepted_at is null")
