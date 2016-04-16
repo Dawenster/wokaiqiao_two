@@ -15,6 +15,13 @@ class Call < ActiveRecord::Base
     where(cancelled_at: nil)
   }
 
+  validates :est_duration_in_min,
+            :user_id,
+            :expert_id,
+            :offer_time_one,
+            :offer_time_two,
+            :offer_time_three,
+            presence: true
   validate :call_ends_after_start
 
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
