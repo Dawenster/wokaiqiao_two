@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160416172609) do
+ActiveRecord::Schema.define(version: 20160416173435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 20160416172609) do
     t.integer  "cancelled_by"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.string   "stripe_inv_id"
   end
 
   create_table "charges", force: :cascade do |t|
