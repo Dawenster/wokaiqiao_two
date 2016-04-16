@@ -3,7 +3,7 @@ class Call < ActiveRecord::Base
   belongs_to :expert, class_name: User, foreign_key: :expert_id
   belongs_to :user
   belongs_to :user_that_cancelled, class_name: User, foreign_key: :cancelled_by
-  has_many :charges
+  has_many :payments
 
   scope :unconfirmed, -> {
     where("user_accepted_at is null OR expert_accepted_at is null")
@@ -14,6 +14,8 @@ class Call < ActiveRecord::Base
   scope :not_cancelled, -> {
     where(cancelled_at: nil)
   }
+
+  after_save :after_call_payments_or_adjustments, if: :call_completed?
 
   validates :est_duration_in_min,
             :user_id,
@@ -118,11 +120,64 @@ class Call < ActiveRecord::Base
     self
   end
 
+  def actual_duration_in_min
+    # Rounded down
+    ((ended_at - started_at) / 60).floor
+  end
+
+  def cost_in_cents
+    actual_duration_in_min * expert.rate_per_minute * 100
+  end
+
+  def payment_required?
+    total_paid_in_cents < cost_in_cents
+  end
+
+  def payment_amount
+    cost_in_cents - total_paid_in_cents
+  end
+
+  def refund_required?
+    total_paid_in_cents > cost_in_cents
+  end
+
+  def refund_amount
+    total_paid_in_cents - cost_in_cents
+  end
+
+  def total_paid_in_cents
+    payments.sum(:amount_in_cents)
+  end
+
   private
 
   def call_ends_after_start
     if ended_at < started_at
       errors.add(:ended_at, "cannot be before started_at")
+    end
+  end
+
+  def call_completed?
+    ended_at_changed? &&
+    started_at.present? &&
+    ended_at.present?
+  end
+
+  def after_call_payments_or_adjustments
+    customer = StripeTask.customer(user)
+    if payment_required?
+      charge = StripeTask.charge(customer, charge_amount, "和#{expert.name}通话")
+      Payment.make(user, self, charge)
+    elsif refund_required?
+      amount = refund_amount
+      payments.each do |payment|
+        return if amount == 0
+        next unless payment.can_refund?
+        amount_to_refund = amount > remaining_refundable ? remaining_refundable : amount
+        refund = StripeTask.refund(payment.stripe_ch_id, amount_to_refund)
+        Refund.make(user, payment, refund)
+        amount -= amount_to_refund
+      end
     end
   end
   
