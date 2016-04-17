@@ -6,7 +6,11 @@
   = simple_form_for call, url: cancel_call_path(call), method: "post" do |f|
     - if call.would_be_charged_cancellation_fee?
       h5.alert-text
-        = "请注意：你现在是在约定的通话时间前#{Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED}小时以内取消通话，我们会收取相对于你#{Call::MINUTES_TO_CHARGE_FOR_CANCELLATION}分钟(¥#{call.pure_cancellation_fee})的通话费用。"
+        = "请注意：因为你未能在预定通话时间前#{Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED}小时取消通话，所以我们将收取该专家#{Call::MINUTES_TO_CHARGE_FOR_CANCELLATION}分钟(¥#{call.pure_cancellation_fee})的通话费用。"
+        small
+          / TODO: Link to FAQ
+          = link_to "我开窍会收额外的费用吗？", ""
+
     = f.input :cancellation_reason, label: "取消原因", required: false
     = f.submit "取消通话", class: "button alert"
 
