@@ -18,6 +18,9 @@ class Call < ActiveRecord::Base
   scope :not_cancelled, -> {
     where(cancelled_at: nil)
   }
+  scope :reviewed_by_user, -> {
+    where.not(user_review: nil, user_review: "")
+  }
 
   after_save :tasks_after_call_completion, if: :call_completed?
 

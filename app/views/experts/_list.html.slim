@@ -55,18 +55,14 @@
             | 通话申请
           .show-for-small-only
             = "每分钟收费：¥#{expert.rate_per_minute}"
-          div
-            i.fa.fa-star
-            i.fa.fa-star
-            i.fa.fa-star
-            i.fa.fa-star
-            i.fa.fa-star-half-empty
+
+          .raty-div data-rating="#{expert.avg_rating_as_expert}" ng-controller="RatingsCtrl"
 
           div
             h6
               small.subtitle
                 i.fa.fa-comments
-                |  10个评论
+                = " #{expert.num_comments_as_expert}个评论"
 
       - unless (i + 1) == max
         br

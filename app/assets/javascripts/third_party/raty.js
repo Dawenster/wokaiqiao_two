@@ -748,7 +748,7 @@
     starHalf     : 'star-half.png',
     starOff      : 'star-off.png',
     starOn       : 'star-on.png',
-    starType     : 'img',
+    starType     : 'i',
     target       : undefined,
     targetFormat : '{score}',
     targetKeep   : false,

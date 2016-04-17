@@ -42,14 +42,6 @@ class User < ActiveRecord::Base
     educations.map{|e|e.name_with_year}.join("，")
   end
 
-  def rate_for(min)
-    rate_per_minute * min
-  end
-
-  def rate_in_cents_for(min)
-    rate_per_minute * min * 100
-  end
-
   def all_calls
     calls.not_cancelled + calls_as_expert.not_cancelled
   end
@@ -72,6 +64,27 @@ class User < ActiveRecord::Base
 
   def is_expert_in?(call)
     role_in(call) == Call::EXPERT_ACCEPTOR_TEXT
+  end
+
+  # USERS ONLY ==============================================================
+
+  # EXPERTS ONLY ==============================================================
+
+  def rate_for(min)
+    rate_per_minute * min
+  end
+
+  def rate_in_cents_for(min)
+    rate_per_minute * min * 100
+  end
+
+  def avg_rating_as_expert
+    avg_rating = calls_as_expert.average(:user_rating)
+    avg_rating.nil? ? 0 : avg_rating
+  end
+
+  def num_comments_as_expert
+    calls_as_expert.reviewed_by_user.count
   end
 
   private
