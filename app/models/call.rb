@@ -30,6 +30,7 @@ class Call < ActiveRecord::Base
   validate :call_ends_after_start
 
   CALL_CANCELLED = "通话取消"
+  CALL_COMPLETED = "通话取消"
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
   PENDING_USER_ACCEPTANCE = "专家建议时间更改为"
   MUTUALLY_ACCEPTED = "通话确认"
@@ -45,16 +46,30 @@ class Call < ActiveRecord::Base
   CONFERENCE_CALL_ADMIN_CODE = "953026"
   CONFERENCE_CALL_PARTICIPANT_CODE = "476513"
 
-  def status
-    if cancelled_at.present?
-      CALL_CANCELLED
-    elsif user_accepted_at.present? && expert_accepted_at.nil?
-      PENDING_EXPERT_ACCEPTANCE
-    elsif user_accepted_at.nil? && expert_accepted_at.present?
-      PENDING_USER_ACCEPTANCE
-    elsif user_accepted_at.present? && expert_accepted_at.present?
-      MUTUALLY_ACCEPTED
+  # GENERAL =======================================================
+
+  def person_to_action
+    case status
+    when PENDING_EXPERT_ACCEPTANCE
+      expert
+    when PENDING_USER_ACCEPTANCE
+      user
     end
+  end
+
+  def other_user(current_user)
+    user == current_user ? expert : user
+  end
+
+  def change_user_or_expert_accepted_at(current_user)
+    if current_user.is_user_in?(self)
+      self.user_accepted_at = Time.current
+      self.expert_accepted_at = nil
+    else
+      self.user_accepted_at = nil
+      self.expert_accepted_at = Time.current
+    end
+    self
   end
 
   def accept_as_expert(num)
@@ -84,21 +99,37 @@ class Call < ActiveRecord::Base
     "call-anchor-#{id}"
   end
 
-  def accepted?
-    status == MUTUALLY_ACCEPTED
-  end
+  # STATUS =======================================================
 
-  def pending_expert_acceptance?
-    status == PENDING_EXPERT_ACCEPTANCE
-  end
-
-  def pending_user_acceptance?
-    status == PENDING_USER_ACCEPTANCE
+  def status
+    return CALL_CANCELLED            if cancelled?
+    return CALL_COMPLETED            if completed?
+    return PENDING_EXPERT_ACCEPTANCE if pending_expert_acceptance?
+    return PENDING_USER_ACCEPTANCE   if pending_user_acceptance?
+    return MUTUALLY_ACCEPTED         if accepted?
   end
 
   def cancelled?
-    status == CALL_CANCELLED
+    cancelled_at.present?
   end
+
+  def completed?
+    started_at.present? && ended_at.present?
+  end
+
+  def pending_expert_acceptance?
+    user_accepted_at.present? && expert_accepted_at.nil?
+  end
+
+  def pending_user_acceptance?
+    user_accepted_at.nil? && expert_accepted_at.present?
+  end
+
+  def accepted?
+    user_accepted_at.present? && expert_accepted_at.present?
+  end
+
+  # CANCELLATION =======================================================
 
   def cancellee
     user_that_cancelled == user ? expert : user
@@ -131,29 +162,7 @@ class Call < ActiveRecord::Base
     cancellation_fee * 100
   end
 
-  def person_to_action
-    case status
-    when PENDING_EXPERT_ACCEPTANCE
-      expert
-    when PENDING_USER_ACCEPTANCE
-      user
-    end
-  end
-
-  def other_user(current_user)
-    user == current_user ? expert : user
-  end
-
-  def change_user_or_expert_accepted_at(current_user)
-    if current_user.is_user_in?(self)
-      self.user_accepted_at = Time.current
-      self.expert_accepted_at = nil
-    else
-      self.user_accepted_at = nil
-      self.expert_accepted_at = Time.current
-    end
-    self
-  end
+  # PAYMENT / COSTS =======================================================
 
   def actual_duration_in_min
     # Rounded down
