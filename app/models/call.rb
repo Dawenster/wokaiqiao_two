@@ -86,14 +86,23 @@ class Call < ActiveRecord::Base
     user_that_cancelled == user ? expert : user
   end
 
+  def would_be_charged_cancellation_fee?
+    return false if scheduled_at.nil?
+    Time.current > scheduled_at - CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED.minutes
+  end
+
   def apply_cancellation_fee?
     return false if scheduled_at.nil?
     cancelled_at > scheduled_at - CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED.minutes
   end
 
+  def pure_cancellation_fee
+    MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute
+  end
+
   def cancellation_fee
     # Charge amount if cancelled too late
-    apply_cancellation_fee? ? MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute : 0
+    apply_cancellation_fee? ? pure_cancellation_fee : 0
   end
 
   def cancellation_fee_in_cents
