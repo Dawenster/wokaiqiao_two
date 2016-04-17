@@ -65,40 +65,7 @@
 
         .small-12.medium-4.column.end
           .callout.action-callout class="#{callout_class(call)}"
-            h5
-              b
-                = "状态: #{call.status}"
-            - if call.accepted?
-              div
-                = "确定时间：#{ChineseTime.display(call.scheduled_at)}"
-            - else
-              div
-                = "一：#{ChineseTime.display(call.offer_time_one)}#{link_to_accept(call, 1) if current_user.need_to_action_on(call)}".html_safe
-              div
-                = "二：#{ChineseTime.display(call.offer_time_two)}#{link_to_accept(call, 2) if current_user.need_to_action_on(call)}".html_safe
-              div
-                = "三：#{ChineseTime.display(call.offer_time_three)}#{link_to_accept(call, 3) if current_user.need_to_action_on(call)}".html_safe
-            div
-              = "预计通话长度：#{call.est_duration_in_min}分钟"
-            div
-              = "每分钟收费：¥#{expert.rate_per_minute}"
-            div
-              | 通话内容简介：
-            div
-              - description = call.description
-              - truncate_length = 40
-              - if description.length > truncate_length
-                = truncate(description, length: truncate_length)
-                = link_to "..更多", "", class: "read-more-description-#{call.id}"
-              - else
-                = simple_format(description)
-
-            .call-action-buttons-holder
-              a.button.secondary.call-action-button.edit-call-button data-toggle="editCallModal#{call.id}"
-                | 编辑通话申请
-              a.button.alert.call-action-button.cancel-call-button data-toggle="cancelCallModal#{call.id}"
-                | 取消通话申请
-
+            = render "calls/action_callout/main", call: call, expert: expert
 
       - unless (i + 1) == max
         br
@@ -107,9 +74,3 @@
         
   = render "edit_call_modal", call: call
   = render "cancel_call_modal", call: call
-
-  javascript:
-    $(".read-more-description-#{call.id}").on('click', function(e) {
-      e.preventDefault()
-      $(this).parent().html("#{escape_javascript simple_format(description)}")
-    })

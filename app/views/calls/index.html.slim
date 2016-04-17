@@ -12,10 +12,13 @@
           a.calls-tab-title href="#in-progress" aria-selected="true"
             | 进行中
         li.tabs-title
-          a.calls-tab-title href="#completed" aria-selected="true"
+          a.calls-tab-title href="#completed"
             | 已进行
+        li.tabs-title
+          a.calls-tab-title href="#cancelled"
+            | 已取消
 
-      .tabs-content data-tabs-content="example-tabs"
+      .tabs-content data-tabs-content="calls-tabs"
         div.tabs-panel.is-active id="in-progress"
           br
           - if @in_progress_calls.any?
@@ -28,8 +31,17 @@
         div.tabs-panel id="completed"
           br
           - if @completed_calls.any?
-            - @completed_calls.each do |call|
-              = call.description
+            - @completed_calls.each_with_index do |call, i|
+              = render "list", call: call, expert: call.expert, i: i, max: @completed_calls.length
 
           - else
             | 您目前还没有完成任何通话。
+
+        div.tabs-panel id="cancelled"
+          br
+          - if @cancelled_calls.any?
+            - @cancelled_calls.each_with_index do |call, i|
+              = render "list", call: call, expert: call.expert, i: i, max: @cancelled_calls.length
+
+          - else
+            | 您目前还没有取消任何通话。

@@ -1,0 +1,16 @@
+div
+  | 通话内容简介：
+div
+  - description = call.description
+  - truncate_length = 40
+  - if description.length > truncate_length
+    = truncate(description, length: truncate_length)
+    = link_to "..更多", "", class: "read-more-description-#{call.id}"
+  - else
+    = simple_format(description)
+
+javascript:
+  $(".read-more-description-#{call.id}").on('click', function(e) {
+    e.preventDefault()
+    $(this).parent().html("#{escape_javascript simple_format(description)}")
+  })

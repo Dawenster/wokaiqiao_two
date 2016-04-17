@@ -1,0 +1,14 @@
+div
+  = "确定时间：#{ChineseTime.display(call.scheduled_at)}"
+div
+  = "预计通话长度：#{call.est_duration_in_min}分钟"
+div
+  = "每分钟收费：¥#{expert.rate_per_minute}"
+  
+= render "calls/action_callout/call_description", call: call
+
+.call-action-buttons-holder
+  a.button.secondary.call-action-button.edit-call-button data-toggle="editCallModal#{call.id}"
+    | 编辑通话申请
+  a.button.alert.call-action-button.cancel-call-button data-toggle="cancelCallModal#{call.id}"
+    | 取消通话申请

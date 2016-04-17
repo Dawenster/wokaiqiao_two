@@ -46,6 +46,7 @@ class CallsController < ApplicationController
     end
     @completed_calls = current_user.all_completed_calls
     @in_progress_calls = current_user.all_calls - @completed_calls
+    @cancelled_calls = current_user.calls.cancelled
     @available_times = default_available_times
     @today = Time.current
   end
@@ -76,7 +77,7 @@ class CallsController < ApplicationController
     @call.cancelled_at = Time.current
     @call.user_that_cancelled = current_user
 
-    if @call.accepted? && @call.apply_cancellation_fee?
+    if @call.accepted? && @call.cancelled_by_user? && @call.apply_cancellation_fee?
       if @call.need_to_pay_after_cancellation?
         customer = StripeTask.customer(@call.user)
         charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "和#{@call.expert.name}通话提早取消")

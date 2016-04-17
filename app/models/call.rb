@@ -11,6 +11,9 @@ class Call < ActiveRecord::Base
   scope :completed, -> {
     where("started_at is not null AND ended_at is not null")
   }
+  scope :cancelled, -> {
+    where.not(cancelled_at: nil)
+  }
   scope :not_cancelled, -> {
     where(cancelled_at: nil)
   }
@@ -26,6 +29,7 @@ class Call < ActiveRecord::Base
             presence: true
   validate :call_ends_after_start
 
+  CALL_CANCELLED = "通话取消"
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
   PENDING_USER_ACCEPTANCE = "专家建议时间更改为"
   MUTUALLY_ACCEPTED = "通话确认"
@@ -42,7 +46,9 @@ class Call < ActiveRecord::Base
   CONFERENCE_CALL_PARTICIPANT_CODE = "476513"
 
   def status
-    if user_accepted_at.present? && expert_accepted_at.nil?
+    if cancelled_at.present?
+      CALL_CANCELLED
+    elsif user_accepted_at.present? && expert_accepted_at.nil?
       PENDING_EXPERT_ACCEPTANCE
     elsif user_accepted_at.nil? && expert_accepted_at.present?
       PENDING_USER_ACCEPTANCE
@@ -82,8 +88,24 @@ class Call < ActiveRecord::Base
     status == MUTUALLY_ACCEPTED
   end
 
+  def pending_expert_acceptance?
+    status == PENDING_EXPERT_ACCEPTANCE
+  end
+
+  def pending_user_acceptance?
+    status == PENDING_USER_ACCEPTANCE
+  end
+
+  def cancelled?
+    status == CALL_CANCELLED
+  end
+
   def cancellee
     user_that_cancelled == user ? expert : user
+  end
+
+  def cancelled_by_user?
+    cancellee == user
   end
 
   def would_be_charged_cancellation_fee?

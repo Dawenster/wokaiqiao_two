@@ -1,0 +1,14 @@
+div
+  = "约定时间：#{ChineseTime.display(call.scheduled_at)}"
+div
+  = "取消时间：#{ChineseTime.display(call.cancelled_at)}"
+div
+  = "约定通话#{Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED}小时前取消：#{call.apply_cancellation_fee? ? '否' : '是'}"
+div
+  = "收取的收费：¥#{call.cancellation_fee}"
+
+= render "calls/action_callout/call_description", call: call
+
+.call-action-buttons-holder
+  a.button.secondary.call-action-button.edit-call-button href="#{book_expert_path(expert)}"
+    = "再次約#{expert.name}"
