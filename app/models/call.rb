@@ -19,7 +19,7 @@ class Call < ActiveRecord::Base
     where(cancelled_at: nil)
   }
 
-  after_save :after_call_payments_or_adjustments, if: :call_completed?
+  after_save :tasks_after_call_completion, if: :call_completed?
 
   validates :est_duration_in_min,
             :user_id,
@@ -228,13 +228,21 @@ class Call < ActiveRecord::Base
 
   # EXPERT PAYOUTS =======================================================
 
+  def expert_payout
+    cost - admin_fee
+  end
+
   def expert_payout_in_cents
     cost_in_cents - admin_fee_in_cents
   end
 
+  def admin_fee
+    admin_fee_in_cents / 100
+  end
+
   def admin_fee_in_cents
-    # Round down for us
-    (cost_in_cents * Payout::ADMIN_FEE_PERCENTAGE / 100).ceil
+    # Round down to the nearest hundred (元) for us so there are no cents
+    ((cost_in_cents * Payout::ADMIN_FEE_PERCENTAGE / 100) * 100).ceil / 100
   end
 
   private
@@ -251,7 +259,7 @@ class Call < ActiveRecord::Base
     ended_at.present?
   end
 
-  def after_call_payments_or_adjustments
+  def tasks_after_call_completion
     customer = StripeTask.customer(user)
     if payment_required?
       charge = StripeTask.charge(customer, payment_amount, "和#{expert.name}通话")
@@ -260,6 +268,8 @@ class Call < ActiveRecord::Base
       Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
     end
     Payout.make_for_call(self)
+    Emails::Call.send_call_completion_to_user(self)
+    Emails::Call.send_call_completion_to_expert(self)
   end
   
 end

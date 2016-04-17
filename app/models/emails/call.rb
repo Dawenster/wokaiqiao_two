@@ -230,5 +230,59 @@ module Emails
       end
     end
 
+    def self.send_call_completion_to_user(call)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        user = call.user
+        expert = call.expert
+        links = Emails::Links.new
+        manage_calls_link = links.calls_url(auth_token: user.auth_token)
+
+        result = obj.send_email(
+          "tem_LFr5ctYwEhR5W5MKyNS5mc",
+          { address: user.email },
+          data: {
+            user_name: user.name,
+            expert_name: expert.name,
+            rate_per_min: expert.rate_per_minute,
+            scheduled_date_time: ChineseTime.display(call.scheduled_at),
+            duration_in_min: call.actual_duration_in_min,
+            amount_to_collect: call.cost,
+            manage_calls_link: manage_calls_link
+          }
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
+    def self.send_call_completion_to_expert(call)
+      begin
+        obj = Emails::Setup.send_with_us_obj
+        user = call.user
+        expert = call.expert
+        links = Emails::Links.new
+        manage_calls_link = links.calls_url(auth_token: expert.auth_token)
+
+        result = obj.send_email(
+          "tem_6sB2KctZEqnZJEcrskdGfm",
+          { address: expert.email },
+          data: {
+            user_name: user.name,
+            expert_name: expert.name,
+            rate_per_min: expert.rate_per_minute,
+            scheduled_date_time: ChineseTime.display(call.scheduled_at),
+            duration_in_min: call.actual_duration_in_min,
+            total_collected: call.cost,
+            wokaiqiao_collected: "#{call.admin_fee} (#{call.payout.admin_fee_percentage}%)",
+            amount_earned: call.expert_payout,
+            manage_calls_link: manage_calls_link
+          }
+        )
+      rescue => e
+        puts "Error - #{e.class.name}: #{e.message}"
+      end
+    end
+
   end
 end

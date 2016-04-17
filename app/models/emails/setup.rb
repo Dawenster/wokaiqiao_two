@@ -1,4 +1,5 @@
 module Emails
+
   class Setup
 
     def self.send_with_us_obj
