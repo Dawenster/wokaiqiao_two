@@ -168,7 +168,7 @@ class Call < ActiveRecord::Base
     cancellation_fee * 100
   end
 
-  # PAYMENT / COSTS =======================================================
+  # CUSTOMER PAYMENT / COSTS =======================================================
 
   def cost
     actual_duration_in_min * expert.rate_per_minute
@@ -226,6 +226,17 @@ class Call < ActiveRecord::Base
     net_paid - cancellation_fee_in_cents
   end
 
+  # EXPERT PAYOUTS =======================================================
+
+  def expert_payout_in_cents
+    cost_in_cents - admin_fee_in_cents
+  end
+
+  def admin_fee_in_cents
+    # Round down for us
+    (cost_in_cents * Payout::ADMIN_FEE_PERCENTAGE / 100).ceil
+  end
+
   private
 
   def call_ends_after_start
@@ -248,6 +259,7 @@ class Call < ActiveRecord::Base
     elsif refund_required?
       Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
     end
+    Payout.make_for_call(self)
   end
   
 end
