@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :educations
   has_many :charges
   has_many :refunds
+  has_many :payouts, class_name: Payout, foreign_key: :expert_id
 
   def s3_credentials
     {
