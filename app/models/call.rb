@@ -34,7 +34,7 @@ class Call < ActiveRecord::Base
   USER_ACCEPTOR_TEXT = "user"
 
   CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED = 2
-  CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED = 120
+  CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED = CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED * 60
   MINUTES_TO_CHARGE_FOR_CANCELLATION = 15
 
   CONFERENCE_CALL_NUMBER = "+86 (0) 510 6801 0107"
@@ -141,7 +141,7 @@ class Call < ActiveRecord::Base
     total_paid_in_cents > cost_in_cents
   end
 
-  def refund_amount
+  def overage_refund_amount
     total_paid_in_cents - cost_in_cents
   end
 
@@ -149,10 +149,46 @@ class Call < ActiveRecord::Base
     payments.sum(:amount_in_cents)
   end
 
+  def total_refunded_in_cents
+    payments.inject(0) { |sum, p| sum += p.total_refunds_in_cents }
+  end
+
+  def net_paid
+    total_paid_in_cents - total_refunded_in_cents
+  end
+
+  def cancelled_too_late?
+    Time.current > scheduled_at - CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED.minutes
+  end
+
+  def has_positive_paid_balance?
+    net_paid > 0
+  end
+
+  def amount_for_early_cancellation_in_cents
+    MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute * 100
+  end
+
+  def need_to_pay_after_cancellation?
+    amount_for_early_cancellation_in_cents < net_paid
+  end
+
+  def need_to_refund_after_cancellation?
+    amount_for_early_cancellation_in_cents > net_paid
+  end
+
+  def payment_amount_for_early_cancellation
+    amount_for_early_cancellation_in_cents - net_paid
+  end
+
+  def refund_amount_for_early_cancellation
+    net_paid - amount_for_early_cancellation_in_cents
+  end
+
   private
 
   def call_ends_after_start
-    if ended_at < started_at
+    if ended_at.present? && started_at.present? && ended_at < started_at
       errors.add(:ended_at, "cannot be before started_at")
     end
   end
@@ -166,18 +202,10 @@ class Call < ActiveRecord::Base
   def after_call_payments_or_adjustments
     customer = StripeTask.customer(user)
     if payment_required?
-      charge = StripeTask.charge(customer, charge_amount, "和#{expert.name}通话")
+      charge = StripeTask.charge(customer, payment_amount, "和#{expert.name}通话")
       Payment.make(user, self, charge)
     elsif refund_required?
-      amount = refund_amount
-      payments.each do |payment|
-        return if amount == 0
-        next unless payment.can_refund?
-        amount_to_refund = amount > remaining_refundable ? remaining_refundable : amount
-        refund = StripeTask.refund(payment.stripe_ch_id, amount_to_refund)
-        Refund.make(user, payment, refund)
-        amount -= amount_to_refund
-      end
+      Refund.refund_call(self, overage_refund_amount, customer)
     end
   end
   

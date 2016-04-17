@@ -1,6 +1,7 @@
 class StripeTask
 
   CURRENCY = "cny"
+  ALIPAY_ACCOUNT = "alipay_account"
 
   def self.customer(user)
     Stripe::Customer.retrieve(user.stripe_cus_id)
@@ -25,10 +26,10 @@ class StripeTask
     )
   end
 
-  def self.refund(stripe_ch_id, amount, reason=nil)
+  def self.refund(stripe_py_id, amount, reason=nil)
     Stripe::Refund.create(
+      charge: stripe_py_id,
       amount: amount,
-      currency: CURRENCY,
       reason: reason
     )
   end

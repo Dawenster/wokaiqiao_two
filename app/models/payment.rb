@@ -20,7 +20,7 @@ class Payment < ActiveRecord::Base
   end
 
   def can_refund?
-    total_refunds_in_cents == amount_in_cents
+    amount_in_cents > total_refunds_in_cents
   end
 
   def remaining_refundable
