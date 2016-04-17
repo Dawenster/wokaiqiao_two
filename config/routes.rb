@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :calls, only: [:create, :update, :index] do
     member do
       post :accept
+      post :rate
       post :cancel
     end
   end

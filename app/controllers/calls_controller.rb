@@ -71,6 +71,17 @@ class CallsController < ApplicationController
     redirect_to calls_path
   end
 
+  def rate
+    @call = Call.find(params[:id])
+    @call.assign_attributes(call_params)
+    if @call.save
+      flash[:notice] = "感谢你给#{@call.expert.name}留了评论"
+    else
+      flash[:alert] = @call.errors.full_messages.join("，") + "。"
+    end
+    redirect_to calls_path
+  end
+
   def cancel
     @call = Call.find(params[:id])
     @call.assign_attributes(call_params)
