@@ -92,8 +92,12 @@ class Call < ActiveRecord::Base
   end
 
   def cancellation_fee
-    # Charge 15 minutes if cancelled too late
+    # Charge amount if cancelled too late
     apply_cancellation_fee? ? MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute : 0
+  end
+
+  def cancellation_fee_in_cents
+    cancellation_fee * 100
   end
 
   def person_to_action
@@ -157,32 +161,24 @@ class Call < ActiveRecord::Base
     total_paid_in_cents - total_refunded_in_cents
   end
 
-  def cancelled_too_late?
-    Time.current > scheduled_at - CANCELLATION_BUFFER_IN_MINUTES_BEFORE_CALL_IS_CHARGED.minutes
-  end
-
   def has_positive_paid_balance?
     net_paid > 0
   end
 
-  def amount_for_early_cancellation_in_cents
-    MINUTES_TO_CHARGE_FOR_CANCELLATION * expert.rate_per_minute * 100
-  end
-
   def need_to_pay_after_cancellation?
-    amount_for_early_cancellation_in_cents > net_paid
+    cancellation_fee_in_cents > net_paid
   end
 
   def need_to_refund_after_cancellation?
-    amount_for_early_cancellation_in_cents < net_paid
+    cancellation_fee_in_cents < net_paid
   end
 
   def payment_amount_for_early_cancellation
-    amount_for_early_cancellation_in_cents - net_paid
+    cancellation_fee_in_cents - net_paid
   end
 
   def refund_amount_for_early_cancellation
-    net_paid - amount_for_early_cancellation_in_cents
+    net_paid - cancellation_fee_in_cents
   end
 
   private
