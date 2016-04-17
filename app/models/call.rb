@@ -30,7 +30,7 @@ class Call < ActiveRecord::Base
   validate :call_ends_after_start
 
   CALL_CANCELLED = "通话取消"
-  CALL_COMPLETED = "通话取消"
+  CALL_COMPLETED = "通话已进行"
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
   PENDING_USER_ACCEPTANCE = "专家建议时间更改为"
   MUTUALLY_ACCEPTED = "通话确认"
@@ -99,6 +99,11 @@ class Call < ActiveRecord::Base
     "call-anchor-#{id}"
   end
 
+  def actual_duration_in_min
+    # Rounded down
+    ((ended_at - started_at) / 60).floor
+  end
+
   # STATUS =======================================================
 
   def status
@@ -164,13 +169,12 @@ class Call < ActiveRecord::Base
 
   # PAYMENT / COSTS =======================================================
 
-  def actual_duration_in_min
-    # Rounded down
-    ((ended_at - started_at) / 60).floor
+  def cost
+    actual_duration_in_min * expert.rate_per_minute
   end
 
   def cost_in_cents
-    actual_duration_in_min * expert.rate_per_minute * 100
+    cost * 100
   end
 
   def payment_required?

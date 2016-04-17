@@ -1,0 +1,14 @@
+div
+  = "时间：#{ChineseTime.display(call.scheduled_at)}"
+div
+  = "通话长度：#{call.actual_duration_in_min}分钟"
+div
+  = "每分钟收费：¥#{expert.rate_per_minute}"
+div
+  = "总共收费：¥#{call.cost}"
+  
+= render "calls/action_callout/call_description", call: call
+
+.call-action-buttons-holder
+  a.button.secondary.call-action-button.edit-call-button href="#{book_expert_path(expert)}"
+    = "再次約#{expert.name}"

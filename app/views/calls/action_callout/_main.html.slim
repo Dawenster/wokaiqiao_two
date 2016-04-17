@@ -3,7 +3,9 @@ h5
     = "状态: #{call.status}"
 - if call.cancelled?
   = render "calls/action_callout/cancelled", call: call, expert: expert
+- elsif call.completed?
+  = render "calls/action_callout/completed", call: call, expert: expert
 - elsif call.accepted?
   = render "calls/action_callout/accepted", call: call, expert: expert
-- elsif call.pending_expert_acceptance?
+- elsif call.pending_expert_acceptance? || call.pending_user_acceptance?
   = render "calls/action_callout/pending_expert_acceptance", call: call, expert: expert
