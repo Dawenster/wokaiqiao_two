@@ -16,9 +16,3 @@ div
     | 编辑通话申请
   a.button.alert.call-action-button.cancel-call-button data-toggle="cancelCallModal#{call.id}"
     | 取消通话申请
-
-javascript:
-  $(".read-more-description-#{call.id}").on('click', function(e) {
-    e.preventDefault()
-    $(this).parent().html("#{escape_javascript simple_format(description)}")
-  })
