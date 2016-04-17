@@ -12,18 +12,7 @@
             b
               = expert.name
           
-          div
-            i.fa.fa-star
-            i.fa.fa-star
-            i.fa.fa-star
-            i.fa.fa-star
-            i.fa.fa-star-half-empty
-
-          div
-            h6
-              small.subtitle
-                i.fa.fa-comments
-                |  10个评论
+          = render "experts/read_only_expert_rating", expert: expert
 
         .small-12.medium-6.columns
           h5.call-title
