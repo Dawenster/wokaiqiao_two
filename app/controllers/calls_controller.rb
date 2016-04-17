@@ -76,17 +76,18 @@ class CallsController < ApplicationController
     @call.cancelled_at = Time.current
     @call.user_that_cancelled = current_user
 
-    if @call.cancelled_too_late?
+    if @call.accepted? && @call.cancelled_too_late?
       if @call.need_to_pay_after_cancellation?
         customer = StripeTask.customer(@call.user)
-        charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "和#{expert.name}通话提早取消")
+        charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "和#{@call.expert.name}通话提早取消")
         Payment.make(@call.user, @call, charge)
       elsif @call.need_to_refund_after_cancellation?
         customer = StripeTask.customer(@call.user)
-        Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, customer)
+        Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.amount_for_early_cancellation_in_cents, customer)
       end
-    elsif @call.has_positive_paid_balance?
-      Refund.refund_call(@call, @call.net_paid, customer)
+    elsif @call.accepted? && @call.has_positive_paid_balance?
+      customer = StripeTask.customer(@call.user)
+      Refund.refund_call(@call, @call.net_paid, 0, customer)
     end
 
     if @call.save

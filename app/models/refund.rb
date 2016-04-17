@@ -22,24 +22,26 @@ class Refund < ActiveRecord::Base
     )
   end
 
-  def self.refund_call(call, amount, customer)
+  def self.refund_call(call, amount, remaining_charge, customer)
     user_is_alipay = customer.sources.data.first.object == StripeTask::ALIPAY_ACCOUNT
     if user_is_alipay
-      Refund.refund_alipay(call, amount, customer)
+      Refund.refund_alipay(call, amount, remaining_charge, customer)
     else
       Refund.refund_credit_card(call, amount)
     end
   end
 
-  def self.refund_alipay(call, amount, customer)
+  def self.refund_alipay(call, amount, remaining_charge, customer)
     # Refund everything and then charge the correct amount
     call.payments.each do |payment|
       next unless payment.can_refund?
       refund = StripeTask.refund(payment.stripe_py_id, payment.remaining_refundable)
       Refund.make(call.user, payment, refund)
     end
-    charge = StripeTask.charge(customer, call.cost_in_cents, "和#{call.expert.name}通话")
-    Payment.make(call.user, call, charge)
+    if remaining_charge > 0
+      charge = StripeTask.charge(customer, remaining_charge, "和#{call.expert.name}通话")
+      Payment.make(call.user, call, charge)
+    end
   end
 
   def self.refund_credit_card(call, amount)

@@ -9,7 +9,7 @@ class Call < ActiveRecord::Base
     where("user_accepted_at is null OR expert_accepted_at is null")
   }
   scope :completed, -> {
-    where("scheduled_at < ?", Time.current)
+    where("started_at is not null AND ended_at is not null")
   }
   scope :not_cancelled, -> {
     where(cancelled_at: nil)
@@ -170,11 +170,11 @@ class Call < ActiveRecord::Base
   end
 
   def need_to_pay_after_cancellation?
-    amount_for_early_cancellation_in_cents < net_paid
+    amount_for_early_cancellation_in_cents > net_paid
   end
 
   def need_to_refund_after_cancellation?
-    amount_for_early_cancellation_in_cents > net_paid
+    amount_for_early_cancellation_in_cents < net_paid
   end
 
   def payment_amount_for_early_cancellation
@@ -205,7 +205,7 @@ class Call < ActiveRecord::Base
       charge = StripeTask.charge(customer, payment_amount, "和#{expert.name}通话")
       Payment.make(user, self, charge)
     elsif refund_required?
-      Refund.refund_call(self, overage_refund_amount, customer)
+      Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
     end
   end
   
