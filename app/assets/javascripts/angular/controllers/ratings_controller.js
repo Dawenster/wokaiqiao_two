@@ -11,15 +11,17 @@ app.controller('RatingsCtrl', ['$scope', '$element', function($scope, $element) 
     });
   }
 
-  $(".blank-user-raty-div").raty({
-    scoreName: "call[user_rating]",
-    score: $element.find(".blank-user-raty-div").data("user-rating")
-  });
+  if ($element.hasClass("ratable")) {
+    $(".blank-user-raty-div").raty({
+      scoreName: "call[user_rating]",
+      score: $element.find(".blank-user-raty-div").data("user-rating")
+    });
 
-  $(".blank-expert-raty-div").raty({
-    scoreName: "call[expert_rating]",
-    score: $element.find(".blank-expert-raty-div").data("expert-rating")
-  });
+    $(".blank-expert-raty-div").raty({
+      scoreName: "call[expert_rating]",
+      score: $element.find(".blank-expert-raty-div").data("expert-rating")
+    });
+  }
 
   $("body").on("click", ".leave-rating-button", function(e) {
     e.preventDefault()
