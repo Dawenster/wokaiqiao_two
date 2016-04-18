@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
   end
 
   def avg_rating_as_expert
-    avg_rating = calls_as_expert.average(:user_rating)
+    avg_rating = calls_as_expert.average(:user_rating).to_s
     avg_rating.nil? ? 0 : avg_rating
   end
 

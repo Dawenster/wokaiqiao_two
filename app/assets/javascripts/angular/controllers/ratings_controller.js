@@ -2,11 +2,14 @@ var app = angular.module('wokaiqiao');
 
 app.controller('RatingsCtrl', ['$scope', '$element', function($scope, $element) {
 
-  $(".raty-div").raty({
-    score: $element.data("rating"),
-    readOnly: true,
-    noRatedMsg: "还没有评分"
-  });
+  if ($element.hasClass("readonly")) {
+    var score = $element.data("rating")
+    $(".raty-div").raty({
+      score: score,
+      readOnly: true,
+      noRatedMsg: "还没有评分"
+    });
+  }
 
   $(".blank-user-raty-div").raty({
     scoreName: "call[user_rating]",
