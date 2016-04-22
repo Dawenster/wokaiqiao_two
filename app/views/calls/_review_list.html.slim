@@ -1,0 +1,10 @@
+- reviewer = call.user
+.review-list-holder
+  .left-side
+    div
+      = image_tag reviewer.picture.url(:thumb), class: "profile-circle small" if reviewer.picture.present?
+    div
+      = reviewer.name
+  .right-side
+    .triangle-isosceles.left
+      = simple_format call.user_review
