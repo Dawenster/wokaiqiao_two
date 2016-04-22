@@ -44,8 +44,13 @@
     margin-bottom: 0px;
   }
 
-  .subtitle {
+  small.subtitle {
     color: $dark-gray;
+  }
+
+  small.subtitle-linkable {
+    color: $success-color;
+    cursor: pointer;
   }
 }
 

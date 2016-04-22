@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
     avg_rating.nil? ? 0 : avg_rating
   end
 
-  def num_comments_as_expert
+  def num_comments_from_users
     calls_as_expert.reviewed_by_user.count
   end
 

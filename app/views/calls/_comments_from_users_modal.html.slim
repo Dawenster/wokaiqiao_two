@@ -1,0 +1,10 @@
+.reveal.tiny.modal-slide id="commentsFromUsers#{expert.id}" data-reveal="" data-close-on-click="true"
+  h3
+    = "<strong>#{expert.name}</strong>的评论".html_safe
+  
+  - calls_with_user_reviews.each do |call|
+    = call.user_review
+
+  button.close-button data-close="" aria-label="Close reveal" type="button"
+    span aria-hidden="true"
+      | &times;
