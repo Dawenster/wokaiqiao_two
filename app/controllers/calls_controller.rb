@@ -74,6 +74,12 @@ class CallsController < ApplicationController
   def rate
     @call = Call.find(params[:id])
     @call.assign_attributes(call_params)
+    if current_user.is_user_in?(@call) && @call.user_review.present?
+      @call.user_review_left_at = Time.current
+    elsif current_user.is_expert_in?(@call) && @call.expert_review.present?
+      @call.expert_review_left_at = Time.current
+    end
+
     if @call.save
       flash[:notice] = "感谢你给#{@call.expert.name}留了评论"
     else

@@ -8,3 +8,8 @@
   .right-side
     .triangle-isosceles.left
       = simple_format call.user_review
+    .review-details-holder
+      - if reviewer.is_user_in?(call)
+        = ChineseTime.display(call.user_review_left_at, true)
+      - else
+        = ChineseTime.display(call.expert_review_left_at, true)
