@@ -2,7 +2,7 @@
 .review-list-holder
   .left-side
     div
-      = image_tag reviewer.picture.url(:thumb), class: "profile-circle small" if reviewer.picture.present?
+      = image_tag reviewer.picture.url(:thumb), class: "profile-circle small"
     div
       = reviewer.name
   .right-side
