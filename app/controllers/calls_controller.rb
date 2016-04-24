@@ -126,7 +126,7 @@ class CallsController < ApplicationController
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
     end
-    redirect_to calls_path
+    redirect_to calls_path(t: "cancelled")
   end
 
   protected
