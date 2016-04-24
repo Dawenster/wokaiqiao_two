@@ -32,6 +32,7 @@ class Call < ActiveRecord::Base
             :offer_time_three,
             presence: true
   validate :call_ends_after_start
+  validate :user_is_not_expert
 
   CALL_CANCELLED = "通话取消"
   CALL_COMPLETED = "通话已完成"
@@ -273,6 +274,12 @@ class Call < ActiveRecord::Base
     Payout.make_for_call(self)
     Emails::Call.send_call_completion_to_user(self)
     Emails::Call.send_call_completion_to_expert(self)
+  end
+
+  def user_is_not_expert
+    if user == expert
+      errors.add(:user_id, "cannot be same as expert")
+    end
   end
   
 end
