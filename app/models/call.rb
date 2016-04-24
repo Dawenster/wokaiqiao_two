@@ -34,7 +34,7 @@ class Call < ActiveRecord::Base
   validate :call_ends_after_start
 
   CALL_CANCELLED = "通话取消"
-  CALL_COMPLETED = "通话已进行"
+  CALL_COMPLETED = "通话已完成"
   PENDING_EXPERT_ACCEPTANCE = "申请处理中"
   PENDING_USER_ACCEPTANCE = "专家建议时间更改为"
   MUTUALLY_ACCEPTED = "通话确认"
@@ -265,7 +265,7 @@ class Call < ActiveRecord::Base
   def tasks_after_call_completion
     customer = StripeTask.customer(user)
     if payment_required?
-      charge = StripeTask.charge(customer, payment_amount, "和#{expert.name}通话")
+      charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
       Payment.make(user, self, charge)
     elsif refund_required?
       Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)

@@ -39,7 +39,7 @@ class Refund < ActiveRecord::Base
       Refund.make(call.user, payment, refund)
     end
     if remaining_charge > 0
-      charge = StripeTask.charge(customer, remaining_charge, "和#{call.expert.name}通话")
+      charge = StripeTask.charge(customer, remaining_charge, "与#{call.expert.name}通话")
       Payment.make(call.user, call, charge)
     end
   end

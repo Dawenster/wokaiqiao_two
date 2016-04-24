@@ -20,7 +20,7 @@ class CallsController < ApplicationController
 
     unless @user.stripe_cus_id
       customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
-      @charge = StripeTask.charge(customer, amount_to_charge, "和#{@expert.name}通话")
+      @charge = StripeTask.charge(customer, amount_to_charge, "与#{@expert.name}通话")
     end
 
     merge_dates
@@ -64,7 +64,7 @@ class CallsController < ApplicationController
     @call = @call.change_user_or_expert_accepted_at(current_user) if datetimes_changed(@call)
     if @call.save
       send_edit_call_email(@call) if datetimes_changed(@call)
-      flash[:notice] = "编辑了你和#{@call.other_user(current_user).name}的通话"
+      flash[:notice] = "成功更改与#{@call.other_user(current_user).name}的通话申请"
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
     end
@@ -109,7 +109,7 @@ class CallsController < ApplicationController
     if @call.accepted? && @call.cancelled_by_user? && @call.apply_cancellation_fee?
       if @call.need_to_pay_after_cancellation?
         customer = StripeTask.customer(@call.user)
-        charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "和#{@call.expert.name}通话提早取消")
+        charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "与#{@call.expert.name}通话提早取消")
         Payment.make(@call.user, @call, charge)
       elsif @call.need_to_refund_after_cancellation?
         customer = StripeTask.customer(@call.user)
@@ -122,7 +122,7 @@ class CallsController < ApplicationController
 
     if @call.save
       send_cancellation_emails(@call)
-      flash[:notice] = "取消了你和#{@call.cancellee.name}的通话"
+      flash[:notice] = "取消了你与#{@call.cancellee.name}的通话"
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
     end
@@ -200,10 +200,10 @@ class CallsController < ApplicationController
   def accept_call(call)
     if params[:acceptor] == Call::EXPERT_ACCEPTOR_TEXT && call.expert == current_user
       call.accept_as_expert(params[:datetime_num].to_i)
-      flash[:notice] = "谢谢你接受在<strong>#{ChineseTime.display(call.scheduled_at)}</strong>和<strong>#{call.user.name}</strong>通话"
+      flash[:notice] = "谢你接受在<strong>#{ChineseTime.display(call.scheduled_at)}</strong>与<strong>#{call.user.name}</strong>通话"
     elsif params[:acceptor] == Call::USER_ACCEPTOR_TEXT && call.user == current_user
       call.accept_as_user(params[:datetime_num].to_i)
-      flash[:notice] = "接受成功：<strong>#{ChineseTime.display(call.scheduled_at)}</strong>和<strong>#{call.expert.name}</strong>通话"
+      flash[:notice] = "接受成功：<strong>#{ChineseTime.display(call.scheduled_at)}</strong>与<strong>#{call.expert.name}</strong>通话"
     end
     send_confirmation_of_calls_emails(call)
   end

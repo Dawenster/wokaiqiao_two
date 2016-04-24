@@ -6,6 +6,10 @@ class Education < ActiveRecord::Base
             presence: true
 
   def name_with_year
-    "#{year}年#{name}"
+    if year
+      "#{year}年#{name}"
+    else
+      name
+    end
   end
 end

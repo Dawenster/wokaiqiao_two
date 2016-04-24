@@ -1,7 +1,7 @@
 .reveal.small.modal-slide id="editCallModal#{call.id}" data-reveal="" data-close-on-click="true"
   h3
     - edit_target = call.other_user(current_user)
-    = "编辑跟<strong>#{edit_target.name}</strong>的通话".html_safe
+    = "更改与<strong>#{edit_target.name}</strong>的通话".html_safe
   
   = simple_form_for call, url: call_path(call), method: "put" do |f|
     - if call.user == current_user
@@ -10,7 +10,7 @@
           | 通话内容简介：
       = f.input :description, label: false, input_html: {rows: 5}
     = render "datetime_picker", today: @today, available_times: @available_times, call: call if call.person_to_action == current_user
-    = f.submit "编辑通话", class: "button secondary"
+    = f.submit "更改通话", class: "button secondary"
 
   button.close-button data-close="" aria-label="Close reveal" type="button"
     span aria-hidden="true"

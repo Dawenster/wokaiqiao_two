@@ -27,7 +27,7 @@
   }
 
   a {
-    &:hover {
+    &:hover, &:focus {
       color: $success-color;
     }
   }
