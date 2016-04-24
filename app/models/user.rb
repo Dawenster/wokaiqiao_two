@@ -50,6 +50,10 @@ class User < ActiveRecord::Base
     calls.completed + calls_as_expert.completed
   end
 
+  def all_cancelled_calls
+    calls.cancelled + calls_as_expert.cancelled
+  end
+
   def need_to_action_on(call)
     self == call.person_to_action
   end
