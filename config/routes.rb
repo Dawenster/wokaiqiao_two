@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     member do
       post :accept
       post :rate
+      get  :rate_with_rating
       post :cancel
     end
   end

@@ -237,6 +237,7 @@ module Emails
         expert = call.expert
         links = Emails::Links.new
         manage_calls_link = links.calls_url(auth_token: user.auth_token)
+        rate_with_rating_link = links.rate_with_rating_call_url(call, auth_token: user.auth_token)
 
         result = obj.send_email(
           "tem_LFr5ctYwEhR5W5MKyNS5mc",
@@ -248,7 +249,8 @@ module Emails
             scheduled_date_time: ChineseTime.display(call.scheduled_at),
             duration_in_min: call.actual_duration_in_min,
             amount_to_collect: call.cost,
-            manage_calls_link: manage_calls_link
+            manage_calls_link: manage_calls_link,
+            rate_with_rating_link: rate_with_rating_link
           }
         )
       rescue => e
@@ -263,6 +265,7 @@ module Emails
         expert = call.expert
         links = Emails::Links.new
         manage_calls_link = links.calls_url(auth_token: expert.auth_token)
+        rate_with_rating_link = links.rate_with_rating_call_url(call, auth_token: expert.auth_token)
 
         result = obj.send_email(
           "tem_6sB2KctZEqnZJEcrskdGfm",
@@ -276,7 +279,8 @@ module Emails
             total_collected: call.cost,
             wokaiqiao_collected: "#{call.admin_fee} (#{call.payout.admin_fee_percentage}%)",
             amount_earned: call.expert_payout,
-            manage_calls_link: manage_calls_link
+            manage_calls_link: manage_calls_link,
+            rate_with_rating_link: rate_with_rating_link
           }
         )
       rescue => e

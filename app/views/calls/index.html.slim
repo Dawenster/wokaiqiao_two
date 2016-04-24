@@ -7,7 +7,7 @@
 
   .row
     .small-12.large-10.large-offset-1.columns
-      ul.tabs data-tabs="" id="calls-tabs"
+      ul#calls-tabs.tabs data-tabs=""
         li.tabs-title.is-active
           a.calls-tab-title href="#in-progress" aria-selected="true"
             | 进行中
@@ -19,7 +19,7 @@
             | 已取消
 
       .tabs-content data-tabs-content="calls-tabs"
-        div.tabs-panel.is-active id="in-progress"
+        #in-progress.tabs-panel.is-active
           br
           - if @in_progress_calls.any?
             - @in_progress_calls.each_with_index do |call, i|
@@ -28,7 +28,7 @@
           - else
             | 您目前没有在进行中的通话。
 
-        div.tabs-panel id="completed"
+        #completed.tabs-panel
           br
           - if @completed_calls.any?
             - @completed_calls.each_with_index do |call, i|
@@ -37,7 +37,7 @@
           - else
             | 您目前还没有完成任何通话。
 
-        div.tabs-panel id="cancelled"
+        #cancelled.tabs-panel
           br
           - if @cancelled_calls.any?
             - @cancelled_calls.each_with_index do |call, i|

@@ -17,4 +17,29 @@ app.controller('CallListCtrl', ['$scope', function($scope) {
       }, 1000, 'swing');
     }
   }
+
+  $(document).ready(function() {
+    var tab = getQueryVariable("t")
+    if (tab) {
+      var tabElement = $("#" + tab)
+      $('#calls-tabs').foundation('selectTab', tabElement);
+    }
+
+    var openRatingId = getQueryVariable("openRating")
+    if (openRatingId) {
+      $("#rateCallModal" + openRatingId).foundation('open');
+    }
+  })
+
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      if (decodeURIComponent(pair[0]) == variable) {
+        return decodeURIComponent(pair[1]);
+      }
+    }
+    return null
+  }
 }]);

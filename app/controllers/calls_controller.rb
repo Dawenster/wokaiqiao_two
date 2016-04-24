@@ -85,7 +85,19 @@ class CallsController < ApplicationController
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
     end
-    redirect_to calls_path
+    redirect_to calls_path(t: "completed")
+  end
+
+  def rate_with_rating
+    @call = Call.find(params[:id])
+    if current_user.is_user_in?(@call)
+      @call.update_attributes(user_rating: params[:r])
+      flash[:notice] = "感谢你给#{@call.expert.name}留了评论"
+    elsif current_user.is_expert_in?(@call)
+      @call.update_attributes(expert_rating: params[:r])
+      flash[:notice] = "感谢你给#{@call.user.name}留了评论"
+    end
+    redirect_to calls_path(t: "completed", openRating: @call.id)
   end
 
   def cancel
