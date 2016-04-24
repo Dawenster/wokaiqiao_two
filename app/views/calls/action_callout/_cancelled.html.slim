@@ -1,5 +1,6 @@
-div
-  = "约定时间：#{ChineseTime.display(call.scheduled_at)}"
+- if call.scheduled_at
+  div
+    = "约定时间：#{ChineseTime.display(call.scheduled_at)}"
 div
   = "取消时间：#{ChineseTime.display(call.cancelled_at)}"
 div
