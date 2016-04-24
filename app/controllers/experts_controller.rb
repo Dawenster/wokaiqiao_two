@@ -1,6 +1,10 @@
 class ExpertsController < ApplicationController
   def index
-    @experts = User.experts
+    if current_user
+      @experts = User.experts.where.not(id: current_user.id)
+    else
+      @experts = User.experts
+    end
   end
 
   def book
