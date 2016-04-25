@@ -63,7 +63,7 @@ RailsAdmin.config do |config|
       field :domestic
       field :rate_per_minute
       field :title
-      field :expertise
+      field :description
       field :current_work
       field :past_work
       field :educations
