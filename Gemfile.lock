@@ -293,6 +293,7 @@ DEPENDENCIES
   jquery-rails
   mailcatcher
   momentjs-rails
+  nested_form
   oj (~> 2.12.14)
   paperclip (~> 4.3)
   pg
