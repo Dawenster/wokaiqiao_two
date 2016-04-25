@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     get "book/:expert_id" => "experts#book", as: :book_expert
   end
 
-  resources :users, only: [:show]
+  resources :users, only: [:show, :update]
   resources :calls, only: [:create, :update, :index] do
     member do
       post :accept

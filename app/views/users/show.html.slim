@@ -1,4 +1,17 @@
+.page-banner-holder
+  .row
+    .small-12.columns
+      img.profile-circle src="#{@user.picture.url(:medium)}" width="100"
+      h3.expert-name
+        b
+          = @user.name
+
 .row
-  .small-12.columns
-    h3
-      = "你好，#{@user.name}"
+  .small-12.medium-8.medium-offset-2.large-6.large-offset-3.columns
+    = simple_form_for @user do |f|
+      h5
+        b
+          | 简短介绍
+      = f.input :description, label: false, input_html: { rows: 3 }
+
+      = f.submit t('.update', :default => "更新"), class: "button"
