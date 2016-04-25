@@ -6,12 +6,42 @@
         b
           = @user.name
 
-.row
-  .small-12.medium-8.medium-offset-2.large-6.large-offset-3.columns
-    = simple_form_for @user do |f|
-      h5
-        b
-          | 简短介绍
-      = f.input :description, label: false, input_html: { rows: 3 }
+.user-profile-holder
+  .row
+    .small-12.medium-8.medium-offset-2.large-6.large-offset-3.columns
+      = simple_nested_form_for @user do |u|
+        h5
+          b
+            | 简短介绍
+        = u.input :description, label: false, input_html: { rows: 3 }
 
-      = f.submit t('.update', :default => "更新"), class: "button"
+        h5
+          b
+            | 学历
+
+        #educations-list
+          = u.simple_fields_for :educations do |e|
+            = e.input :user, as: :hidden, input_html: { value: current_user.id }
+
+            .row
+              .small-8.columns
+                .input-group
+                  span.input-group-label
+                    | 学校
+                  = e.input :name, label: false, placeholder: "学校", input_html: { class: "input-group-field education-input-field" }
+
+              .small-3.columns.year-column
+                .input-group
+                  = e.input :year, label: false, placeholder: "毕业年", input_html: { class: "input-group-field education-input-field" }
+                  span.input-group-label.year-label.hide-for-small-only
+                    | 年
+
+              .small-1.columns
+                .minus-icon-holder
+                  = e.link_to_remove "<i class='fa fa-minus-circle'></i>".html_safe
+
+        .link-to-add-education-holder
+          = u.link_to_add "<i class='fa fa-plus-circle'></i> 新增学历".html_safe, :educations, data: { :target => "#educations-list" }
+
+        div
+          = u.submit t('.update', :default => "更新"), class: "button"

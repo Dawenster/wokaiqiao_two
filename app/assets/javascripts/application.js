@@ -16,6 +16,7 @@
 //= require angular
 //= require moment
 //= require pikaday
+//= require jquery_nested_form
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

@@ -1,0 +1,34 @@
+@import "settings";
+
+.user-profile-holder {
+
+  .education-input-field {
+    margin-bottom: 0px;
+    border-top-left-radius: $global-radius;
+    border-bottom-left-radius: $global-radius;
+  }
+
+  @media only screen and (max-width: 40em) {
+    .education-input-field {
+      border-top-right-radius: $global-radius;
+      border-bottom-right-radius: $global-radius;
+    }
+  }
+
+  .year-column {
+    padding-left: 0px;
+  }
+
+  .year-label {
+    border-top-right-radius: $global-radius;
+    border-bottom-right-radius: $global-radius;
+  }
+
+  .minus-icon-holder {
+    margin-top: 7px;
+  }
+
+  .link-to-add-education-holder {
+    margin-bottom: 20px;
+  }
+}

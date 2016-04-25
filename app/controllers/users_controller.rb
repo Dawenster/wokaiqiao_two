@@ -22,7 +22,14 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(
-      :description
+      :description,
+      :educations_attributes => [
+        :id,
+        :name,
+        :year,
+        :user_id,
+        :_destroy
+      ]
     )
   end
 
