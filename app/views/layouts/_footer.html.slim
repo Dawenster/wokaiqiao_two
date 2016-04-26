@@ -12,12 +12,10 @@ footer.footer
       .footer-links
         ul.menu
           li
-            a.footer-link href="#"
-              | 全部专家
+            = link_to "全部专家", experts_path, class: "footer-link"
 
           li
             = mail_to team_email, "联络我们", encode: "hex", class: "footer-link"
 
           li
-            a.footer-link href="https://www.surveymonkey.com/r/K7KGTPQ" target="_blank"
-              | 反馈意见
+            = link_to "反馈意见", "https://www.surveymonkey.com/r/K7KGTPQ", target: "_blank", class: "footer-link"
