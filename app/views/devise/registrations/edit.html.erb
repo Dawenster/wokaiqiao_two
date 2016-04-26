@@ -11,8 +11,13 @@
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
       <%= devise_error_messages! %>
 
-      <div><%= f.label :email %><br />
-      <%= f.email_field :email %></div>
+      <h5>
+        <strong>
+          电子邮箱
+        </strong>
+      </h5>
+
+      <%= f.email_field :email %>
 
       <%- if devise_mapping.confirmable? && resource.pending_reconfirmation? -%>
         <p>
@@ -20,14 +25,30 @@
         </p>
       <%- end -%>
 
-      <div><%= f.label :password %> <i>(<%= t('.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)</i><br />
-      <%= f.password_field :password, :autocomplete => "off" %></div>
+      <h5>
+        <strong>
+          密码
+        </strong>
+        <small>
+          (<%= t('.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)
+        </small>
+      </h5>
+
+      <%= f.password_field :password, :autocomplete => "off" %>
 
       <!-- <div><%= f.label :password_confirmation %><br />
       <%= f.password_field :password_confirmation %></div> -->
 
-      <div><%= f.label :current_password %> <i>(<%= t('.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>)</i><br />
-      <%= f.password_field :current_password %></div>
+      <h5>
+        <strong>
+          当前密码
+        </strong>
+        <small>
+          (<%= t('.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>)
+        </small>
+      </h5>
+
+      <%= f.password_field :current_password %>
 
       <div><%= f.submit t('.update', :default => "Update"), class: "button" %></div>
     <% end %>
