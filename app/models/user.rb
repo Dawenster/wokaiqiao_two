@@ -8,7 +8,8 @@ class User < ActiveRecord::Base
                     styles: { medium: "300x300#", thumb: "100x100#" },
                     default_url: "https://s3-us-west-2.amazonaws.com/wokaiqiao/users/missing-user.png",
                     storage: :s3,
-                    s3_credentials: Proc.new{|a| a.instance.s3_credentials }
+                    s3_credentials: Proc.new{|a| a.instance.s3_credentials },
+                    s3_protocol: :https
 
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
   validates :name, :email, presence: true
