@@ -1,4 +1,5 @@
 class Promotion < ActiveRecord::Base
+  has_many :credits
   has_and_belongs_to_many :users
 
   validates :name,
