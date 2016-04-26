@@ -17,13 +17,18 @@
 
         h5
           b
-            | 简短介绍
+            | 专长领域
         = u.input :description, label: false, input_html: { rows: 3 }
 
         h5
           b
             | 现在就职
         = u.input :current_work, label: false
+
+        h5
+          b
+            | 曾经就职
+        = u.input :past_work, label: false, input_html: { rows: 2 }
 
         h5
           b
@@ -82,7 +87,7 @@
 
               h5
                 b
-                  | 通话标题
+                  | 简短介绍
               = u.input :title, label: false
 
           .row
