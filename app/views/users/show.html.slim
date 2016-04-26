@@ -43,5 +43,19 @@
         .link-to-add-education-holder
           = u.link_to_add "<i class='fa fa-plus-circle'></i> 新增学历".html_safe, :educations, data: { :target => "#educations-list" }
 
+        .row
+          .small-12.columns
+            h5
+              b
+                | 地点
+
+          .small-8.columns
+            = u.input :location, label: false
+
+          .small-4.columns
+            .domestic-checkbox-holder
+              = u.input :domestic, label: "国内？"
+
+
         div
           = u.submit t('.update', :default => "更新"), class: "button"

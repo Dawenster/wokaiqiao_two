@@ -23,6 +23,13 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(
       :description,
+      :current_work,
+      :rate_per_minute,
+      :past_work,
+      :languages,
+      :location,
+      :domestic,
+      :title,
       :educations_attributes => [
         :id,
         :name,
