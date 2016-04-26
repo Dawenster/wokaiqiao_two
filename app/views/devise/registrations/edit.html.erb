@@ -8,8 +8,30 @@
 
 <div class="row">
   <div class="small-12 medium-6 medium-offset-3 large-4 large-offset-4 columns">
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-      <%= devise_error_messages! %>
+    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+      <h5>
+        <strong>
+          名字
+        </strong>
+      </h5>
+
+      <%= f.input :name, label: false %>
+
+      <h5>
+        <strong>
+          电话
+        </strong>
+      </h5>
+
+      <%= f.input :phone, label: false %>
+
+      <h5>
+        <strong>
+          微信
+        </strong>
+      </h5>
+
+      <%= f.input :wechat, label: false %>
 
       <h5>
         <strong>

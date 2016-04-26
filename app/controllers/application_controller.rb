@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_in)        << :name
     devise_parameter_sanitizer.for(:sign_up)        << :name
-    devise_parameter_sanitizer.for(:account_update) << :name
+    devise_parameter_sanitizer.for(:account_update) << [:name, :phone, :wechat]
   end
 
   def set_english_in_rails_admin
