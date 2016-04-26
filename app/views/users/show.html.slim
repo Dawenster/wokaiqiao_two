@@ -17,11 +17,16 @@
 
         h5
           b
+            | 现在就职
+        = u.input :current_work, label: false
+
+        h5
+          b
             | 学历
 
         #educations-list
           = u.simple_fields_for :educations do |e|
-            = e.input :user, as: :hidden, input_html: { value: current_user.id }
+            = e.input :user, as: :hidden, input_html: { value: @user.id }
 
             .row
               .small-8.columns
@@ -56,6 +61,49 @@
             .domestic-checkbox-holder
               = u.input :domestic, label: "国内？"
 
+        .row
+          .small-8.columns.end
+            h5
+              b
+                | 语言
+            = u.input :languages, label: false
+
+        hr
+
+        - if @user.expert
+
+          .row
+            .small-8.columns.end
+
+              h5
+                b
+                  | 通话标题
+              = u.input :title, label: false
+
+          .row
+            .small-8.medium-7.large-5.columns
+              .input-group
+                span.input-group-label
+                  | 每分钟收费（¥）
+                = u.input :rate_per_minute, label: false, input_html: { class: "input-group-field" }
+
+        - else
+
+          h5
+            b
+              | 想成为专家吗？
+          = mail_to become_expert_email, "成为专家", encode: "hex", class: "button landing-call-to-action-button success", subject: "我想当专家", body: "名字: \n联络资料(邮箱, 微信户名, 或手机号): "
+
+        hr
 
         div
           = u.submit t('.update', :default => "更新"), class: "button"
+
+
+
+
+
+
+
+
+
