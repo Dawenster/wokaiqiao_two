@@ -30,6 +30,7 @@ class UsersController < ApplicationController
       :location,
       :domestic,
       :title,
+      :picture,
       :educations_attributes => [
         :id,
         :name,

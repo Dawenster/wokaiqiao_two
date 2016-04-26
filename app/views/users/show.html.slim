@@ -12,6 +12,11 @@
       = simple_nested_form_for @user do |u|
         h5
           b
+            | 档案照片
+        = u.input :picture, label: false
+
+        h5
+          b
             | 简短介绍
         = u.input :description, label: false, input_html: { rows: 3 }
 
@@ -97,7 +102,7 @@
         hr
 
         div
-          = u.submit t('.update', :default => "更新"), class: "button"
+          = u.submit t('.update', :default => "保存"), class: "button"
 
 
 
