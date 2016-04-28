@@ -1,7 +1,7 @@
 class Promotion < ActiveRecord::Base
   has_many :credits
   has_many :promotions_users
-  has_and_belongs_to_many :users, -> { uniq }
+  has_and_belongs_to_many :users, uniq: true
 
   validates :name,
             :code,
