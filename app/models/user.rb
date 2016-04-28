@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   has_many :credits
   has_many :educations
   accepts_nested_attributes_for :educations, allow_destroy: true
-  has_many :charges
+  has_many :payments
   has_many :refunds
   has_many :payouts, class_name: Payout, foreign_key: :expert_id
   has_and_belongs_to_many :promotions, uniq: true
