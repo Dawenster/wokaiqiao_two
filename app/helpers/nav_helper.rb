@@ -47,6 +47,11 @@ module NavHelper
         method: :get
       },
       {
+        text: "折扣代码",
+        link: promotions_path,
+        method: :get
+      },
+      {
         text: "修改用户",
         link: edit_user_registration_path,
         method: :get

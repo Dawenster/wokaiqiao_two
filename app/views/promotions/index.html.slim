@@ -1,0 +1,61 @@
+.page-banner-holder
+  .row
+    .small-12.columns
+      h3
+        | 折扣代码
+
+.promotions-page-holder
+  .row
+    .small-12.medium-6.medium-offset-3.large-4.large-offset-4.columns
+
+      h5
+        b
+          | 如果你从我们在活动中收到了折扣代码，请在下面输入：
+
+      = simple_form_for Promotion.new, url: check_promotions_path, method: "post" do |p|
+        .input-group
+          span.input-group-label
+            | 请输入代码
+          input.input-group-field type="text" name="code"
+          .input-group-button
+            input.button type="submit" value="加入"
+
+      br
+
+    .small-12.columns
+
+      - if @promotions.any?
+
+        table
+          thead
+            tr
+              th
+                | 详细
+              th.hide-for-small-only
+                | 代码
+              th.hide-for-small-only
+                | 创建日期
+              th.right-align
+                | 合计
+              th.right-align
+                | 已使用
+
+          tbody
+            - @promotions.each do |promotion|
+              tr
+                td
+                  = promotion.name
+                td.hide-for-small-only
+                  = promotion.code
+                td.hide-for-small-only
+                  = ChineseTime.display(promotion.promotions_users.first.created_at)
+                td.right-align
+                  = number_to_currency(promotion.amount, unit: "¥", precision: 0)
+                td.right-align
+                  - if promotion.credits.used.any?
+                    - promotion.credits.used.each do |credit|
+                      div
+                        = number_to_currency(credit.amount, unit: "¥", precision: 0)
+                  - else
+                    | ¥0
+

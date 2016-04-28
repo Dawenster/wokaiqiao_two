@@ -26,12 +26,13 @@ class User < ActiveRecord::Base
   has_many :calls
   has_many :calls_as_expert, class_name: Call, foreign_key: :expert_id
   has_many :cancellations_initiated, class_name: Call, foreign_key: :cancelled_by
+  has_many :credits
   has_many :educations
   accepts_nested_attributes_for :educations, allow_destroy: true
   has_many :charges
   has_many :refunds
   has_many :payouts, class_name: Payout, foreign_key: :expert_id
-  has_and_belongs_to_many :promotions
+  has_and_belongs_to_many :promotions, -> { uniq }
 
   def s3_credentials
     {

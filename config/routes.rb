@@ -24,4 +24,9 @@ Rails.application.routes.draw do
       post :cancel
     end
   end
+  resources :promotions, only: [:index] do
+    collection do
+      post :check
+    end
+  end
 end
