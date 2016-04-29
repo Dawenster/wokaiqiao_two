@@ -1,7 +1,7 @@
 class PromotionsController < ApplicationController
 
   def index
-    @promotions = current_user.promotions
+    @credits = current_user.credits.order(:created_at)
   end
 
   def check

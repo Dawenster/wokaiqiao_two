@@ -76,6 +76,14 @@ class User < ActiveRecord::Base
 
   # USERS ONLY ==============================================================
 
+  def net_credits
+    net_credits_in_cents / 100
+  end
+
+  def net_credits_in_cents
+    credits.inject(0){|sum, c| sum += c.amount_in_cents}
+  end
+
   # EXPERTS ONLY ==============================================================
 
   def rate_for(min)

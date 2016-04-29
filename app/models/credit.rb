@@ -16,6 +16,9 @@ class Credit < ActiveRecord::Base
     where("amount_in_cents < 0")
   }
 
+  EARNED = "赚得"
+  USED = "使用"
+
   def self.create_for(user, promotion)
     Credit.create(
       user: user,
@@ -27,6 +30,22 @@ class Credit < ActiveRecord::Base
 
   def amount
     amount_in_cents / 100
+  end
+
+  def credit_type
+    if is_earned?
+      EARNED
+    elsif is_used?
+      USED
+    end
+  end
+
+  def is_earned?
+    amount_in_cents > 0
+  end
+
+  def is_used?
+    amount_in_cents < 0
   end
 
 end
