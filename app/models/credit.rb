@@ -5,8 +5,9 @@ class Credit < ActiveRecord::Base
 
   validates :amount_in_cents,
             :currency,
-            :promotion_id,
+            :user_id,
             presence: true
+  validate :always_positive_net_credits_per_user
 
   scope :received, -> {
     where("amount_in_cents > 0")
@@ -28,6 +29,15 @@ class Credit < ActiveRecord::Base
     )
   end
 
+  def self.user_on(call, amount_in_cents)
+    Credit.create(
+      user: call.user,
+      call: call,
+      amount_in_cents: -(amount_in_cents),
+      currency: StripeTask::CURRENCY
+    )
+  end
+
   def amount
     amount_in_cents / 100
   end
@@ -46,6 +56,14 @@ class Credit < ActiveRecord::Base
 
   def is_used?
     amount_in_cents < 0
+  end
+
+  private
+
+  def always_positive_net_credits_per_user
+    if user.net_credits_in_cents < 0
+      errors.add(:base, "Net credits cannot be less than zero")
+    end
   end
 
 end

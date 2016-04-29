@@ -230,7 +230,7 @@ module Emails
       end
     end
 
-    def self.send_call_completion_to_user(call)
+    def self.send_call_completion_to_user(call, original_payment, credits_applied)
       begin
         obj = Emails::Setup.send_with_us_obj
         user = call.user
@@ -248,9 +248,10 @@ module Emails
             rate_per_min: expert.rate_per_minute,
             scheduled_date_time: ChineseTime.display(call.scheduled_at),
             duration_in_min: call.actual_duration_in_min,
-            amount_to_collect: call.cost,
+            amount_to_collect: original_payment,
             manage_calls_link: manage_calls_link,
-            rate_with_rating_link: rate_with_rating_link
+            rate_with_rating_link: rate_with_rating_link,
+            credit_amount: credits_applied
           }
         )
       rescue => e

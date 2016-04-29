@@ -49,9 +49,12 @@
                   - if credit.is_earned?
                     = credit.promotion.name
                   - elsif credit.is_used?
-                    = "与#{credit.call.expert.name}通话"
+                    = link_to "与#{credit.call.expert.name}通话", calls_path(t: "completed", anchor: credit.call.anchor_tag)
                 td.hide-for-small-only
-                  = credit.promotion.code
+                  - if credit.is_earned?
+                    = credit.promotion.code
+                  - else
+                    | -
                 td.hide-for-small-only
                   = ChineseTime.display(credit.created_at)
                 td.right-align

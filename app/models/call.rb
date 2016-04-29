@@ -184,15 +184,15 @@ class Call < ActiveRecord::Base
   end
 
   def payment_required?
-    total_paid_in_cents < cost_in_cents
+    total_paid_in_cents < cost_in_cents - applicable_credits_in_cents
   end
 
   def payment_amount
-    cost_in_cents - total_paid_in_cents
+    cost_in_cents - total_paid_in_cents - applicable_credits_in_cents
   end
 
   def refund_required?
-    total_paid_in_cents > cost_in_cents
+    total_paid_in_cents > cost_in_cents - applicable_credits_in_cents
   end
 
   def overage_refund_amount
@@ -231,6 +231,12 @@ class Call < ActiveRecord::Base
     net_paid - cancellation_fee_in_cents
   end
 
+  def applicable_credits_in_cents
+    # Lesser between credits and amount owing
+    # Greater between amount owing and 0 (in case amount owing is negative)
+    [[user.net_credits_in_cents, cost_in_cents - total_paid_in_cents].min, 0].max
+  end
+
   # EXPERT PAYOUTS =======================================================
 
   def expert_payout
@@ -266,14 +272,23 @@ class Call < ActiveRecord::Base
 
   def tasks_after_call_completion
     customer = StripeTask.customer(user)
+    credits_applied = applicable_credits_in_cents / 100
+    original_payment = payment_amount / 100
+
     if payment_required?
+
       charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
+      Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
       Payment.make(user, self, charge)
+
     elsif refund_required?
+
       Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
+      
     end
+
     Payout.make_for_call(self)
-    Emails::Call.send_call_completion_to_user(self)
+    Emails::Call.send_call_completion_to_user(self, original_payment, credits_applied)
     Emails::Call.send_call_completion_to_expert(self)
   end
 
