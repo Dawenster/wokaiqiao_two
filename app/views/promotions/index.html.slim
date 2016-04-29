@@ -38,7 +38,7 @@
               th.hide-for-small-only
                 | 创建日期
               th.right-align
-                | 合计
+                | 金额
 
           tbody
             - @credits.each do |credit|
@@ -64,5 +64,5 @@
               td.hide-for-small-only
               td.right-align
                 b
-                  = "综合计：#{number_to_currency(current_user.net_credits, unit: "¥", precision: 0)}"
+                  = "综金额：#{number_to_currency(current_user.net_credits, unit: "¥", precision: 0)}"
 
