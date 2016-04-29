@@ -1,15 +1,15 @@
 class ExpertsController < ApplicationController
   def index
-    if current_user
-      @experts = User.experts.where.not(id: current_user.id)
-    else
-      @experts = User.experts
-    end
+    @experts = User.experts
   end
 
   def book
     @call = Call.new
     @expert = User.find(params[:expert_id])
+    if current_user && current_user == @expert
+      flash[:alert] = "你不能与自己通话..."
+      return redirect_to request.referrer || root_path
+    end
     estimated_durations = [15, 30, 60]
     @estimated_call_durations = []
     estimated_durations.each do |duration|
