@@ -291,6 +291,7 @@ DEPENDENCIES
   foundation-rails
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   mailcatcher
   momentjs-rails
   nested_form
