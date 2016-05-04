@@ -272,6 +272,7 @@ class Call < ActiveRecord::Base
 
   def tasks_after_call_completion
     customer = StripeTask.customer(user)
+    amount_already_collected = total_paid_in_cents / 100
     credits_applied = applicable_credits_in_cents / 100
     original_payment = payment_amount / 100
 
@@ -288,7 +289,7 @@ class Call < ActiveRecord::Base
     end
 
     Payout.make_for_call(self)
-    Emails::Call.send_call_completion_to_user(self, original_payment, credits_applied)
+    Emails::Call.send_call_completion_to_user(self, amount_already_collected, original_payment, credits_applied)
     Emails::Call.send_call_completion_to_expert(self)
   end
 

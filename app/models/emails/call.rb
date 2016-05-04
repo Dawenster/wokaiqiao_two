@@ -230,7 +230,7 @@ module Emails
       end
     end
 
-    def self.send_call_completion_to_user(call, original_payment, credits_applied)
+    def self.send_call_completion_to_user(call, amount_already_collected, original_payment, credits_applied)
       begin
         obj = Emails::Setup.send_with_us_obj
         user = call.user
@@ -251,7 +251,8 @@ module Emails
             amount_to_collect: original_payment,
             manage_calls_link: manage_calls_link,
             rate_with_rating_link: rate_with_rating_link,
-            credit_amount: credits_applied
+            credit_amount: credits_applied,
+            amount_already_collected: amount_already_collected
           }
         )
       rescue => e
