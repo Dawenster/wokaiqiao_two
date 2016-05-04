@@ -1,7 +1,11 @@
 class ExpertsController < ApplicationController
   def index
-    @experts = User.experts.page params[:page]
-    # @paginatable_experts = Kaminari.paginate_array(@experts).page(params[:page]).per(10)
+    @tags = Tag.all
+    if params[:t].present?
+      @experts = Tag.find(params[:t]).experts.page(params[:page])
+    else
+      @experts = User.experts.page(params[:page])
+    end
   end
 
   def book

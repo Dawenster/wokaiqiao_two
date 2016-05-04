@@ -6,10 +6,25 @@
 
 .row
   .small-12.columns
+    ul.menu.menu-centered.pagination
+      li class="#{'current' if params[:t].nil?}"
+        = link_to "全部", experts_path
+
+      - @tags.each do |tag|
+        li class="#{'current' if params[:t] == tag.id.to_s}"
+          a href="#{experts_path(t: tag.id)}"
+            = tag.name
+
+    br
+
+  .small-12.columns
     .pagination-holder
       = paginate @experts
       
-  .small-12.columns
+  .small-12.medium-10.medium-offset-1.large-8.large-offset-2.column
+    br
+    hr
+    br
     - @experts.each_with_index do |expert, i|
       = render "experts/list", expert: expert, i: i, max: @experts.count
 

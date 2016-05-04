@@ -100,7 +100,20 @@
 
 .pagination-holder {
   text-align: center;
-  margin: 30px 0px;
+  margin-top: 30px 0px;
+
+  .current a {
+    color: white;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.menu-centered.menu {
+  display: table;
+  margin: 0 auto;
 
   .current a {
     color: white;

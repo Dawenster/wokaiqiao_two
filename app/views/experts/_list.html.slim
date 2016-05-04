@@ -1,65 +1,62 @@
 .expert-list-holder
   .row
-    .small-12.medium-10.medium-offset-1.large-8.large-offset-2.column
-      .row
-        .small-12.medium-3.column.profile-circle-holder
-          img.profile-circle src="#{expert.picture.url(:medium)}"
-          h4.expert-name
-            b
-              = expert.name
+    .small-12.medium-3.column.profile-circle-holder
+      img.profile-circle src="#{expert.picture.url(:medium)}"
+      h4.expert-name
+        b
+          = expert.name
 
-        .small-12.medium-6.columns
-          h5.expert-title
-            b
-              = expert.title
+    .small-12.medium-6.columns
+      h5.expert-title
+        b
+          = expert.title
 
-          .subtitle-holder
-            h6
-              small.subtitle
-                i.fa.fa-graduation-cap
-                = " #{expert.list_education}"
+      .subtitle-holder
+        h6
+          small.subtitle
+            i.fa.fa-graduation-cap
+            = " #{expert.list_education}"
 
-            h6
-              small.subtitle
-                i.fa.fa-map-pin
-                = " #{expert.location}"
+        h6
+          small.subtitle
+            i.fa.fa-map-pin
+            = " #{expert.location}"
 
-            .expert-details-holder
-              div
-                .left-side
-                  .inline-title
-                    | 现在就职：
-                .right-side
-                  = expert.current_work
+        .expert-details-holder
+          div
+            .left-side
+              .inline-title
+                | 现在就职：
+            .right-side
+              = expert.current_work
 
-              div
-                .left-side
-                  .inline-title
-                    | 曾经就职：
-                .right-side
-                  = expert.past_work
-                
-              div
-                .left-side
-                  .inline-title
-                    | 专长领域：
-                .right-side
-                  = expert.description
+          div
+            .left-side
+              .inline-title
+                | 曾经就职：
+            .right-side
+              = expert.past_work
+            
+          div
+            .left-side
+              .inline-title
+                | 专长领域：
+            .right-side
+              = expert.description
 
-        .small-12.medium-3.column.end.far-right-column
-          .hide-for-small-only
-            = "每分钟收费：¥#{expert.rate_per_minute}"
-            br
-          br
-          - if user_signed_in? && current_user != expert
-            a.button.primary.expanded href="#{book_expert_path(expert)}"
-              | 通话申请
-          .show-for-small-only
-            = "每分钟收费：¥#{expert.rate_per_minute}"
-
-          = render "experts/read_only_expert_rating", expert: expert
-
-      - unless (i + 1) == max
+    .small-12.medium-3.column.end.far-right-column
+      .hide-for-small-only
+        = "每分钟收费：¥#{expert.rate_per_minute}"
         br
-        hr
-        br
+      br
+      - if user_signed_in? && current_user != expert
+        a.button.primary.expanded href="#{book_expert_path(expert)}"
+          | 通话申请
+      .show-for-small-only
+        = "每分钟收费：¥#{expert.rate_per_minute}"
+
+      = render "experts/read_only_expert_rating", expert: expert
+
+  br
+  hr
+  br
