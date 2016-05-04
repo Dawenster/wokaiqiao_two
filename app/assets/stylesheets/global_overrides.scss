@@ -97,3 +97,16 @@
 .blank-raty-div {
   font-size: 30px;
 }
+
+.pagination-holder {
+  text-align: center;
+  margin: 30px 0px;
+
+  .current a {
+    color: white;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
