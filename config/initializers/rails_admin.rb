@@ -69,6 +69,7 @@ RailsAdmin.config do |config|
       field :educations
       field :languages
       field :location
+      field :tags
     end
   end
 end

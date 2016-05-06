@@ -97,6 +97,14 @@
                   | 每分钟收费（¥）
                 = u.input :rate_per_minute, label: false, input_html: { class: "input-group-field" }
 
+          .row
+            .small-12.columns
+              h5
+                b
+                  | 类别
+
+              = u.association :tags, as: :check_boxes, label: false
+
         - else
 
           h5

@@ -31,6 +31,7 @@ class UsersController < ApplicationController
       :domestic,
       :title,
       :picture,
+      {:tag_ids => []},
       :educations_attributes => [
         :id,
         :name,
