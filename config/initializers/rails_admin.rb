@@ -41,6 +41,7 @@ RailsAdmin.config do |config|
 
   config.model User do
     list do
+      field :id
       field :name
       field :email
       field :phone
@@ -70,6 +71,8 @@ RailsAdmin.config do |config|
       field :languages
       field :location
       field :tags
+      field :stripe_cus_id
+      field :auth_token
     end
   end
 end
