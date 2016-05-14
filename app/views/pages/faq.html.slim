@@ -6,3 +6,20 @@
 
 .row
   .small-12.columns
+    .faq-holder
+      .row.collapse
+        .medium-3.columns
+          .tabs.vertical id="faq-tabs" data-tabs=""
+            - faq_list.each_with_index do |faq, i|
+              li.tabs-title class="#{'is-active' if i == 0}"
+                a href="#faq-#{i}" aria-selected="#{true if i == 0}"
+                  = faq[:question]
+
+        .medium-9.columns
+          .tabs-content.vertical data-tabs-content="faq-tabs"
+            - faq_list.each_with_index do |faq, i|
+              .tabs-panel id="faq-#{i}" class="#{'is-active' if i == 0}"
+                p
+                  - faq[:answer_paragraphs].each do |answer_paragraph|
+                    p
+                      = answer_paragraph.html_safe
