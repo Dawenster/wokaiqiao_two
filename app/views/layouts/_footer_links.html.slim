@@ -1,0 +1,7 @@
+- links.each do |link_hash|
+  li
+    - if link_hash[:type] == "link"
+      = link_to link_hash[:text], link_hash[:path], class: "footer-link", target: "#{'_blank' if link_hash[:new_tab]}"
+
+    - elsif link_hash[:type] == "mail_to"
+      = mail_to link_hash[:mail_to], link_hash[:text], class: "footer-link", encode: "hex"

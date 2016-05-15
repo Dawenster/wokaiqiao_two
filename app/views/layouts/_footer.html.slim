@@ -1,5 +1,5 @@
 footer.footer
-  .row.full-width
+  .row
     .small-12.medium-6.medium-offset-3.columns
       i.fa.fa-globe
       h4
@@ -9,25 +9,19 @@ footer.footer
 
       br
 
-      .footer-links
-        ul.menu
-          li
-            = link_to "全部专家", experts_path, class: "footer-link"
+  .row
+    .footer-links
+      .hide-for-small-only
+        .medium-12.columns
+          ul.menu
+            = render "layouts/footer_links", links: footer_links
 
-          li
-            = mail_to team_email, "联络我们", encode: "hex", class: "footer-link"
-
-          li
-            = link_to "反馈意见", "https://www.surveymonkey.com/r/K7KGTPQ", target: "_blank", class: "footer-link"
-
-          li
-            = link_to "著作权与商标声明", copyright_and_trademark_path, class: "footer-link"
-
-          li
-            = link_to "法律声明", disclaimer_path, class: "footer-link"
-
-          li
-            = link_to "隐私政策", privacy_policy_path, class: "footer-link"
-
-          li
-            = link_to "使用条款", service_agreement_path, class: "footer-link"
+      .show-for-small-only
+        - num_in_first_column = footer_links.count / 2
+        - num_in_last_column = footer_links.count - num_in_first_column
+        .small-6.columns
+          ul.menu.vertical
+            = render "layouts/footer_links", links: footer_links.first(num_in_first_column)
+        .small-6.columns
+          ul.menu.vertical
+            = render "layouts/footer_links", links: footer_links.last(num_in_last_column)
