@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 
   get "faq" => "pages#faq", as: :faq
   get "partners" => "pages#partners", as: :partners
+  get "copyright-and-trademark" => "pages#copyright_and_trademark", as: :copyright_and_trademark
+  get "disclaimer" => "pages#disclaimer", as: :disclaimer
+  get "privacy-policy" => "pages#privacy_policy", as: :privacy_policy
+  get "service-agreement" => "pages#service_agreement", as: :service_agreement
 
   scope "experts" do
     get "/" => "experts#index", as: :experts
