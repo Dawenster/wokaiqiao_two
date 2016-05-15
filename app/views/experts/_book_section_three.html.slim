@@ -1,17 +1,36 @@
-.small-12.medium-8.columns.end
+br
+.small-12.columns
   div
     .left-side
       .numbered-circle
         | 3
     .right-side
       h5
-        | 注册
+        | 请注意
 
   br
 
   .row
-    .small-12.medium-8.columns.end
+    .small-12.columns
       p
-        = "已经注册了？#{link_to '请快速登入', new_user_session_path}".html_safe
-      = render "devise/registrations/registration_fields", resource: user, resource_name: :user, just_fields: true
-      = render "stripe_checkout", expert: @expert
+        b
+          | 同校校友优惠
+      p
+        = "我开窍支持及鼓励校友之间的资讯共享、互利互惠，因此与同校校友的通话费用全额免费。如果你没收到我们的学校验证电邮，请尽快与我们联系 – #{mail_to 'contact@wokaiqiao.com'}。此优惠仅限用于验证成功以后的同校校友通话。验证成功之前所支付的通话服务费用不可退返。".html_safe
+
+      p
+        b
+          | 迟到政策
+   
+      p
+        = "如果你迟到十分钟及其以上或者没有赴约，专家可选择继续提供通话服务。如果专家拒绝继续通话，你必须支付#{Call::MINUTES_TO_CHARGE_FOR_CANCELLATION}分钟的通话费用；如果专家愿意继续通话，则按通话长度收费。"
+      p
+        | 罚金不适用于经验证的同校校友。
+   
+      p
+        b
+          | 取消政策
+      p
+        | 如果需要临时更改或取消通话申请，请尽早与专家联系，以方便专家安排工作行程或将通话时段分配给其他有需要的用户。
+      p
+        = "请注意如果你在约定的通话时间前2小时取消通话，将不会有任何收费，否则我们会收取该专家#{Call::MINUTES_TO_CHARGE_FOR_CANCELLATION}分钟的通话费用。".html_safe

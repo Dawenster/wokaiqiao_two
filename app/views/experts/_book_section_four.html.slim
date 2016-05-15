@@ -1,0 +1,17 @@
+.small-12.medium-8.columns.end
+  div
+    .left-side
+      .numbered-circle
+        | 4
+    .right-side
+      h5
+        | 注册
+
+  br
+
+  .row
+    .small-12.medium-8.columns.end
+      p
+        = "已经注册了？#{link_to '请快速登入', new_user_session_path}".html_safe
+      = render "devise/registrations/registration_fields", resource: user, resource_name: :user, just_fields: true
+      = render "stripe_checkout", expert: @expert
