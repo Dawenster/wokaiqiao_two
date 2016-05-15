@@ -16,6 +16,7 @@ zh:
         description: "简短介绍"
         phone: "电话"
         wechat: "微信"
+        agreed_to_policies: "同意我开窍服务协议"
     models:
       user: "用户"
     errors:
@@ -29,6 +30,8 @@ zh:
               invalid: "无效"
             password:
               too_short: "密码格式不正确: 最少 8 位字符。可以是小写字母、大写字母、数字、符号"
+            agreed_to_policies:
+              blank: "请同意我开窍服务协议"
   devise:
     confirmations:
       confirmed: "您的帐号已经确认，您现在已登录。"

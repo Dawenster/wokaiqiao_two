@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
                     s3_protocol: :https
 
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
-  validates :name, :email, presence: true
+  validates :name, :email, :agreed_to_policies, presence: true
 
   before_save :ensure_auth_token
 

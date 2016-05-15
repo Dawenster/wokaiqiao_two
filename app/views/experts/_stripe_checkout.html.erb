@@ -90,6 +90,7 @@
     var name = $("#user_name").val()
     var email = $("#user_email").val()
     var password = $("#user_password").val()
+    var agreeToPolicies = $("#user_agreed_to_policies").is(':checked')
 
     if (name == "") {
       $(".name-error").removeClass("hide")
@@ -109,6 +110,11 @@
       passValidation = false
     } else if (password.length < 8) {
       $(".password-length-error").removeClass("hide")
+      passValidation = false
+    }
+
+    if (!agreeToPolicies) {
+      $(".agreed-to-policies-missing-error").removeClass("hide")
       passValidation = false
     }
     

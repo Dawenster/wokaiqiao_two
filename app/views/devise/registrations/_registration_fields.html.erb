@@ -17,6 +17,14 @@
   <div class="error-box password-missing-error hide">请填入</div>
   <div class="error-box password-length-error hide">最少八个字符</div>
 
+  <fieldset>
+    <%= f.check_box :agreed_to_policies %>
+    <label>
+      同意《<%= link_to "我开窍服务协议", service_agreement_path, target: "_blank" %>》
+    </label>
+  </fieldset>
+  <div class="error-box agreed-to-policies-missing-error hide">请答应</div>
+
   <% unless just_fields %>
     <div><%= f.submit t('.sign_up', :default => "注册"), class: "button" %></div>
   <% end %>
