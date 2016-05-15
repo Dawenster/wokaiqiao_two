@@ -15,7 +15,7 @@ module FooterHelper
       {
         type: "link",
         text: "反馈意见",
-        path: "https://www.surveymonkey.com/r/K7KGTPQ",
+        path: "https://www.surveymonkey.com/r/3F8F5SH",
         new_tab: true
       },
       {
