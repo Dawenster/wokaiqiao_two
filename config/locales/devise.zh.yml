@@ -24,8 +24,11 @@ zh:
           attributes:
             email:
               taken: "已存在"
+              invalid: "电邮格式不正确，请重新输入"
             reset_password_token:
               invalid: "无效"
+            password:
+              too_short: "密码格式不正确: 最少 8 位字符。可以是小写字母、大写字母、数字、符号"
   devise:
     confirmations:
       confirmed: "您的帐号已经确认，您现在已登录。"
