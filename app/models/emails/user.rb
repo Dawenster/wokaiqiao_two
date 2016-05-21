@@ -34,6 +34,7 @@ module Emails
           "tem_HQphnSk5Jhyc4xb9xooShm",
           { address: user.email },
           data: {
+            receiver_name: user.name || user.email,
             reset_link: reset_link
           }
         )

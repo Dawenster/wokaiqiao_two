@@ -10,7 +10,7 @@ class CustomDevise::PasswordsController < Devise::PasswordsController
       reset_link = edit_password_url(resource, :reset_password_token => raw)
       Emails::User.reset_password(resource, reset_link)
 
-      flash[:notice] = "几分钟后，您将收到重置密码的电子邮件。"
+      flash[:notice] = "我们已经把重置的密码邮件发送到你的电邮。如果过了一会都没收到，请记得检查你的垃圾邮箱。"
       redirect_to root_path
     else
       if params[:user][:email].blank?
