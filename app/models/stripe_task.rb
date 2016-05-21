@@ -74,7 +74,7 @@ class StripeTask
   end
 
   def self.failed_charge?(charge)
-    charge.status == FAILED
+    charge[:status] == FAILED
   end
 
 end
