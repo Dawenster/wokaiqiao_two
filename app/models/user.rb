@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
   validates :name, :email, :agreed_to_policies, presence: true
+  validates :rate_per_minute, :numericality => { :greater_than_or_equal_to => 0 }
 
   before_save :ensure_auth_token
 
