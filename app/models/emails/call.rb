@@ -56,7 +56,9 @@ module Emails
             link_to_accept_call_three: data[:link_to_accept_call_three],
             call_description: call.description,
             rate_per_min: expert.rate_per_minute,
-            estimated_duration_in_min: call.est_duration_in_min
+            estimated_duration_in_min: call.est_duration_in_min,
+            hours_buffer: ::Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED,
+            minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION
           }
         )
       rescue => e
