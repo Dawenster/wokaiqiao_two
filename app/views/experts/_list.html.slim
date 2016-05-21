@@ -44,6 +44,13 @@
             .right-side
               = expert.description
 
+          div
+            .left-side
+              .inline-title
+                | 交谈语言：
+            .right-side
+              = expert.languages
+
     .small-12.medium-3.column.end.far-right-column
       .hide-for-small-only
         = "每分钟收费：¥#{expert.rate_per_minute}"
