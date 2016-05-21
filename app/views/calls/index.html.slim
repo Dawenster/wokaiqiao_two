@@ -23,7 +23,8 @@
           br
           - if @in_progress_calls.any?
             - @in_progress_calls.each_with_index do |call, i|
-              = render "list", call: call, expert: call.expert, i: i, max: @in_progress_calls.length
+              - other_user = call.other_user(current_user)
+              = render "list", call: call, expert: call.expert, i: i, max: @in_progress_calls.length, other_user: other_user
 
           - else
             | 您目前没有在进行中的通话。
@@ -32,7 +33,8 @@
           br
           - if @completed_calls.any?
             - @completed_calls.each_with_index do |call, i|
-              = render "list", call: call, expert: call.expert, i: i, max: @completed_calls.length
+              - other_user = call.other_user(current_user)
+              = render "list", call: call, expert: call.expert, i: i, max: @completed_calls.length, other_user: other_user
 
           - else
             | 您目前还没有完成任何通话。
@@ -41,7 +43,8 @@
           br
           - if @cancelled_calls.any?
             - @cancelled_calls.each_with_index do |call, i|
-              = render "list", call: call, expert: call.expert, i: i, max: @cancelled_calls.length
+              - other_user = call.other_user(current_user)
+              = render "list", call: call, expert: call.expert, i: i, max: @cancelled_calls.length, other_user: other_user
 
           - else
             | 您目前还没有取消任何通话。
