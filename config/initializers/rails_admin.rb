@@ -73,6 +73,7 @@ RailsAdmin.config do |config|
       field :tags
       field :stripe_cus_id
       field :auth_token
+      field :agreed_to_policies
     end
   end
 end
