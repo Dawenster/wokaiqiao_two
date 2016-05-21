@@ -185,8 +185,8 @@ module Emails
           data: {
             receiver_name: receiver.name,
             other_person_name: other_person.name,
-            conference_number: ::Call::CONFERENCE_CALL_NUMBER,
-            conference_participant_code: ::Call::CONFERENCE_CALL_PARTICIPANT_CODE,
+            conference_number: call.conference_call_number,
+            conference_participant_code: call.conference_call_participant_code,
             link_to_manage_calls: link_to_manage_calls,
             scheduled_date_time: ChineseTime.display(call.scheduled_at),
             expert_expertise: expert.description,

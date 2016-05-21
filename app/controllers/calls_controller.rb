@@ -21,7 +21,7 @@ class CallsController < ApplicationController
     unless @user.stripe_cus_id.present?
       customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
       @charge = StripeTask.charge(customer, amount_to_charge, "与#{@expert.name}通话")
-      if @charge[:status]
+      if StripeTask.failed_charge?(@charge)
         customer.delete
         @user.update_attributes(stripe_cus_id: nil)
         flash[:alert] = @charge[:error_message] + "。"
@@ -212,6 +212,7 @@ class CallsController < ApplicationController
       call.accept_as_user(params[:datetime_num].to_i)
       flash[:notice] = "接受成功：<strong>#{ChineseTime.display(call.scheduled_at)}</strong>与<strong>#{call.expert.name}</strong>通话"
     end
+    call.set_conference_details
     send_confirmation_of_calls_emails(call)
   end
 

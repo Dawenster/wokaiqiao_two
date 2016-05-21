@@ -257,6 +257,13 @@ class Call < ActiveRecord::Base
     ((cost_in_cents * Payout::ADMIN_FEE_PERCENTAGE / 100) * 100).ceil / 100
   end
 
+  def set_conference_details
+    self.conference_call_number = CONFERENCE_CALL_NUMBER
+    self.conference_call_admin_code = CONFERENCE_CALL_ADMIN_CODE
+    self.conference_call_participant_code = CONFERENCE_CALL_PARTICIPANT_CODE
+    self.save
+  end
+
   private
 
   def call_ends_after_start
