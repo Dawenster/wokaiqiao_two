@@ -202,7 +202,9 @@ module Emails
             estimated_duration_in_min: call.est_duration_in_min,
             hours_buffer: ::Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED,
             minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION,
-            receiver_is_user: receiver == user
+            receiver_is_user: receiver == user,
+            user_title: user.title,
+            user_short_description: user.description
           }
         )
       rescue => e
