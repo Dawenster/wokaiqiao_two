@@ -10,7 +10,7 @@ module FooterHelper
       {
         type: "mail_to",
         text: "联络我们",
-        mail_to: team_email
+        mail_to: contact_email
       },
       {
         type: "link",
