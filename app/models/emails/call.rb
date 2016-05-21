@@ -104,6 +104,7 @@ module Emails
           data: {
             editing_user_name: editing_user.name,
             receiver_name: receiver.name,
+            expert_picture: call.expert.picture.url(:medium),
             manage_calls_link: data[:link_to_manage_calls],
             requested_date_time_one: ChineseTime.display(call.offer_time_one),
             requested_date_time_two: ChineseTime.display(call.offer_time_two),

@@ -67,9 +67,10 @@ class CallsController < ApplicationController
     @call = Call.find(params[:id])
     merge_dates if datetimes_passed_in
     @call.assign_attributes(call_params)
+    new_time_offered = datetimes_changed(@call)
     @call = @call.change_user_or_expert_accepted_at(current_user) if datetimes_changed(@call)
     if @call.save
-      send_edit_call_email(@call) if datetimes_changed(@call)
+      send_edit_call_email(@call) if new_time_offered
       flash[:notice] = "成功更改与#{@call.other_user(current_user).name}的通话申请"
     else
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
