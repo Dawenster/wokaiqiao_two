@@ -54,6 +54,13 @@
                 .right-side
                   = expert.description
 
+              div
+                .left-side
+                  .inline-title
+                    | 交谈语言：
+                .right-side
+                  = expert.languages
+
         .small-12.medium-4.column.end
           .callout.action-callout class="#{callout_class(call)}"
             = render "calls/action_callout/main", call: call, expert: expert
