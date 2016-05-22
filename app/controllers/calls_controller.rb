@@ -9,7 +9,7 @@ class CallsController < ApplicationController
       @user = User.new(user_params)
       if !@user.save
         flash[:alert] = @user.errors.full_messages.join("，") + "。"
-        redirect_to book_expert_path(params[:call][:expert_id]) and return
+        return redirect_to book_expert_path(params[:call][:expert_id])
       else
         sign_in(:user, @user)
       end
@@ -25,7 +25,7 @@ class CallsController < ApplicationController
         customer.delete
         @user.update_attributes(stripe_cus_id: nil)
         flash[:alert] = @charge[:error_message] + "。"
-        redirect_to book_expert_path(params[:call][:expert_id]) and return
+        return redirect_to book_expert_path(params[:call][:expert_id])
       end
     end
 

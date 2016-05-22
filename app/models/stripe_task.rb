@@ -3,9 +3,9 @@ class StripeTask
   CURRENCY = "cny"
   ALIPAY_ACCOUNT = "alipay_account"
   STATUS = [
-    SUCCEEDED = "succeeded",
-    PENDING = "pending",
-    FAILED = "failed"
+    SUCCEEDED = :succeeded,
+    PENDING = :pending,
+    FAILED = :failed
   ]
 
   # invalid_number  The card number is not a valid credit card number.
