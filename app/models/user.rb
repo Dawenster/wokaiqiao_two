@@ -101,8 +101,9 @@ class User < ActiveRecord::Base
     avg_rating = calls_as_expert.average(:user_rating)
     avg_rating = avg_rating.nil? ? 0 : avg_rating
     if use_fake_rating
-      num_fake_ratings = 5
       fake_rating_value = fake_rating || 0
+      return avg_rating if fake_rating_value == 0
+      num_fake_ratings = 5
       (avg_rating + num_fake_ratings * fake_rating_value) / (num_fake_ratings + num_ratings)
     else
       avg_rating
