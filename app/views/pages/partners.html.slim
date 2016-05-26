@@ -4,5 +4,31 @@
       h3
         | 合作伙伴
 
-.row
-  .small-12.columns
+.partners-page-holder
+  .row
+    .small-12.columns
+      h3.title-sentence
+        | 我们会到访下列学校及为他们的学生进行模拟小组电话会议!
+
+      hr
+
+    .small-12.columns
+      .row
+        - school_partners.each do |school_partner|
+          .small-12.medium-4.columns
+            .school-holder
+              h4
+                b
+                  = school_partner[:name]
+              div
+                = image_tag school_partner[:logo]
+              div
+                = "活动：#{school_partner[:activity]}"
+              div
+                = ChineseTime.display(school_partner[:activity_occurred_at], true)
+
+      hr
+
+    .small-12.columns
+      h5.title-sentence
+        | 想我们到访您的学习及为您的学生提供与专家进行电话会议的服务？请马上填写您的相关信息，我们会尽快与您取得联系
