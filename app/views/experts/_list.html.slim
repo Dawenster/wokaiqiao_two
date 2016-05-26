@@ -22,6 +22,10 @@
             i.fa.fa-map-pin
             = " #{expert.location}"
 
+        - if expert.domestic
+          span.label.success
+            | 国内
+
         .expert-details-holder
           div
             .left-side
