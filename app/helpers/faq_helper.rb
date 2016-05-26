@@ -42,7 +42,7 @@ module FaqHelper
       {
         question: "有没有使用我开窍时需要注意和遵守的礼仪与规则？",
         answer_paragraphs: [
-          "有的，详情请参阅使用方法。"
+          "有的，详情请参阅#{link_to '使用方法', root_path(anchor: 'how-it-works-holder')}。"
         ]
       },
       {

@@ -59,6 +59,11 @@
 .how-it-works-holder {
   margin-bottom: 30px;
 
+  .title-holder {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
   .left-side {
     width: 50px;
     float: left;
@@ -68,7 +73,15 @@
     margin-left: 50px;
   }
 
+  .how-it-works-row {
+    margin: 50px 0px;
+  }
+
   p.special-notice {
     color: $alert-color;
+  }
+
+  .how-it-works-image-holder {
+    text-align: center;
   }
 }
