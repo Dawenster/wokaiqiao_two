@@ -1,7 +1,10 @@
 .review-list-holder
   .left-side
     div
-      = image_tag fake_comment.profile_pic_url, class: "profile-circle small"
+      - if fake_comment.profile_pic_url.present?
+        = image_tag fake_comment.profile_pic_url, class: "profile-circle small"
+      - else
+        = image_tag "https://s3-us-west-2.amazonaws.com/wokaiqiao/users/missing-user.png", class: "profile-circle small"
     div
       = fake_comment.name
   .right-side
