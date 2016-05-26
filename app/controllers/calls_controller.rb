@@ -122,7 +122,7 @@ class CallsController < ApplicationController
         customer = StripeTask.customer(@call.user)
         Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.cancellation_fee_in_cents, customer)
       end
-    elsif @call.accepted? && @call.has_positive_paid_balance?
+    elsif @call.has_positive_paid_balance?
       customer = StripeTask.customer(@call.user)
       Refund.refund_call(@call, @call.net_paid, 0, customer)
     end
