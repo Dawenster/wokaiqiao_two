@@ -102,6 +102,7 @@ class User < ActiveRecord::Base
     avg_rating = avg_rating.nil? ? 0 : avg_rating
     if use_fake_rating
       num_fake_ratings = 5
+      fake_rating_value = fake_rating || 0
       (avg_rating + num_fake_ratings * fake_rating) / (num_fake_ratings + num_ratings)
     else
       avg_rating
