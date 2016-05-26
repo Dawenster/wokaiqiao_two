@@ -21,17 +21,17 @@ class StripeTask
   # processing_error  An error occurred while processing the card.
 
   ERRORS = {
-    "invalid_number" => "一",
-    "invalid_expiry_month" => "二",
-    "invalid_expiry_year" => "三",
-    "invalid_cvc" => "四",
-    "incorrect_number" => "五",
-    "expired_card" => "六",
-    "incorrect_cvc" => "七",
-    "incorrect_zip" => "八",
-    "card_declined" => "九",
-    "missing" => "十",
-    "processing_error" => "十一"
+    "invalid_number" => "信用卡卡号错误",
+    "invalid_expiry_month" => "信用卡有效到期月份错误",
+    "invalid_expiry_year" => "信用卡有效到期年份错误",
+    "invalid_cvc" => "信用卡安全认证码错误",
+    "incorrect_number" => "信用卡卡号错误",
+    "expired_card" => "信用卡已过期",
+    "incorrect_cvc" => "信用卡安全认证码错误",
+    "incorrect_zip" => "邮政编码错误",
+    "card_declined" => "信用卡被拒绝：请检查信用卡资料，如问题并未解决，请联系发卡机构",
+    "missing" => "信用卡资料不存在，请重新填写",
+    "processing_error" => "信用卡无法通过认证：请检查信用卡资料，如问题并未解决，请联系发卡机构"
   }
 
   def self.customer(user)
