@@ -2,9 +2,21 @@ class ExpertsController < ApplicationController
   def index
     @tags = Tag.all
     if params[:t].present?
-      @experts = Tag.find(params[:t]).experts.page(params[:page])
+      if params[:s] == "price-up"
+        @experts = Tag.find(params[:t]).experts.order("rate_per_minute ASC").page(params[:page])
+      elsif params[:s] == "price-down"
+        @experts = Tag.find(params[:t]).experts.order("rate_per_minute DESC").page(params[:page])
+      else
+        @experts = Tag.find(params[:t]).experts.order("domestic DESC").page(params[:page])
+      end
     else
-      @experts = User.experts.page(params[:page])
+      if params[:s] == "price-up"
+        @experts = User.experts.page(params[:page]).order("rate_per_minute ASC").page(params[:page])
+      elsif params[:s] == "price-down"
+        @experts = User.experts.page(params[:page]).order("rate_per_minute DESC").page(params[:page])
+      else
+        @experts = User.experts.page(params[:page]).order("domestic DESC").page(params[:page])
+      end
     end
   end
 

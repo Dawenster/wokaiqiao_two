@@ -20,9 +20,19 @@
   .small-12.columns
     .pagination-holder
       = paginate @experts
-      
+
   .small-12.medium-10.medium-offset-1.large-8.large-offset-2.column
     br
+    .sort-holder
+      | 列: 
+      a href="#{experts_path(t: params[:t], s: 'domestic')}"
+        | 国内先
+      | ，
+      a href="#{experts_path(t: params[:t], s: 'price-up')}"
+        | 价钱 &uarr;
+      | ，
+      a href="#{experts_path(t: params[:t], s: 'price-down')}"
+        | 价钱 &darr;
     hr
     br
     - @experts.each_with_index do |expert, i|
