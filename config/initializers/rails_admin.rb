@@ -74,6 +74,7 @@ RailsAdmin.config do |config|
       field :stripe_cus_id
       field :auth_token
       field :agreed_to_policies
+      field :use_fake_comments
       field :use_fake_rating
       field :fake_rating
     end
