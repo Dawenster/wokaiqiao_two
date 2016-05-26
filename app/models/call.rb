@@ -283,11 +283,12 @@ class Call < ActiveRecord::Base
     amount_already_collected = total_paid_in_cents / 100
     credits_applied = applicable_credits_in_cents / 100
     original_payment = payment_amount / 100
+    
+    Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
 
     if payment_required?
 
       charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
-      Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
       Payment.make(user, self, charge)
 
     elsif refund_required?
