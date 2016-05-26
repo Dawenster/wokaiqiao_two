@@ -97,12 +97,22 @@ class User < ActiveRecord::Base
   end
 
   def avg_rating_as_expert
-    avg_rating = calls_as_expert.average(:user_rating).to_s
-    avg_rating.nil? ? 0 : avg_rating
+    avg_rating = calls_as_expert.average(:user_rating)
+    avg_rating = avg_rating.nil? ? 0 : avg_rating
+    if use_fake_rating
+      num_fake_ratings = 5
+      (avg_rating + num_fake_ratings * fake_rating) / (num_fake_ratings + num_ratings)
+    else
+      avg_rating
+    end
   end
 
   def num_comments_from_users
     calls_as_expert.reviewed_by_user.count
+  end
+
+  def num_ratings
+    calls_as_expert.rated_by_user.count
   end
 
   private

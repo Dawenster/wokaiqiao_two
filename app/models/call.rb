@@ -19,6 +19,9 @@ class Call < ActiveRecord::Base
   scope :not_cancelled, -> {
     where(cancelled_at: nil)
   }
+  scope :rated_by_user, -> {
+    where.not(user_rating: nil)
+  }
   scope :reviewed_by_user, -> {
     where.not(user_review: [nil, ""])
   }
