@@ -118,6 +118,9 @@ class CallsController < ApplicationController
         customer = StripeTask.customer(@call.user)
         charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "与#{@call.expert.name}通话提早取消")
         Payment.make(@call.user, @call, charge)
+
+        # TODO: Error handling for failed charges
+        
       elsif @call.need_to_refund_after_cancellation?
         customer = StripeTask.customer(@call.user)
         Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.cancellation_fee_in_cents, customer)
