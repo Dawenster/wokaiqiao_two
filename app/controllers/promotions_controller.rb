@@ -1,5 +1,7 @@
 class PromotionsController < ApplicationController
 
+  before_filter :authenticate_user!
+
   def index
     @credits = current_user.credits.order(:created_at)
   end
