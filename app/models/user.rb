@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   has_many :payouts, class_name: Payout, foreign_key: :expert_id
   has_and_belongs_to_many :promotions, uniq: true
   has_and_belongs_to_many :tags, class_name: Tag, join_table: "experts_tags", foreign_key: "expert_id", uniq: true
+  has_many :fake_comments
 
   def s3_credentials
     {
