@@ -10,7 +10,7 @@
 
       h5
         b
-          | 如果你从我们在活动中收到了折扣代码，请在下面输入：
+          | 如果你在我们的活动中收到折扣代码，请在下面输入：
 
       = simple_form_for Promotion.new, url: check_promotions_path, method: "post" do |p|
         .input-group
@@ -18,7 +18,7 @@
             | 请输入代码
           input.input-group-field type="text" name="code"
           .input-group-button
-            input.button type="submit" value="加入"
+            input.button type="submit" value="确认"
 
       br
 
@@ -30,13 +30,11 @@
           thead
             tr
               th
-                | 类别
-              th
                 | 详细
               th.hide-for-small-only
                 | 代码
               th.hide-for-small-only
-                | 创建日期
+                | 使用日期
               th.right-align
                 | 金额
 
@@ -44,12 +42,11 @@
             - @credits.each do |credit|
               tr
                 td
-                  = credit.credit_type
-                td
                   - if credit.is_earned?
                     = credit.promotion.name
                   - elsif credit.is_used?
-                    = link_to "与#{credit.call.expert.name}通话", calls_path(t: "completed", anchor: credit.call.anchor_tag)
+                    - tab = credit.call.completed? ? "completed" : "in-progress"
+                    = link_to "与#{credit.call.expert.name}通话", calls_path(t: tab, anchor: credit.call.anchor_tag)
                 td.hide-for-small-only
                   - if credit.is_earned?
                     = credit.promotion.code
@@ -62,10 +59,9 @@
 
             tr
               td
-              td
               td.hide-for-small-only
               td.hide-for-small-only
               td.right-align
                 b
-                  = "综金额：#{number_to_currency(current_user.net_credits, unit: "¥", precision: 0)}"
+                  = "折扣余额：#{number_to_currency(current_user.net_credits, unit: "¥", precision: 0)}"
 

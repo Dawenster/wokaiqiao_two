@@ -11,7 +11,7 @@ class PromotionsController < ApplicationController
     elsif promotion.present?
       Credit.create_for(current_user, promotion)
       current_user.promotions << promotion
-      flash[:notice] = "成功加入代码：你的用户增加了¥#{promotion.amount}"
+      flash[:notice] = "成功激活折扣代码：你的折扣金额增加了¥#{promotion.amount}"
     elsif params[:code].blank?
       flash[:alert] = "请输入代码"
     else
