@@ -11,11 +11,11 @@ class ExpertsController < ApplicationController
       end
     else
       if params[:s] == "price-up"
-        @experts = User.experts.page(params[:page]).order("rate_per_minute ASC").page(params[:page])
+        @experts = User.experts.order("rate_per_minute ASC").page(params[:page])
       elsif params[:s] == "price-down"
-        @experts = User.experts.page(params[:page]).order("rate_per_minute DESC").page(params[:page])
+        @experts = User.experts.order("rate_per_minute DESC").page(params[:page])
       else
-        @experts = User.experts.page(params[:page]).order("domestic DESC").page(params[:page])
+        @experts = User.experts.order("domestic DESC").page(params[:page])
       end
     end
   end
