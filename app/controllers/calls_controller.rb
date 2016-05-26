@@ -59,7 +59,7 @@ class CallsController < ApplicationController
 
   def accept
     @call = Call.find(params[:id])
-    accept_call(@call)
+    accept_call(@call) unless @call.accepted?
     redirect_to calls_path
   end
 
