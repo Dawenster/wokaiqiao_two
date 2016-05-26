@@ -8,11 +8,11 @@
   .small-12.columns
     ul.vertical.large-horizontal.menu.menu-centered
       li class="#{'current' if params[:t].nil?}"
-        = link_to "全部", experts_path
+        = link_to "全部", experts_path(s: params[:s])
 
       - @tags.each do |tag|
         li class="#{'current' if params[:t] == tag.id.to_s}"
-          a href="#{experts_path(t: tag.id)}"
+          a href="#{experts_path(t: tag.id, s: params[:s])}"
             = tag.name
 
     br
