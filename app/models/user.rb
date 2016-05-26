@@ -50,15 +50,15 @@ class User < ActiveRecord::Base
   end
 
   def all_calls
-    calls.not_cancelled + calls_as_expert.not_cancelled
+    calls.not_cancelled.order("scheduled_at DESC") + calls_as_expert.not_cancelled.order("scheduled_at DESC")
   end
 
   def all_completed_calls
-    calls.completed + calls_as_expert.completed
+    calls.completed.order("scheduled_at DESC") + calls_as_expert.completed.order("scheduled_at DESC")
   end
 
   def all_cancelled_calls
-    calls.cancelled + calls_as_expert.cancelled
+    calls.cancelled.order("scheduled_at DESC") + calls_as_expert.cancelled.order("scheduled_at DESC")
   end
 
   def need_to_action_on(call)
