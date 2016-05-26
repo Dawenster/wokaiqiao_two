@@ -3,19 +3,19 @@ class ExpertsController < ApplicationController
     @tags = Tag.all
     if params[:t].present?
       if params[:s] == "price-up"
-        @experts = Tag.find(params[:t]).experts.order("rate_per_minute ASC").page(params[:page])
+        @experts = Tag.find(params[:t]).experts.order("rate_per_minute ASC, id ASC").page(params[:page])
       elsif params[:s] == "price-down"
-        @experts = Tag.find(params[:t]).experts.order("rate_per_minute DESC").page(params[:page])
+        @experts = Tag.find(params[:t]).experts.order("rate_per_minute DESC, id ASC").page(params[:page])
       else
-        @experts = Tag.find(params[:t]).experts.order("domestic DESC").page(params[:page])
+        @experts = Tag.find(params[:t]).experts.order("domestic DESC, id ASC").page(params[:page])
       end
     else
       if params[:s] == "price-up"
-        @experts = User.experts.order("rate_per_minute ASC").page(params[:page])
+        @experts = User.experts.order("rate_per_minute ASC, id ASC").page(params[:page])
       elsif params[:s] == "price-down"
-        @experts = User.experts.order("rate_per_minute DESC").page(params[:page])
+        @experts = User.experts.order("rate_per_minute DESC, id ASC").page(params[:page])
       else
-        @experts = User.experts.order("domestic DESC").page(params[:page])
+        @experts = User.experts.order("domestic DESC, id ASC").page(params[:page])
       end
     end
   end
