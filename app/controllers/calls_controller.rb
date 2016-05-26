@@ -127,6 +127,9 @@ class CallsController < ApplicationController
       Refund.refund_call(@call, @call.net_paid, 0, customer)
     end
 
+    # TODO: Account for situation where someone used promo code to sign up, and then cancel
+    # We should be giving that credit back to the customer
+
     if @call.save
       send_cancellation_emails(@call)
       flash[:notice] = "取消了你与#{@call.cancellee.name}的通话"
