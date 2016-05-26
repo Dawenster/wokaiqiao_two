@@ -33,4 +33,5 @@ Rails.application.routes.draw do
       post :check
     end
   end
+  resources :partnership_requests, only: [:create]
 end

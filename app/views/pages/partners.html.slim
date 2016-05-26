@@ -32,3 +32,15 @@
     .small-12.columns
       h5.title-sentence
         | 想我们到访您的学习及为您的学生提供与专家进行电话会议的服务？请马上填写您的相关信息，我们会尽快与您取得联系
+
+    .small-12.large-8.large-offset-2.columns.end
+      = simple_form_for @partnership_request || PartnershipRequest.new do |pr|
+        .row
+          .small-12.medium-3.columns
+            = pr.input :name, required: false
+          .small-12.medium-3.columns
+            = pr.input :school, required: false
+          .small-12.medium-5.columns
+            = pr.input :email, required: false
+          .small-12.medium-1.columns
+            = pr.submit "提交", class: "button submit-partership-request-button"

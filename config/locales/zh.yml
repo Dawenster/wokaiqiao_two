@@ -1,13 +1,20 @@
 zh:
-  hello: 你好
   activerecord:
     errors:
       models:
         user:
           attributes:
             email:
-              blank: 请填入
+              blank: "请填入"
             password:
-              blank: 请填入
+              blank: "请填入"
             name:
-              blank: 请填入
+              blank: "请填入"
+        partnership_request:
+          attributes:
+            name:
+              blank: "请填入"
+            school:
+              blank: "请填入"
+            email:
+              blank: "请填入"

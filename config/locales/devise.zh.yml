@@ -17,6 +17,10 @@ zh:
         phone: "电话"
         wechat: "微信"
         agreed_to_policies: "同意我开窍服务协议"
+      partnership_request:
+        name: "名字"
+        school: "学校"
+        email: "电子邮箱"
     models:
       user: "用户"
     errors:
