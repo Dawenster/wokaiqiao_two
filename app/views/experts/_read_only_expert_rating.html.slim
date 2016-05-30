@@ -5,11 +5,11 @@
     - if expert.num_comments_from_users > 0
       small.subtitle-linkable data-toggle="commentsFromUsers#{expert.id}"
         i.fa.fa-comments
-        = " #{expert.num_comments_from_users}个评论"
+        = " #{expert.num_comments_from_users}个点评"
 
       = render "calls/comments_from_users_modal", expert: expert, calls_with_user_reviews: expert.calls_as_expert.reviewed_by_user
 
     - else
       small.subtitle
         i.fa.fa-comments
-        = " #{expert.num_comments_from_users}个评论"
+        = " #{expert.num_comments_from_users}个点评"

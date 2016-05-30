@@ -1,7 +1,7 @@
 .reveal.tiny.modal-slide.ratable id="rateCallModal#{call.id}" data-reveal="" data-close-on-click="true" ng-controller="RatingsCtrl"
   h3
     - rating_target = call.expert == current_user ? call.user : call.expert
-    = "给<strong>#{rating_target.name}</strong>留个评论".html_safe
+    = "给<strong>#{rating_target.name}</strong>留个点评".html_safe
   
   = simple_form_for call, url: rate_call_path(call), method: "post" do |f|
 
