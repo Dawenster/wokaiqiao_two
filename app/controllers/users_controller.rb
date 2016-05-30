@@ -1,13 +1,9 @@
 class UsersController < ApplicationController
 
   before_filter :authenticate_user!
-
-  def show
-    @user = User.find(params[:id])
-  end
+  before_filter :user_can_make_changes
 
   def update
-    @user = User.find(params[:id])
     @user.assign_attributes(user_params)
     if @user.save
       flash[:notice] = "成功更新"
@@ -40,6 +36,14 @@ class UsersController < ApplicationController
         :_destroy
       ]
     )
+  end
+
+  def user_can_make_changes
+    @user = User.find(params[:id])
+    if @user != current_user
+      flash[:alert] = "请别乱来..."
+      redirect_to request.referrer || root_path
+    end
   end
 
 end
