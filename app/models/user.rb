@@ -37,6 +37,14 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :tags, class_name: Tag, join_table: "experts_tags", foreign_key: "expert_id", uniq: true
   has_many :fake_comments
 
+  EXPERT_SORT_CATEGORIES = [
+    DOMESTIC       = "domestic",
+    PRICE_UP       = "price-up",
+    PRICE_DOWN     = "price-down",
+    HIGHEST_RATING = "highest-rating",
+    MOST_COMMENTS  = "most-comments"
+  ]
+
   def s3_credentials
     {
       bucket: ENV['AWS_BUCKET'],

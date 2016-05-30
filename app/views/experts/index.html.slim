@@ -25,14 +25,20 @@
     br
     .sort-holder
       | 排序: 
-      a href="#{experts_path(t: params[:t], s: 'domestic')}"
+      a href="#{experts_path(t: params[:t], s: User::DOMESTIC)}"
         | 国内先
       | ，
-      a href="#{experts_path(t: params[:t], s: 'price-up')}"
-        | 收费 &uarr;
+      a href="#{experts_path(t: params[:t], s: User::PRICE_DOWN)}"
+        | 收费最高
       | ，
-      a href="#{experts_path(t: params[:t], s: 'price-down')}"
-        | 收费 &darr;
+      a href="#{experts_path(t: params[:t], s: User::PRICE_UP)}"
+        | 收费最低
+      | ，
+      a href="#{experts_path(t: params[:t], s: User::MOST_COMMENTS)}"
+        | 点评最多
+      | ，
+      a href="#{experts_path(t: params[:t], s: User::HIGHEST_RATING)}"
+        | 评分最高
     hr
     br
     - @experts.each_with_index do |expert, i|

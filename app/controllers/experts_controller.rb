@@ -1,22 +1,39 @@
 class ExpertsController < ApplicationController
   def index
     @tags = Tag.all
+
     if params[:t].present?
-      if params[:s] == "price-up"
-        @experts = Tag.find(params[:t]).experts.order("rate_per_minute ASC, id ASC").page(params[:page])
-      elsif params[:s] == "price-down"
-        @experts = Tag.find(params[:t]).experts.order("rate_per_minute DESC, id ASC").page(params[:page])
-      else
-        @experts = Tag.find(params[:t]).experts.order("domestic DESC, id ASC").page(params[:page])
+
+      if params[:s] == User::PRICE_UP
+        @experts = Tag.find(params[:t]).experts.uniq.order("rate_per_minute ASC, id ASC").page(params[:page])
+      elsif params[:s] == User::PRICE_DOWN
+        @experts = Tag.find(params[:t]).experts.uniq.order("rate_per_minute DESC, id ASC").page(params[:page])
+      elsif params[:s] == User::HIGHEST_RATING
+        sorted_experts = Tag.find(params[:t]).experts.uniq.sort_by(&:avg_rating_as_expert).reverse
+        @experts = Kaminari.paginate_array(sorted_experts).page(params[:page]).per(10)
+      elsif params[:s] == User::MOST_COMMENTS
+        sorted_experts = Tag.find(params[:t]).experts.uniq.sort_by(&:num_comments_from_users).reverse
+        @experts = Kaminari.paginate_array(sorted_experts).page(params[:page]).per(10)
+      else # Default to sort by domestic
+        @experts = Tag.find(params[:t]).experts.uniq.order("domestic DESC, id ASC").page(params[:page])
       end
+
     else
-      if params[:s] == "price-up"
+
+      if params[:s] == User::PRICE_UP
         @experts = User.experts.order("rate_per_minute ASC, id ASC").page(params[:page])
-      elsif params[:s] == "price-down"
+      elsif params[:s] == User::PRICE_DOWN
         @experts = User.experts.order("rate_per_minute DESC, id ASC").page(params[:page])
-      else
+      elsif params[:s] == User::HIGHEST_RATING
+        sorted_experts = User.experts.uniq.sort_by(&:avg_rating_as_expert).reverse
+        @experts = Kaminari.paginate_array(sorted_experts).page(params[:page]).per(10)
+      elsif params[:s] == User::MOST_COMMENTS
+        sorted_experts = User.experts.uniq.sort_by(&:num_comments_from_users).reverse
+        @experts = Kaminari.paginate_array(sorted_experts).page(params[:page]).per(10)
+      else # Default to sort by domestic
         @experts = User.experts.order("domestic DESC, id ASC").page(params[:page])
       end
+
     end
   end
 
