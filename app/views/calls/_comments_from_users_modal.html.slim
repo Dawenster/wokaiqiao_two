@@ -7,9 +7,9 @@
   - if expert.use_fake_comments
     - expert.fake_comments.each do |fake_comment|
       = render "calls/fake_comment", fake_comment: fake_comment
-  - else
-    - calls_with_user_reviews.each do |call|
-      = render "calls/review_list", call: call
+      
+  - calls_with_user_reviews.each do |call|
+    = render "calls/review_list", call: call
 
   button.close-button data-close="" aria-label="Close reveal" type="button"
     span aria-hidden="true"
