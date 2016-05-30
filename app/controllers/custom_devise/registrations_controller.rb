@@ -2,7 +2,7 @@ class CustomDevise::RegistrationsController < Devise::RegistrationsController
 
   def create
     super
-    Emails::User.send_welcome(resource)
+    Emails::User.send_welcome(resource) if resource.id # only send if saved successfully
   end
 
   def update
