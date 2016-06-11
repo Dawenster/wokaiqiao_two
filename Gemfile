@@ -17,6 +17,7 @@ gem 'oj', '~> 2.12.14'
 gem 'paperclip', '~> 4.3'
 gem 'pikaday-gem', '~> 1.4'
 gem 'pg'
+gem 'puma'
 gem 'rails', '4.2.4'
 gem 'rails_admin'
 gem 'rollbar', '~> 2.8.0'
@@ -39,5 +40,10 @@ end
 group :development do
   gem 'spring'
   gem 'web-console', '~> 2.0'
+  gem 'capistrano',         require: false
+  gem 'capistrano-rvm',     require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma',   require: false
 end
 
