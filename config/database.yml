@@ -15,6 +15,7 @@ test:
 
 production:
   adapter: postgresql
+  database: wokaiqiao_two_production
   pool: 5
   timeout: 5000
   host: localhost
