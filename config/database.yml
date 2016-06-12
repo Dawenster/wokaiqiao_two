@@ -20,5 +20,5 @@ production:
   timeout: 5000
   host: localhost
   port: 5432
-  username: <%= ENV['APPNAME_DATABASE_USERNAME'] %>
-  password: <%= ENV['APPNAME_DATABASE_PASSWORD'] %>
+  username: <%= ENV['APP_DATABASE_USERNAME'] %>
+  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
