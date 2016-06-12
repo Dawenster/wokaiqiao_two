@@ -1,12 +1,3 @@
-default: &default
-  adapter: postgresql
-  pool: 5
-  timeout: 5000
-  host: localhost
-  port: 5432
-  username: <%= ENV['APPNAME_DATABASE_USERNAME'] %>
-  password: <%= ENV['APPNAME_DATABASE_PASSWORD'] %>
-
 development:
   adapter: postgresql
   database: wokaiqiao_two_development
@@ -21,3 +12,12 @@ test:
   database: wokaiqiao_two_test
   pool: 5
   timeout: 5000
+
+production:
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  host: localhost
+  port: 5432
+  username: <%= ENV['APPNAME_DATABASE_USERNAME'] %>
+  password: <%= ENV['APPNAME_DATABASE_PASSWORD'] %>
