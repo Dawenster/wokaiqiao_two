@@ -43,13 +43,13 @@
               tr
                 td
                   - if credit.is_earned?
-                    = credit.promotion.name
+                    = credit.promotion.try(:name)
                   - elsif credit.is_used?
                     - tab = credit.call.completed? ? "completed" : "in-progress"
                     = link_to "与#{credit.call.expert.name}通话", calls_path(t: tab, anchor: credit.call.anchor_tag)
                 td.hide-for-small-only
                   - if credit.is_earned?
-                    = credit.promotion.code
+                    = credit.promotion.try(:code)
                   - else
                     | -
                 td.hide-for-small-only
