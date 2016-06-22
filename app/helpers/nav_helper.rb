@@ -42,7 +42,7 @@ module NavHelper
         method: :get
       },
       {
-        text: "通话会议",
+        text: "管理申请",
         link: calls_path,
         method: :get
       },
