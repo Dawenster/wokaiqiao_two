@@ -181,6 +181,7 @@ module Emails
         expert = call.expert
         receiver = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? expert : user
         other_person = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? user : expert
+        dial_in_code = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? call.conference_call_admin_code : call.conference_call_participant_code
 
         result = obj.send_email(
           "tem_PB3bXhdYEUde2zND63Y8yR",
@@ -189,7 +190,7 @@ module Emails
             receiver_name: receiver.name,
             other_person_name: other_person.name,
             conference_number: call.conference_call_number,
-            conference_participant_code: call.conference_call_participant_code,
+            conference_participant_code: dial_in_code,
             link_to_manage_calls: link_to_manage_calls,
             scheduled_date_time: ChineseTime.display(call.scheduled_at),
             expert_expertise: expert.description,
