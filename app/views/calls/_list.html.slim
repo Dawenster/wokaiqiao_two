@@ -25,13 +25,13 @@
             h6
               small.subtitle
                 i.fa.fa-graduation-cap
-                - education_text = other_user.educations.any? ? other_user.list_education : "未填入"
+                - education_text = other_user.educations.any? ? other_user.list_education : "未填写"
                 = " #{education_text}"
 
             h6
               small.subtitle
                 i.fa.fa-map-pin
-                = " #{other_user.location || '未填入'}"
+                = " #{other_user.location || '未填写'}"
 
             .call-details-holder
               div
@@ -39,28 +39,28 @@
                   .inline-title
                     | 现在就职：
                 .right-side
-                  = other_user.current_work || "未填入"
+                  = other_user.current_work || "未填写"
 
               div
                 .left-side
                   .inline-title
                     | 曾经就职：
                 .right-side
-                  = other_user.past_work || "未填入"
+                  = other_user.past_work || "未填写"
                 
               div
                 .left-side
                   .inline-title
                     | 专长领域：
                 .right-side
-                  = other_user.description || "未填入"
+                  = other_user.description || "未填写"
 
               div
                 .left-side
                   .inline-title
                     | 交谈语言：
                 .right-side
-                  = other_user.languages || "未填入"
+                  = other_user.languages || "未填写"
 
         .small-12.medium-4.column.end
           .callout.action-callout class="#{callout_class(call)}"
