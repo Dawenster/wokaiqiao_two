@@ -96,6 +96,17 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
+  # Paperclip
+  Paperclip.options[:command_path] = "/usr/local/bin/"
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_credentials => {
+      :bucket => ENV['AWS_BUCKET'],
+      :access_key_id => ENV['AWS_ACCESS_KEY'],
+      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+    }
+  }
+
   config.time_zone = 'Beijing'
   config.active_record.default_timezone = :utc
 end
