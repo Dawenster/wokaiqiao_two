@@ -11,8 +11,7 @@
     ul.menu.vertical
       - logged_in_user_dropdown_list.each do |nav_item|
         li
-          a href="#{nav_item[:link]}"
-            = nav_item[:text]
+          = link_to "#{nav_item[:text]}", nav_item[:link], :method => nav_item[:method]
 
   - else
     ul.menu.vertical
