@@ -120,7 +120,7 @@ class User < ActiveRecord::Base
 
   def num_comments_from_users
     if use_fake_comments
-      fake_comments.count
+      fake_comments.count + calls_as_expert.reviewed_by_user.count
     else
       calls_as_expert.reviewed_by_user.count
     end
