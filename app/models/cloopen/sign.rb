@@ -1,5 +1,4 @@
 module Cloopen
-  
   class Sign
     # 生成验证参数
     # 1. SigParameter
@@ -12,5 +11,4 @@ module Cloopen
     end
 
   end
-
 end

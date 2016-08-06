@@ -1,10 +1,16 @@
 module Cloopen
-  module Conference
+  class Conference
 
-    def self.create_conference(maxmember = 3)
-      sig_parameter, authorization = Sign.generate_sig_and_auth
-      url = "#{Cloopen::Controller.base_uri}/ivr/createconf?sig=#{sig_parameter}&maxmember=#{maxmember}"
+    def initialize
+      @sig_parameter, @authorization = Sign.generate_sig_and_auth
+      @header = {
+        "Content-type"  => "application/xml;charset=utf-8;",
+        "Accept"        => "application/xml;",
+        "Authorization" => @authorization
+      }
+    end
 
+    def create_conference(maxmember = 3)
       payload = <<-eos
         <?xml version='1.0' encoding='utf-8'?>
         <Request>
@@ -14,15 +20,12 @@ module Cloopen
       eos
       # Clean up newline and double spaces
       payload.gsub!("\n", "").gsub!("  ", "")
-
-      header = {
-        "Content-type"  => "application/xml;charset=utf-8;",
-        "Accept"        => "application/xml;",
-        "Authorization" => authorization
-      }
-
-      res = Hash.from_xml(RestClient.post url, payload, header)["Response"]
+      Hash.from_xml(RestClient.post url("createconf"), payload, @header)["Response"]
     end
-    
+
+    def url(action)
+      @url = "#{Cloopen::Controller.base_uri}/ivr/#{action}?sig=#{@sig_parameter}"
+    end
+
   end
 end
