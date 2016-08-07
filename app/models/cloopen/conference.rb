@@ -15,7 +15,7 @@ module Cloopen
         <?xml version='1.0' encoding='utf-8'?>
         <Request>
           <Appid>#{ENV["CLOOPEN_APP_ID"]}</Appid>
-          <CreateConf action='createconfresult.jsp' maxmember='#{maxmember}'/>
+          <CreateConf action='/webhooks/create_conference_succeeded' maxmember='#{maxmember}' />
         </Request>
       eos
       # Clean up newline and double spaces
@@ -37,6 +37,22 @@ module Cloopen
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
+
+    def query_conference_state(conf_id)
+      payload = <<-eos
+        <?xml version='1.0' encoding='utf-8'?>
+        <Request>
+          <Appid>#{ENV["CLOOPEN_APP_ID"]}</Appid>
+          <QueryConfState confid='#{conf_id}' />
+        </Request>
+      eos
+      # Clean up newline and double spaces
+      payload = clean_up_payload(payload)
+      full_url = url("conf", {confid: conf_id})
+      Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
+    end
+
+    private
 
     def url(action, options)
       action_url = "#{Cloopen::Controller.base_uri}/ivr/#{action}?sig=#{@sig_parameter}"
