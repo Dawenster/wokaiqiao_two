@@ -34,4 +34,10 @@ Rails.application.routes.draw do
     end
   end
   resources :partnership_requests, only: [:create]
+
+  namespace :webhooks do
+    scope "cloopen" do
+      post :create_conference_succeeded
+    end
+  end
 end
