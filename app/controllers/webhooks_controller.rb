@@ -1,4 +1,6 @@
 class WebhooksController < ApplicationController
+
+  skip_before_filter :verify_authenticity_token, :authenticate_user!
   
   def create_conference_succeeded
     puts "*********************"
