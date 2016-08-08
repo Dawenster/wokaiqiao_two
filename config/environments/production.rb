@@ -78,7 +78,11 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # For devise
-  config.action_mailer.default_url_options = { host: 'wokaiqiao.com' }
+  if ENV["PRODUCTION"] == "true"
+    config.action_mailer.default_url_options = { host: 'wokaiqiao.com' }
+  else
+    config.action_mailer.default_url_options = { host: 'wokaiqiao-staging.herokuapp.com' }
+  end
 
   # Email settings
   config.action_mailer.delivery_method = :smtp
