@@ -12,11 +12,12 @@ module Cloopen
 
     def create_conference(maxmember = 3)
       callback = Rails.application.routes.url_helpers.webhooks_create_conference_succeeded_path
+      del_callback = Rails.application.routes.url_helpers.webhooks_conference_ended_path
       payload = <<-eos
         <?xml version='1.0' encoding='utf-8'?>
         <Request>
           <Appid>#{ENV["CLOOPEN_APP_ID"]}</Appid>
-          <CreateConf action='#{callback}' maxmember='#{maxmember}' />
+          <CreateConf action='#{callback}' maxmember='#{maxmember}' autorecord='true' delreporturl='#{del_callback}' />
         </Request>
       eos
       # Clean up newline and double spaces
