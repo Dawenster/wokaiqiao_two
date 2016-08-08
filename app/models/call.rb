@@ -52,9 +52,7 @@ class Call < ActiveRecord::Base
   MINUTES_TO_CHARGE_FOR_CANCELLATION = 15
   HOURS_TO_WAIT_FOR_EXPERT_TO_REPLY = 72
 
-  CONFERENCE_CALL_NUMBER = "+86 510 8022 4325"
-  CONFERENCE_CALL_ADMIN_CODE = "2270"
-  CONFERENCE_CALL_PARTICIPANT_CODE = "506410"
+  CONFERENCE_CALL_NUMBER = "+86 10 8303 5690"
 
   # GENERAL =======================================================
 
@@ -261,9 +259,11 @@ class Call < ActiveRecord::Base
   end
 
   def set_conference_details
+    cloopen = Cloopen::Conference.new
+    conf_response = cloopen.create_conference(3)
     self.conference_call_number = CONFERENCE_CALL_NUMBER
-    self.conference_call_admin_code = CONFERENCE_CALL_ADMIN_CODE
-    self.conference_call_participant_code = CONFERENCE_CALL_PARTICIPANT_CODE
+    self.conference_call_admin_code = conf_response["confid"]
+    self.conference_call_participant_code = conf_response["confid"]
     self.save
   end
 
