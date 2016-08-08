@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   namespace :webhooks do
     scope "cloopen" do
       post :create_conference_succeeded
+      post :conference_ended
     end
   end
 end
