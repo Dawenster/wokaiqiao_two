@@ -11,8 +11,10 @@ module Cloopen
     end
 
     def create_conference(maxmember = 3)
-      callback = Rails.application.routes.url_helpers.webhooks_create_conference_succeeded_url
-      del_callback = Rails.application.routes.url_helpers.webhooks_conference_ended_url
+      callback = Rails.application.routes.url_helpers.webhooks_create_conference_succeeded_path
+      callback[0] = ""
+      del_callback = Rails.application.routes.url_helpers.webhooks_conference_ended_path
+      del_callback[0] = ""
       payload = <<-eos
         <?xml version='1.0' encoding='utf-8'?>
         <Request>
