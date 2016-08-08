@@ -25,6 +25,20 @@ module Cloopen
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
 
+    def end_conference(conf_id)
+      payload = <<-eos
+        <?xml version='1.0' encoding='utf-8'?>
+        <Request>
+          <Appid>#{ENV["CLOOPEN_APP_ID"]}</Appid>
+          <DismissConf confid='#{conf_id}' />
+        </Request>
+      eos
+      # Clean up newline and double spaces
+      payload = clean_up_payload(payload)
+      full_url = url("conf", {confid: conf_id})
+      Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
+    end
+
     def invite_guest(conf_id, number)
       payload = <<-eos
         <?xml version='1.0' encoding='utf-8'?>
