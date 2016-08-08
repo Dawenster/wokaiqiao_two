@@ -7,6 +7,7 @@ class WebhooksController < ApplicationController
     puts "Create conference succeeded"
     puts params
     puts "*********************"
+    render :nothing => true, :status => 200
   end
 
   def conference_ended
@@ -14,6 +15,7 @@ class WebhooksController < ApplicationController
     puts "Conference ended"
     puts params
     puts "*********************"
+    render :nothing => true, :status => 200
   end
 
 end
