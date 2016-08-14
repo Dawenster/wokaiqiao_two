@@ -182,7 +182,7 @@ module Emails
         receiver = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? expert : user
         other_person = receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT ? user : expert
         dial_in_code = call.conference_call_participant_code
-        dial_in_code += "，主持启动密码：#{call.conference_call_admin_code}" if receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT
+        # dial_in_code += "，主持启动密码：#{call.conference_call_admin_code}" if receiver_text == ::Call::EXPERT_ACCEPTOR_TEXT
 
         result = obj.send_email(
           "tem_PB3bXhdYEUde2zND63Y8yR",
