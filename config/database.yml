@@ -17,10 +17,10 @@ production:
   adapter: postgresql
   pool: 5
   timeout: 5000
-  # host: localhost # for Digital Ocean
-  # port: 5432 # for Digital Ocean
-  host: rm-2ze1037kp1w3wo3j7.pg.rds.aliyuncs.com
-  port: 3433
+  host: localhost # for Digital Ocean
+  port: 5432 # for Digital Ocean
+  # host: rm-2ze1037kp1w3wo3j7.pg.rds.aliyuncs.com
+  # port: 3433
   # username: <%= ENV['APP_DATABASE_USERNAME'] %>
   # password: <%= ENV['APP_DATABASE_PASSWORD'] %>
   username: rails
