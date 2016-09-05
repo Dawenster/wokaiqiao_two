@@ -3,7 +3,7 @@ server '60.205.145.194', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:Dawenster/wokaiqiao_two.git'
 set :application,     'wokaiqiao_two'
-set :user,            'root'
+set :user,            'rails'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 
