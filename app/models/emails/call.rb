@@ -30,7 +30,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -62,7 +62,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -87,7 +87,7 @@ module Emails
           cc: Emails::User.admin_emails
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -120,7 +120,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -146,7 +146,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -170,7 +170,7 @@ module Emails
           cc: Emails::User.admin_emails
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -210,7 +210,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -233,7 +233,7 @@ module Emails
           cc: Emails::User.admin_emails
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -263,7 +263,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -293,7 +293,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 

@@ -22,7 +22,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
@@ -39,7 +39,7 @@ module Emails
           }
         )
       rescue => e
-        puts "Error - #{e.class.name}: #{e.message}"
+        Rollbar.error(e)
       end
     end
 
