@@ -24,6 +24,7 @@ gem 'rollbar', '~> 2.8.0'
 gem 'sass-rails', '~> 5.0.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'send_with_us'
+gem 'sidekiq'
 gem 'simple_form'
 gem 'slim'
 gem 'stripe'
