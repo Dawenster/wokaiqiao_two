@@ -25,6 +25,7 @@ gem 'sass-rails', '~> 5.0.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'send_with_us'
 gem 'sidekiq'
+gem 'sidetiq'
 gem 'simple_form'
 gem 'slim'
 gem 'stripe'
