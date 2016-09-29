@@ -34,6 +34,15 @@
                     
                 = f.submit "立即申请通话", class: "button", id: "customButton"
 
+              - elsif current_user.has_free_calls_remaining?
+
+                = f.input :free, as: :hidden, input_html: { value: true }
+
+                .disclaimer-text
+                  p
+                    | 你有免费通话的折扣代码，不需要付费。谢谢利用我开窍平台。
+                    
+                = f.submit "立即申请通话", class: "button", id: "customButton"
 
               - else
 

@@ -6,12 +6,26 @@ class Promotion < ActiveRecord::Base
             :code,
             :amount_in_cents,
             :currency,
+            :free_call_count,
+            :redemption_limit,
             presence: true
+
+  scope :has_free_calls, -> {
+    where("free_call_count > ?", 0)
+  }
 
   before_save :upcase_code
 
   def amount
     amount_in_cents / 100
+  end
+
+  def has_credits?
+    amount_in_cents.present? && amount_in_cents > 0
+  end
+
+  def has_free_calls?
+    free_call_count.present? && free_call_count > 0
   end
 
   private

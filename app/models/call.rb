@@ -25,6 +25,9 @@ class Call < ActiveRecord::Base
   scope :reviewed_by_user, -> {
     where.not(user_review: [nil, ""])
   }
+  scope :free, -> {
+    where(free: true)
+  }
 
   after_save :tasks_after_call_completion, if: :call_completed?
 
@@ -282,22 +285,24 @@ class Call < ActiveRecord::Base
   end
 
   def tasks_after_call_completion
-    customer = StripeTask.customer(user)
-    amount_already_collected = total_paid_in_cents / 100
-    credits_applied = applicable_credits_in_cents / 100
-    original_payment = payment_amount / 100
-    
-    Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
-
-    if payment_required?
-
-      charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
-      Payment.make(user, self, charge)
-
-    elsif refund_required?
-
-      Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
+    if !free
+      customer = StripeTask.customer(user)
+      amount_already_collected = total_paid_in_cents / 100
+      credits_applied = applicable_credits_in_cents / 100
+      original_payment = payment_amount / 100
       
+      Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
+
+      if payment_required?
+
+        charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
+        Payment.make(user, self, charge)
+
+      elsif refund_required?
+
+        Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
+        
+      end
     end
 
     Payout.make_for_call(self)
