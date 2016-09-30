@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
   end
 
   def free_calls_completed
-    calls.free.count
+    calls.completed.free.count
   end
 
   def free_calls_available
