@@ -4,6 +4,7 @@ class PromotionsController < ApplicationController
 
   def index
     @credits = current_user.credits.order(:created_at)
+    @free_call_promotions = current_user.promotions.has_free_calls
   end
 
   def check
