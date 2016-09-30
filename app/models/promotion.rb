@@ -9,6 +9,7 @@ class Promotion < ActiveRecord::Base
             :free_call_count,
             :redemption_limit,
             presence: true
+  validate :cannot_redeem_past_limit
 
   scope :has_free_calls, -> {
     where("free_call_count > ?", 0)
@@ -32,6 +33,13 @@ class Promotion < ActiveRecord::Base
 
   def upcase_code
     self.code.upcase!
+  end
+
+  def cannot_redeem_past_limit
+    promo = Promotion.find_by_code(code)
+    if promo.users.count > promo.redemption_limit
+      errors.add(:redemption_limit, "has been reached")
+    end
   end
 
 end
