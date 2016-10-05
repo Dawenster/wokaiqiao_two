@@ -206,7 +206,8 @@ module Emails
             minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION,
             receiver_is_user: receiver == user,
             user_title: user.title,
-            user_short_description: user.description
+            user_short_description: user.description,
+            free_call: call.free
           }
         )
       rescue => e
