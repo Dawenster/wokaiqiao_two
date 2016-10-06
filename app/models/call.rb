@@ -285,7 +285,11 @@ class Call < ActiveRecord::Base
   end
 
   def tasks_after_call_completion
-    if !free
+    if free
+      amount_already_collected = 0
+      original_payment = 0
+      credits_applied = cost
+    else
       customer = StripeTask.customer(user)
       amount_already_collected = total_paid_in_cents / 100
       credits_applied = applicable_credits_in_cents / 100
