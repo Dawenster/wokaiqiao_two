@@ -95,20 +95,32 @@ class User < ActiveRecord::Base
     credits.inject(0){|sum, c| sum += c.amount_in_cents}
   end
 
-  def free_calls_completed
-    calls.completed.free.count
-  end
-
   def free_calls_available
     promotions.has_free_calls.inject(0){|sum, promo| sum + promo.free_call_count}
   end
 
-  def free_calls_remaining
+  def free_calls_booked
+    calls.not_cancelled.free.count
+  end
+
+  def free_calls_completed
+    calls.not_cancelled.completed.free.count
+  end
+
+  def free_calls_remaining_to_book
+    free_calls_available - free_calls_booked
+  end
+
+  def free_calls_remaining_to_complete
     free_calls_available - free_calls_completed
   end
 
-  def has_free_calls_remaining?
-    free_calls_remaining > 0
+  def has_free_calls_remaining_to_book?
+    free_calls_remaining_to_book > 0
+  end
+
+  def has_free_calls_remaining_to_complete?
+    free_calls_remaining_to_complete > 0
   end
 
   # EXPERTS ONLY ==============================================================

@@ -18,7 +18,7 @@ class CallsController < ApplicationController
     @expert = User.find(params[:call][:expert_id])
     amount_to_charge = @expert.rate_in_cents_for(params[:call][:est_duration_in_min].to_i)
 
-    unless @user.stripe_cus_id.present? || @user.has_free_calls_remaining?
+    unless @user.stripe_cus_id.present? || @user.has_free_calls_remaining_to_complete?
       customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
       @charge = StripeTask.charge(customer, amount_to_charge, "与#{@expert.name}通话")
       if StripeTask.failed_charge?(@charge)

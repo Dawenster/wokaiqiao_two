@@ -34,7 +34,7 @@
                     
                 = f.submit "立即申请通话", class: "button", id: "customButton"
 
-              - elsif current_user.has_free_calls_remaining?
+              - elsif current_user.has_free_calls_remaining_to_book?
 
                 = f.input :free, as: :hidden, input_html: { value: true }
 
