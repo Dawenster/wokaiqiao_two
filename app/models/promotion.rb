@@ -38,7 +38,7 @@ class Promotion < ActiveRecord::Base
   def cannot_redeem_past_limit
     promo = Promotion.find_by_code(code)
     if promo.present? && promo.users.count > promo.redemption_limit
-      errors.add(:redemption_limit, "has been reached")
+      errors.add(:redemption_limit, "已经达到了")
     end
   end
 
