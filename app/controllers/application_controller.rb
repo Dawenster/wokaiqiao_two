@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_in)        << :name
-    devise_parameter_sanitizer.for(:sign_up)        << [:name, :agreed_to_policies]
+    devise_parameter_sanitizer.for(:sign_up)        << [:name, :phone, :agreed_to_policies]
     devise_parameter_sanitizer.for(:account_update) << [:name, :phone, :wechat]
   end
 

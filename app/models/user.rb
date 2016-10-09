@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   validates :name, :email, :agreed_to_policies, presence: true
   validates :rate_per_minute, :numericality => { :greater_than_or_equal_to => 0 }, :allow_nil => true
 
+  phony_normalize :phone, default_country_code: 'CN'
+  validates_plausible_phone :phone, presence: true
+
   before_save :ensure_auth_token
 
   scope :admin, -> {
