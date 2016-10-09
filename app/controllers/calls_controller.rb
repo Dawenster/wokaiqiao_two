@@ -113,21 +113,23 @@ class CallsController < ApplicationController
     @call.cancelled_at = Time.current
     @call.user_that_cancelled = current_user
 
-    if @call.accepted? && @call.cancelled_by_user? && @call.apply_cancellation_fee?
-      if @call.need_to_pay_after_cancellation?
-        customer = StripeTask.customer(@call.user)
-        charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "与#{@call.expert.name}通话提早取消")
-        Payment.make(@call.user, @call, charge)
+    if !@call.free
+      if @call.accepted? && @call.cancelled_by_user? && @call.apply_cancellation_fee?
+        if @call.need_to_pay_after_cancellation?
+          customer = StripeTask.customer(@call.user)
+          charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "与#{@call.expert.name}通话提早取消")
+          Payment.make(@call.user, @call, charge)
 
-        # TODO: Error handling for failed charges
-        
-      elsif @call.need_to_refund_after_cancellation?
+          # TODO: Error handling for failed charges
+          
+        elsif @call.need_to_refund_after_cancellation?
+          customer = StripeTask.customer(@call.user)
+          Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.cancellation_fee_in_cents, customer)
+        end
+      elsif @call.has_positive_paid_balance?
         customer = StripeTask.customer(@call.user)
-        Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.cancellation_fee_in_cents, customer)
+        Refund.refund_call(@call, @call.net_paid, 0, customer)
       end
-    elsif @call.has_positive_paid_balance?
-      customer = StripeTask.customer(@call.user)
-      Refund.refund_call(@call, @call.net_paid, 0, customer)
     end
 
     # TODO: Account for situation where someone used promo code to sign up, and then cancel
