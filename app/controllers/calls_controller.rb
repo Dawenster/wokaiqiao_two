@@ -1,6 +1,7 @@
 class CallsController < ApplicationController
 
   before_action :auto_login, except: [:create]
+  before_action :check_for_admin, only: [:upcoming, :start]
 
   def create
     if current_user
@@ -142,6 +143,14 @@ class CallsController < ApplicationController
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
     end
     redirect_to calls_path(t: "cancelled")
+  end
+
+  def upcoming
+    @future_confirmed_calls = Call.confirmed.future.order(:scheduled_at)
+  end
+
+  def start
+    redirect_to upcoming_calls_path
   end
 
   protected

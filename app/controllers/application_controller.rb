@@ -67,4 +67,10 @@ class ApplicationController < ActionController::Base
     end
     available_times
   end
+
+  def check_for_admin
+    if current_user && !current_user.is_admin?
+      return redirect_to request.referrer || root_path, alert: "抱歉，你不是我开窍管理员之一"
+    end
+  end
 end

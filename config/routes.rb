@@ -29,6 +29,10 @@ Rails.application.routes.draw do
       get  :rate_with_rating
       post :cancel
     end
+    collection do
+      get :upcoming
+      post :start
+    end
   end
   resources :promotions, only: [:index] do
     collection do

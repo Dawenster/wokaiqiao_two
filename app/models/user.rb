@@ -20,12 +20,8 @@ class User < ActiveRecord::Base
 
   before_save :ensure_auth_token
 
-  scope :admin, -> {
-    where(admin: true)
-  }
-  scope :experts, -> {
-    where(expert: true)
-  }
+  scope :admin,   -> { where(admin: true) }
+  scope :experts, -> { where(expert: true) }
 
   has_many :calls
   has_many :calls_as_expert, class_name: Call, foreign_key: :expert_id
@@ -86,6 +82,10 @@ class User < ActiveRecord::Base
 
   def is_expert_in?(call)
     role_in(call) == Call::EXPERT_ACCEPTOR_TEXT
+  end
+
+  def is_admin?
+    admin
   end
 
   # USERS ONLY ==============================================================

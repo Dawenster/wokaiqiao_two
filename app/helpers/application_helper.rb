@@ -23,4 +23,8 @@ module ApplicationHelper
       我们致力确保专家的质量和真确性以及为用户提供一个多元的专家库。
     "
   end
+
+  def rails_admin_link(record)
+    rails_admin.show_path(model_name: record.class.name.downcase, id: record.id)
+  end
 end

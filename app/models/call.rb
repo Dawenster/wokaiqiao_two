@@ -7,27 +7,15 @@ class Call < ActiveRecord::Base
   has_many :payments
   has_one :payout
 
-  scope :unconfirmed, -> {
-    where("user_accepted_at is null OR expert_accepted_at is null")
-  }
-  scope :completed, -> {
-    where("started_at is not null AND ended_at is not null")
-  }
-  scope :cancelled, -> {
-    where.not(cancelled_at: nil)
-  }
-  scope :not_cancelled, -> {
-    where(cancelled_at: nil)
-  }
-  scope :rated_by_user, -> {
-    where.not(user_rating: nil)
-  }
-  scope :reviewed_by_user, -> {
-    where.not(user_review: [nil, ""])
-  }
-  scope :free, -> {
-    where(free: true)
-  }
+  scope :confirmed,        -> { where("user_accepted_at is not null AND expert_accepted_at is not null") }
+  scope :unconfirmed,      -> { where("user_accepted_at is null OR expert_accepted_at is null") }
+  scope :completed,        -> { where("started_at is not null AND ended_at is not null") }
+  scope :cancelled,        -> { where.not(cancelled_at: nil) }
+  scope :not_cancelled,    -> { where(cancelled_at: nil) }
+  scope :rated_by_user,    -> { where.not(user_rating: nil) }
+  scope :reviewed_by_user, -> { where.not(user_review: [nil, ""]) }
+  scope :free,             -> { where(free: true) }
+  scope :future,           -> { where("scheduled_at >= ?", Time.current) }
 
   after_save :tasks_after_call_completion, if: :call_completed?
 
