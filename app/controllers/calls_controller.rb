@@ -150,6 +150,11 @@ class CallsController < ApplicationController
   end
 
   def start
+    call = Call.find(params[:id])
+    cloopen = Cloopen::Conference.new
+    response = cloopen.create_conference
+    call.update_details_from_cloopen(response)
+    call.save
     redirect_to upcoming_calls_path
   end
 
@@ -231,7 +236,8 @@ class CallsController < ApplicationController
       call.accept_as_user(params[:datetime_num].to_i)
       flash[:notice] = "接受成功：<strong>#{ChineseTime.display(call.scheduled_at)}</strong>与<strong>#{call.expert.name}</strong>通话"
     end
-    call.set_conference_details
+    call.set_initial_conference_details
+    call.save
     send_confirmation_of_calls_emails(call)
   end
 

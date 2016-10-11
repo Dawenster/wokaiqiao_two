@@ -33,4 +33,4 @@
               td
                 = ChineseTime.display(call.scheduled_at, true)
               td
-                = link_to "Start call", start_calls_path, method: :post, class: "button start-call-button"
+                = link_to "Start call", start_call_path(call), method: :post, class: "button start-call-button"

@@ -103,6 +103,15 @@ class Call < ActiveRecord::Base
     ((ended_at - started_at) / 60).floor
   end
 
+  def set_initial_conference_details
+    self.conference_call_number = CONFERENCE_CALL_NUMBER
+  end
+
+  def update_details_from_cloopen(response)
+    self.conference_call_admin_code = response["confid"]
+    self.conference_call_participant_code = response["confid"]
+  end
+
   # STATUS =======================================================
 
   def status
@@ -247,15 +256,6 @@ class Call < ActiveRecord::Base
   def admin_fee_in_cents
     # Round down to the nearest hundred (元) for us so there are no cents
     ((cost_in_cents * Payout::ADMIN_FEE_PERCENTAGE / 100) * 100).ceil / 100
-  end
-
-  def set_conference_details
-    cloopen = Cloopen::Conference.new
-    conf_response = cloopen.create_conference(3)
-    self.conference_call_number = CONFERENCE_CALL_NUMBER
-    self.conference_call_admin_code = conf_response["confid"]
-    self.conference_call_participant_code = conf_response["confid"]
-    self.save
   end
 
   private
