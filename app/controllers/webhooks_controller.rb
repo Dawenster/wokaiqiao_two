@@ -4,8 +4,10 @@ class WebhooksController < ApplicationController
   
   def conference_ended
     call = Call.find_by_conference_call_participant_code(params[:confid])
-    end_time = Cloopen::Controller.parse_time(params[:deltime])
-    call.update(ended_at: end_time)
+    if call.present?
+      end_time = Cloopen::Controller.parse_time(params[:deltime])
+      call.update(ended_at: end_time)
+    end
 
     render :nothing => true, :status => 200
   end
