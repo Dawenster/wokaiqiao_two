@@ -12,10 +12,22 @@
   <div class="error-box email-missing-error hide">请填入</div>
   <div class="error-box not-proper-email-error hide">请输入正确的电子邮件</div>
 
+  <div><%= f.label :phone %>
+  <%= f.text_field :phone %></div>
+  <div class="error-box password-missing-error hide">请填入</div>
+  <div class="error-box password-length-error hide">最少八个字符</div>
+
   <div><%= f.label :password %>
   <%= f.password_field :password %></div>
   <div class="error-box password-missing-error hide">请填入</div>
   <div class="error-box password-length-error hide">最少八个字符</div>
+
+  <% unless just_fields %>
+    <div>
+      <label>折扣代码</label>
+      <input type="text" name="promo_code">
+    </div>
+  <% end %>
 
   <fieldset>
     <%= f.check_box :agreed_to_policies %>

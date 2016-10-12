@@ -18,3 +18,6 @@ zh:
               blank: "请填入"
             email:
               blank: "请填入"
+        promotion:
+          attributes:
+            redemption_limit: "兑换上限"

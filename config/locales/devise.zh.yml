@@ -30,6 +30,9 @@ zh:
             email:
               taken: "已存在"
               invalid: "电邮格式不正确，请重新输入"
+            phone:
+              blank: "请填入"
+              improbable_phone: "格式不正确"
             reset_password_token:
               invalid: "无效"
             password:

@@ -11,19 +11,17 @@ module Cloopen
     end
 
     def create_conference(maxmember = 3)
-      callback = Rails.application.routes.url_helpers.webhooks_create_conference_succeeded_path
-      callback[0] = ""
       del_callback = Rails.application.routes.url_helpers.webhooks_conference_ended_path
       del_callback[0] = ""
       payload = <<-eos
         <?xml version='1.0' encoding='utf-8'?>
         <Request>
           <Appid>#{ENV["CLOOPEN_APP_ID"]}</Appid>
-          <CreateConf action='#{callback}' maxmember='#{maxmember}' autorecord='true' delreporturl='#{del_callback}' />
+          <CreateConf maxmember='#{maxmember}' autorecord='true' delreporturl='#{del_callback}' />
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("createconf", {maxmember: maxmember})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -37,7 +35,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -51,7 +49,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -65,7 +63,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -78,10 +76,6 @@ module Cloopen
         action_url += "&#{key}=#{value}"
       end
       action_url
-    end
-
-    def clean_up_payload(payload)
-      payload.gsub("\n", "").gsub("  ", "")
     end
 
   end

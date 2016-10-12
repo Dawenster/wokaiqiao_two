@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_in)        << :name
-    devise_parameter_sanitizer.for(:sign_up)        << [:name, :agreed_to_policies]
+    devise_parameter_sanitizer.for(:sign_up)        << [:name, :phone, :agreed_to_policies]
     devise_parameter_sanitizer.for(:account_update) << [:name, :phone, :wechat]
   end
 
@@ -66,5 +66,11 @@ class ApplicationController < ActionController::Base
       available_times << ["#{hour >= 12 ? '下午' + (hour - hours_to_subtract).to_s : '上午' + hour.to_s}:30", "#{hour}:30"]
     end
     available_times
+  end
+
+  def check_for_admin
+    if current_user && !current_user.is_admin?
+      return redirect_to request.referrer || root_path, alert: "抱歉，你不是我开窍管理员之一"
+    end
   end
 end

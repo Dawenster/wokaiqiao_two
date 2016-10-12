@@ -6,7 +6,14 @@ class Promotion < ActiveRecord::Base
             :code,
             :amount_in_cents,
             :currency,
+            :free_call_count,
+            :redemption_limit,
             presence: true
+  validate :cannot_redeem_past_limit
+
+  scope :has_free_calls, -> {
+    where("free_call_count > ?", 0)
+  }
 
   before_save :upcase_code
 
@@ -14,10 +21,25 @@ class Promotion < ActiveRecord::Base
     amount_in_cents / 100
   end
 
+  def has_credits?
+    amount_in_cents.present? && amount_in_cents > 0
+  end
+
+  def has_free_calls?
+    free_call_count.present? && free_call_count > 0
+  end
+
   private
 
   def upcase_code
     self.code.upcase!
+  end
+
+  def cannot_redeem_past_limit
+    promo = Promotion.find_by_code(code)
+    if promo.present? && promo.users.count > promo.redemption_limit
+      errors.add(:redemption_limit, "已经达到了")
+    end
   end
 
 end

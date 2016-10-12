@@ -190,6 +190,10 @@ GEM
       mime-types
       mimemagic (= 0.3.0)
     pg (0.18.4)
+    phony (2.15.32)
+    phony_rails (0.14.2)
+      activesupport (>= 3.0)
+      phony (~> 2.12)
     pikaday-gem (1.4.0)
       railties (>= 3.1)
     pkg-config (1.1.7)
@@ -367,6 +371,7 @@ DEPENDENCIES
   oj (~> 2.12.14)
   paperclip (~> 4.3)
   pg
+  phony_rails
   pikaday-gem (~> 1.4)
   pry
   puma

@@ -28,6 +28,10 @@ Rails.application.routes.draw do
       post :rate
       get  :rate_with_rating
       post :cancel
+      post :start
+    end
+    collection do
+      get :upcoming
     end
   end
   resources :promotions, only: [:index] do
@@ -39,7 +43,6 @@ Rails.application.routes.draw do
 
   namespace :webhooks do
     scope "cloopen" do
-      post :create_conference_succeeded
       post :conference_ended
     end
   end

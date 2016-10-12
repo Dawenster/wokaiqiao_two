@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160526073326) do
+ActiveRecord::Schema.define(version: 20160929052320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20160526073326) do
     t.string   "conference_call_number"
     t.string   "conference_call_admin_code"
     t.string   "conference_call_participant_code"
+    t.boolean  "free",                             default: false
   end
 
   create_table "credits", force: :cascade do |t|
@@ -117,6 +118,8 @@ ActiveRecord::Schema.define(version: 20160526073326) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "currency"
+    t.integer  "free_call_count"
+    t.integer  "redemption_limit"
   end
 
   create_table "promotions_users", force: :cascade do |t|

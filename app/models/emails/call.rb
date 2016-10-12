@@ -26,7 +26,8 @@ module Emails
             requested_date_time_three: ChineseTime.display(call.offer_time_three),
             call_description: call.description,
             rate_per_min: expert.rate_per_minute,
-            estimated_duration_in_min: call.est_duration_in_min
+            estimated_duration_in_min: call.est_duration_in_min,
+            free_call: call.try(:free)
           }
         )
       rescue => e
@@ -82,7 +83,8 @@ module Emails
             call_description: call.description,
             rate_per_min: expert.rate_per_minute,
             estimated_duration_in_min: call.est_duration_in_min,
-            rails_admin_path: rails_admin_path
+            rails_admin_path: rails_admin_path,
+            free_call: call.try(:free)
           },
           cc: Emails::User.admin_emails
         )
@@ -116,7 +118,8 @@ module Emails
             rate_per_min: call.expert.rate_per_minute,
             estimated_duration_in_min: call.est_duration_in_min,
             hours_buffer: ::Call::CANCELLATION_BUFFER_IN_HOURS_BEFORE_CALL_IS_CHARGED,
-            minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION
+            minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION,
+            free_call: call.try(:free)
           }
         )
       rescue => e
@@ -206,7 +209,8 @@ module Emails
             minutes_to_charge: ::Call::MINUTES_TO_CHARGE_FOR_CANCELLATION,
             receiver_is_user: receiver == user,
             user_title: user.title,
-            user_short_description: user.description
+            user_short_description: user.description,
+            free_call: call.try(:free)
           }
         )
       rescue => e
@@ -259,7 +263,8 @@ module Emails
             manage_calls_link: manage_calls_link,
             rate_with_rating_link: rate_with_rating_link,
             credit_amount: credits_applied,
-            amount_already_collected: amount_already_collected
+            amount_already_collected: amount_already_collected,
+            free_call: call.try(:free)
           }
         )
       rescue => e

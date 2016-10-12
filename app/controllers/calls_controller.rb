@@ -1,6 +1,7 @@
 class CallsController < ApplicationController
 
   before_action :auto_login, except: [:create]
+  before_action :check_for_admin, only: [:upcoming, :start]
 
   def create
     if current_user
@@ -18,7 +19,7 @@ class CallsController < ApplicationController
     @expert = User.find(params[:call][:expert_id])
     amount_to_charge = @expert.rate_in_cents_for(params[:call][:est_duration_in_min].to_i)
 
-    unless @user.stripe_cus_id.present?
+    unless @user.stripe_cus_id.present? || @user.has_free_calls_remaining_to_complete?
       customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
       @charge = StripeTask.charge(customer, amount_to_charge, "与#{@expert.name}通话")
       if StripeTask.failed_charge?(@charge)
@@ -113,21 +114,23 @@ class CallsController < ApplicationController
     @call.cancelled_at = Time.current
     @call.user_that_cancelled = current_user
 
-    if @call.accepted? && @call.cancelled_by_user? && @call.apply_cancellation_fee?
-      if @call.need_to_pay_after_cancellation?
-        customer = StripeTask.customer(@call.user)
-        charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "与#{@call.expert.name}通话提早取消")
-        Payment.make(@call.user, @call, charge)
+    if !@call.free
+      if @call.accepted? && @call.cancelled_by_user? && @call.apply_cancellation_fee?
+        if @call.need_to_pay_after_cancellation?
+          customer = StripeTask.customer(@call.user)
+          charge = StripeTask.charge(customer, @call.payment_amount_for_early_cancellation, "与#{@call.expert.name}通话提早取消")
+          Payment.make(@call.user, @call, charge)
 
-        # TODO: Error handling for failed charges
-        
-      elsif @call.need_to_refund_after_cancellation?
+          # TODO: Error handling for failed charges
+          
+        elsif @call.need_to_refund_after_cancellation?
+          customer = StripeTask.customer(@call.user)
+          Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.cancellation_fee_in_cents, customer)
+        end
+      elsif @call.has_positive_paid_balance?
         customer = StripeTask.customer(@call.user)
-        Refund.refund_call(@call, @call.refund_amount_for_early_cancellation, @call.cancellation_fee_in_cents, customer)
+        Refund.refund_call(@call, @call.net_paid, 0, customer)
       end
-    elsif @call.has_positive_paid_balance?
-      customer = StripeTask.customer(@call.user)
-      Refund.refund_call(@call, @call.net_paid, 0, customer)
     end
 
     # TODO: Account for situation where someone used promo code to sign up, and then cancel
@@ -140,6 +143,23 @@ class CallsController < ApplicationController
       flash[:alert] = @call.errors.full_messages.join("，") + "。"
     end
     redirect_to calls_path(t: "cancelled")
+  end
+
+  def upcoming
+    @future_confirmed_calls = Call.confirmed.future.order(:scheduled_at)
+  end
+
+  def start
+    call = Call.find(params[:id])
+    conference_cloopen = Cloopen::Conference.new
+    conference_response = conference_cloopen.create_conference
+    call.update_details_from_cloopen(conference_response)
+    call.save
+
+    sms_cloopen = Cloopen::Sms.new
+    sms_response = sms_cloopen.call_starting_reminder(call.user.phone, call.expert.name, call)
+    sms_response = sms_cloopen.call_starting_reminder(call.expert.phone, call.user.name, call)
+    redirect_to upcoming_calls_path
   end
 
   protected
@@ -160,7 +180,8 @@ class CallsController < ApplicationController
       :scheduled_at,
       :user_accepted_at,
       :expert_accepted_at,
-      :cancellation_reason
+      :cancellation_reason,
+      :free
     )
   end
 
@@ -219,7 +240,8 @@ class CallsController < ApplicationController
       call.accept_as_user(params[:datetime_num].to_i)
       flash[:notice] = "接受成功：<strong>#{ChineseTime.display(call.scheduled_at)}</strong>与<strong>#{call.expert.name}</strong>通话"
     end
-    call.set_conference_details
+    call.set_initial_conference_details
+    call.save
     send_confirmation_of_calls_emails(call)
   end
 

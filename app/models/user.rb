@@ -15,14 +15,13 @@ class User < ActiveRecord::Base
   validates :name, :email, :agreed_to_policies, presence: true
   validates :rate_per_minute, :numericality => { :greater_than_or_equal_to => 0 }, :allow_nil => true
 
+  phony_normalize :phone, default_country_code: 'CN'
+  validates_plausible_phone :phone, presence: true
+
   before_save :ensure_auth_token
 
-  scope :admin, -> {
-    where(admin: true)
-  }
-  scope :experts, -> {
-    where(expert: true)
-  }
+  scope :admin,   -> { where(admin: true) }
+  scope :experts, -> { where(expert: true) }
 
   has_many :calls
   has_many :calls_as_expert, class_name: Call, foreign_key: :expert_id
@@ -85,6 +84,10 @@ class User < ActiveRecord::Base
     role_in(call) == Call::EXPERT_ACCEPTOR_TEXT
   end
 
+  def is_admin?
+    admin
+  end
+
   # USERS ONLY ==============================================================
 
   def net_credits
@@ -93,6 +96,34 @@ class User < ActiveRecord::Base
 
   def net_credits_in_cents
     credits.inject(0){|sum, c| sum += c.amount_in_cents}
+  end
+
+  def free_calls_available
+    promotions.has_free_calls.inject(0){|sum, promo| sum + promo.free_call_count}
+  end
+
+  def free_calls_booked
+    calls.not_cancelled.free.count
+  end
+
+  def free_calls_completed
+    calls.not_cancelled.completed.free.count
+  end
+
+  def free_calls_remaining_to_book
+    free_calls_available - free_calls_booked
+  end
+
+  def free_calls_remaining_to_complete
+    free_calls_available - free_calls_completed
+  end
+
+  def has_free_calls_remaining_to_book?
+    free_calls_remaining_to_book > 0
+  end
+
+  def has_free_calls_remaining_to_complete?
+    free_calls_remaining_to_complete > 0
   end
 
   # EXPERTS ONLY ==============================================================

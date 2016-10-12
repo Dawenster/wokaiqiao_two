@@ -7,24 +7,15 @@ class Call < ActiveRecord::Base
   has_many :payments
   has_one :payout
 
-  scope :unconfirmed, -> {
-    where("user_accepted_at is null OR expert_accepted_at is null")
-  }
-  scope :completed, -> {
-    where("started_at is not null AND ended_at is not null")
-  }
-  scope :cancelled, -> {
-    where.not(cancelled_at: nil)
-  }
-  scope :not_cancelled, -> {
-    where(cancelled_at: nil)
-  }
-  scope :rated_by_user, -> {
-    where.not(user_rating: nil)
-  }
-  scope :reviewed_by_user, -> {
-    where.not(user_review: [nil, ""])
-  }
+  scope :confirmed,        -> { where("user_accepted_at is not null AND expert_accepted_at is not null") }
+  scope :unconfirmed,      -> { where("user_accepted_at is null OR expert_accepted_at is null") }
+  scope :completed,        -> { where("started_at is not null AND ended_at is not null") }
+  scope :cancelled,        -> { where.not(cancelled_at: nil) }
+  scope :not_cancelled,    -> { where(cancelled_at: nil) }
+  scope :rated_by_user,    -> { where.not(user_rating: nil) }
+  scope :reviewed_by_user, -> { where.not(user_review: [nil, ""]) }
+  scope :free,             -> { where(free: true) }
+  scope :future,           -> { where("scheduled_at >= ?", Time.current) }
 
   after_save :tasks_after_call_completion, if: :call_completed?
 
@@ -110,6 +101,19 @@ class Call < ActiveRecord::Base
   def actual_duration_in_min
     # Rounded down
     ((ended_at - started_at) / 60).floor
+  end
+
+  def set_initial_conference_details
+    self.conference_call_number = CONFERENCE_CALL_NUMBER
+  end
+
+  def update_details_from_cloopen(response)
+    self.conference_call_admin_code = response["confid"]
+    self.conference_call_participant_code = response["confid"]
+  end
+
+  def started?
+    started_at.present?
   end
 
   # STATUS =======================================================
@@ -258,15 +262,6 @@ class Call < ActiveRecord::Base
     ((cost_in_cents * Payout::ADMIN_FEE_PERCENTAGE / 100) * 100).ceil / 100
   end
 
-  def set_conference_details
-    cloopen = Cloopen::Conference.new
-    conf_response = cloopen.create_conference(3)
-    self.conference_call_number = CONFERENCE_CALL_NUMBER
-    self.conference_call_admin_code = conf_response["confid"]
-    self.conference_call_participant_code = conf_response["confid"]
-    self.save
-  end
-
   private
 
   def call_ends_after_start
@@ -282,22 +277,28 @@ class Call < ActiveRecord::Base
   end
 
   def tasks_after_call_completion
-    customer = StripeTask.customer(user)
-    amount_already_collected = total_paid_in_cents / 100
-    credits_applied = applicable_credits_in_cents / 100
-    original_payment = payment_amount / 100
-    
-    Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
-
-    if payment_required?
-
-      charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
-      Payment.make(user, self, charge)
-
-    elsif refund_required?
-
-      Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
+    if free
+      amount_already_collected = 0
+      original_payment = 0
+      credits_applied = cost
+    else
+      customer = StripeTask.customer(user)
+      amount_already_collected = total_paid_in_cents / 100
+      credits_applied = applicable_credits_in_cents / 100
+      original_payment = payment_amount / 100
       
+      Credit.user_on(self, applicable_credits_in_cents) if applicable_credits_in_cents > 0
+
+      if payment_required?
+
+        charge = StripeTask.charge(customer, payment_amount, "与#{expert.name}通话")
+        Payment.make(user, self, charge)
+
+      elsif refund_required?
+
+        Refund.refund_call(self, overage_refund_amount, cost_in_cents, customer)
+        
+      end
     end
 
     Payout.make_for_call(self)

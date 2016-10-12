@@ -65,3 +65,35 @@
                 b
                   = "折扣余额：#{number_to_currency(current_user.net_credits, unit: "¥", precision: 0)}"
 
+      - if @free_call_promotions.any?
+
+        table
+          thead
+            tr
+              th
+                | 详细
+              th.hide-for-small-only
+                | 代码
+              th.right-align
+                | 几通免费电话
+
+          tbody
+            - @free_call_promotions.each do |promo|
+              tr
+                td
+                  = promo.name
+                td.hide-for-small-only
+                  = promo.code
+                td.right-align
+                  = promo.free_call_count
+            tr
+              td
+              td.hide-for-small-only
+              td.right-align
+                b
+                  = "总共：#{current_user.free_calls_available}通免费通话"
+
+        p
+          = "你已经使用了#{current_user.free_calls_completed}通免费通话。"
+        p
+          = "你还有#{current_user.free_calls_remaining_to_complete}通免费通话。"
