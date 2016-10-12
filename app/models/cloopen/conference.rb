@@ -23,7 +23,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("createconf", {maxmember: maxmember})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -37,7 +37,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -51,7 +51,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -65,7 +65,7 @@ module Cloopen
         </Request>
       eos
       # Clean up newline and double spaces
-      payload = clean_up_payload(payload)
+      payload = Cloopen::Controller.clean_up_payload(payload)
       full_url = url("conf", {confid: conf_id})
       Hash.from_xml(RestClient.post full_url, payload, @header)["Response"]
     end
@@ -78,10 +78,6 @@ module Cloopen
         action_url += "&#{key}=#{value}"
       end
       action_url
-    end
-
-    def clean_up_payload(payload)
-      payload.gsub("\n", "").gsub("  ", "")
     end
 
   end

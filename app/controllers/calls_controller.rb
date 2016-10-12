@@ -151,10 +151,14 @@ class CallsController < ApplicationController
 
   def start
     call = Call.find(params[:id])
-    cloopen = Cloopen::Conference.new
-    response = cloopen.create_conference
-    call.update_details_from_cloopen(response)
+    conference_cloopen = Cloopen::Conference.new
+    conference_response = conference_cloopen.create_conference
+    call.update_details_from_cloopen(conference_response)
     call.save
+
+    sms_cloopen = Cloopen::Sms.new
+    sms_response = sms_cloopen.call_starting_reminder(call.user.phone, call.expert.name, call)
+    sms_response = sms_cloopen.call_starting_reminder(call.expert.phone, call.user.name, call)
     redirect_to upcoming_calls_path
   end
 

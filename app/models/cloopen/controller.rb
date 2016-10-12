@@ -8,5 +8,9 @@ module Cloopen
       end
       "#{base_uri}#{ENV["CLOOPEN_ACCOUNT_SID"]}"
     end
+
+    def self.clean_up_payload(payload)
+      payload.gsub("\n", "").gsub("  ", "")
+    end
   end
 end
