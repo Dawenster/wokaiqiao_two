@@ -112,6 +112,10 @@ class Call < ActiveRecord::Base
     self.conference_call_participant_code = response["confid"]
   end
 
+  def started?
+    started_at.present?
+  end
+
   # STATUS =======================================================
 
   def status
