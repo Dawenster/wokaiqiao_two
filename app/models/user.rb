@@ -44,6 +44,12 @@ class User < ActiveRecord::Base
     MOST_COMMENTS  = "most-comments"
   ]
 
+  def self.test
+    puts "***************"
+    puts "HI!"
+    puts "***************"
+  end
+
   def s3_credentials
     {
       bucket: ENV['AWS_BUCKET'],
