@@ -10,7 +10,7 @@
 
       h5
         b
-          | 如果你在我们的活动中收到折扣代码，请在下面输入：
+          = "如果你在我们的活动中收到折扣代码，请在下面输入：#{ENV['SENDWITHUS_API_KEY']}"
 
       = simple_form_for Promotion.new, url: check_promotions_path, method: "post" do |p|
         .input-group
