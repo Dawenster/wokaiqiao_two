@@ -20,6 +20,8 @@
               | Scheduled at
             th
               | Actions
+            th
+              | Cloopen conf ID
 
         tbody
           - @future_confirmed_calls.each do |call|
@@ -37,3 +39,5 @@
                   = "Started at #{ChineseTime.display(call.started_at, true)}"
                 - else
                   = link_to "Start call", start_call_path(call), method: :post, class: "button start-call-button"
+              td
+                = call.conference_call_participant_code
