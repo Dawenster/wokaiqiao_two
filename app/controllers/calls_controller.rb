@@ -154,6 +154,7 @@ class CallsController < ApplicationController
     conference_cloopen = Cloopen::Conference.new
     conference_response = conference_cloopen.create_conference
     call.update_details_from_cloopen(conference_response)
+    call.started_at = Time.current
     call.save
 
     sms_cloopen = Cloopen::Sms.new
