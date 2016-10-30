@@ -158,8 +158,8 @@ class CallsController < ApplicationController
     call.save
 
     sms_cloopen = Cloopen::Sms.new
-    sms_response = sms_cloopen.call_starting_reminder(call.user.phone, call.expert.name, call)
-    sms_response = sms_cloopen.call_starting_reminder(call.expert.phone, call.user.name, call)
+    sms_cloopen.call_starting_reminder(call.user.phone, call.expert.name, call) if call.user.phone.present?
+    sms_cloopen.call_starting_reminder(call.expert.phone, call.user.name, call) if call.expert.phone.present?
     redirect_to upcoming_calls_path
   end
 

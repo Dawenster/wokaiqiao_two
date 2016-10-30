@@ -11,10 +11,11 @@ module Cloopen
     end
 
     def call_starting_reminder(number, other_persons_name, call)
+      number_without_country_code = number.gsub("+86", "")
       payload = <<-eos
         <?xml version='1.0' encoding='utf-8'?>
         <TemplateSMS>
-          <to>#{number}</to>
+          <to>#{number_without_country_code}</to>
           <appId>#{ENV["CLOOPEN_APP_ID"]}</appId> 
           <templateId>122856</templateId>
           <datas>
