@@ -64,8 +64,8 @@
         description: "<%= expert.name %>通话" + estimatedDurationInMin + "分钟",
         currency: "<%= StripeTask::CURRENCY %>",
         amount: estimatedDurationInMin * ratePerMin * 100,
-        alipay: true,
-        "alipay-reusable": true,
+        // alipay: true,
+        // "alipay-reusable": true,
         email: email,
         locale: "zh"
       });
