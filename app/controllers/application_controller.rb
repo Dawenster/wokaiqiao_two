@@ -73,4 +73,8 @@ class ApplicationController < ActionController::Base
       return redirect_to request.referrer || root_path, alert: "抱歉，你不是我开窍管理员之一"
     end
   end
+
+  def device_is_mobile?
+    request.user_agent =~ /Mobile|webOS/
+  end
 end

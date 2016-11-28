@@ -28,7 +28,7 @@ class CallsController < ApplicationController
 
       if !@user.has_free_calls_remaining_to_complete?
 
-        alipay = Alipay::Pay.new(@call, amount_to_charge, alipay_callback_calls_url)
+        alipay = Alipay::Pay.new(@call, amount_to_charge, alipay_callback_calls_url, device_is_mobile?)
         alipay_url = alipay.run!
 
         return redirect_to alipay_url
