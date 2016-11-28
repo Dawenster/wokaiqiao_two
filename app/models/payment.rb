@@ -9,13 +9,13 @@ class Payment < ActiveRecord::Base
             :currency,
             presence: true
 
-  def self.make(user, call, charge)
+  def self.make(user, call, amount, trade_no)
     Payment.create(
-      amount_in_cents: charge.amount,
-      currency: StripeTask::CURRENCY,
+      amount_in_cents: amount,
+      currency: Alipay::Pay::CURRENCY,
       call: call,
       user: user,
-      stripe_py_id: charge.id
+      alipay_trade_no: trade_no
     )
   end
 

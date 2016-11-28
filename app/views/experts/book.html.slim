@@ -15,6 +15,8 @@
             br
 
           = simple_form_for @call do |f|
+            = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
+
             .row
               = render "book_section_one", expert: @expert, f: f
             .row
@@ -22,19 +24,9 @@
             .row
               = render "book_section_three"
 
-            = f.input :expert_id, as: :hidden, input_html: { value: @expert.id }
-
             - if user_signed_in?
 
-              - if current_user.stripe_cus_id.present?
-
-                .disclaimer-text
-                  p
-                    | 你的付款账户已经开通，我们会按照实际通话长度自动从你的付款账户收取费用。
-                    
-                = f.submit "立即申请通话", class: "button", id: "customButton"
-
-              - elsif current_user.has_free_calls_remaining_to_book?
+              - if current_user.has_free_calls_remaining_to_book?
 
                 = f.input :free, as: :hidden, input_html: { value: true }
 
@@ -42,18 +34,14 @@
                   p
                     | 你有免费通话的折扣代码，不需要付费。谢谢使用我开窍平台。
                     
-                = f.submit "立即申请通话", class: "button", id: "customButton"
-
-              - else
-
-                = render "stripe_checkout", expert: @expert
+              = f.submit "立即申请通话", class: "button"
 
             - else
 
               br
 
               .row
-                = render "book_section_four", user: @user
+                = render "book_section_four", user: @user, f: f
 
         .medium-4.columns.hide-for-small-only
           = render "expert_brief_horizontal", expert: @expert

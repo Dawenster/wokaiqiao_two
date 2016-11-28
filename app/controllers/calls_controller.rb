@@ -19,30 +19,45 @@ class CallsController < ApplicationController
     @expert = User.find(params[:call][:expert_id])
     amount_to_charge = @expert.rate_in_cents_for(params[:call][:est_duration_in_min].to_i)
 
-    unless @user.stripe_cus_id.present? || @user.has_free_calls_remaining_to_complete?
-      customer = StripeTask.create_stripe_customer(@user, params[:stripe_token])
-      @charge = StripeTask.charge(customer, amount_to_charge, "与#{@expert.name}通话")
-      if StripeTask.failed_charge?(@charge)
-        customer.delete
-        @user.update_attributes(stripe_cus_id: nil)
-        flash[:alert] = @charge[:error_message] + "。"
-        return redirect_to book_expert_path(params[:call][:expert_id])
-      end
-    end
-
     merge_dates
     @call = Call.new(call_params)
     @call.user = @user
     @call.user_accepted_at = Time.current
 
     if @call.save
-      Payment.make(@user, @call, @charge) if @charge
-      flash[:notice] = "<strong>#{@user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{@expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
-      send_confirmation_emails(@user, @expert, @call)
+
+      if !@user.has_free_calls_remaining_to_complete?
+
+        alipay = Alipay::Pay.new(@call, amount_to_charge, alipay_callback_calls_url)
+        alipay_url = alipay.run!
+
+        return redirect_to alipay_url
+      end
+
       redirect_to calls_path
     else
       flash[:alert] = @calls.errors.full_messages.join("，") + "。"
       redirect_to experts_path
+    end
+  end
+
+  def alipay_callback
+    success = params[:is_success] == "T"
+    call = Call.find(params[:out_trade_no])
+    expert = call.expert
+    if success
+      amount = params[:total_fee].to_f
+      trade_no = params[:trade_no]
+      
+      Payment.make(current_user, call, amount, trade_no)
+
+      flash[:notice] = "<strong>#{current_user.name}</strong>，感谢你的通话申请！我们正在努力为你安排与<strong>#{expert.name}</strong>直接通话。通话申请确认邮件已发送到你登记的电子邮箱，请查阅详情。你也可以在个人主页查看你的通话申请。"
+      send_confirmation_emails(current, call.expert, call)
+      return redirect_to calls_path
+    else
+      call.delete
+      flash[:alert] = "不好意思，您付款出了问题，请再次申请通话。"
+      return redirect_to book_expert_path(expert.id)
     end
   end
 
@@ -190,6 +205,7 @@ class CallsController < ApplicationController
     params.require(:user).permit(
       :name,
       :email,
+      :phone,
       :password,
       :agreed_to_policies
     )

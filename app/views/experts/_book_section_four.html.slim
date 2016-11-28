@@ -14,4 +14,4 @@
       p
         = "已经注册了？#{link_to '请快速登入', new_user_session_path}".html_safe
       = render "devise/registrations/registration_fields", resource: user, resource_name: :user, just_fields: true
-      = render "stripe_checkout", expert: @expert
+      = f.submit "立即申请通话", class: "button"

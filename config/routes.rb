@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :upcoming
+      get :alipay_callback
     end
   end
   resources :promotions, only: [:index] do
