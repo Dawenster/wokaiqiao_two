@@ -33,7 +33,6 @@ class CallsController < ApplicationController
 
         return redirect_to alipay_url
       end
-
       redirect_to calls_path
     else
       flash[:alert] = @calls.errors.full_messages.join("，") + "。"
