@@ -283,4 +283,4 @@ class CallsController < ApplicationController
     call.offer_time_one_changed? || call.offer_time_two_changed? || call.offer_time_three_changed?
   end
 
-end
+end 
